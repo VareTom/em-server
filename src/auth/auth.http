@@ -1,0 +1,19 @@
+### Create Account
+POST {{Url}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "t@gmail.com",
+  "password": "1234"
+}
+
+### Login
+POST {{Url}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "t@gmail.com",
+  "password": "1234"
+}
+
+###
