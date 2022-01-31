@@ -1,0 +1,9 @@
+POST {{Url}}/api/entities
+Content-Type: application/json
+
+{
+  "name": "toc",
+  "authorId": "1fc2d445-2e5a-4abb-a8a1-2256392cca22"
+}
+
+###
