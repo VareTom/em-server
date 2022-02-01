@@ -1,0 +1,10 @@
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMjc0ZmEwZTUtMmU0OC00NjJhLThhZTgtZDcyMWU2Mzg3Yzc1IiwiZW1haWwiOiJ0QGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJhJDEwJFdtUmQ1L0pZT1dNVDNQbm55ek1QQk9HQUhDOEtMOWpPOThkcE00NGVyT3U3THJSLkJpNnM2IiwiY3JlYXRlZEF0IjoiMjAyMi0wMi0wMVQxMjozOToxOC44MDdaIiwidXBkYXRlZEF0IjoiMjAyMi0wMi0wMVQxMjozOToxOC44MDhaIiwiZGVsZXRlZEF0IjpudWxsfSwiaWF0IjoxNjQzNzE5MTU4LCJleHAiOjE2NzUyNzY3NTh9.qu0e2hhsIzLdwdY2_PeKyt_UjhbylJczlX8NKLaCNLI",
+  "user": {
+    "id": "274fa0e5-2e48-462a-8ae8-d721e6387c75",
+    "email": "t@gmail.com",
+    "createdAt": "2022-02-01T12:39:18.807Z",
+    "updatedAt": "2022-02-01T12:39:18.808Z",
+    "deletedAt": null
+  }
+}

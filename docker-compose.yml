@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:5.7
+
+    platform: linux/x86_64
+    environment:
+      # MYSQL_ROOT_PASSWORD: oct4tek
+      MYSQL_DATABASE: tclean
+      # MYSQL_PASSWORD: oct4tek
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
