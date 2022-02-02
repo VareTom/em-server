@@ -19,6 +19,7 @@ async function bootstrap() {
   
   const port = process.env.PORT;
   app.useGlobalPipes(new ValidationPipe());
+  app.setGlobalPrefix('api/v1')
   app.use(cookieParser());
   await app.listen(port);
   

@@ -1,21 +1,21 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma, User } from '@prisma/client';
+import { BadRequestException, HttpException, HttpStatus, Inject, Injectable, NotFoundException } from '@nestjs/common';
 
-// Services
-import { PrismaService } from 'src/prisma.service';
+// Entity
+import { User } from 'src/core/entities/user.entity';
+
+// Constants
+import { USER_REPOSITORY } from 'src/core/constants';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    @Inject(USER_REPOSITORY)
+    private usersRepository: typeof User
+  ) {}
 
   async getOne(id: string): Promise<User> {
-    const user = this.prisma.user.findFirst({
-      where: {
-        AND: [
-          {id: id},
-          {deletedAt: null}
-        ]
-      }
+    const user = this.usersRepository.findOne({
+      where: {id: id}
     })
     
     if (!user) {
@@ -31,7 +31,7 @@ export class UserService {
     });
   }
   
-  async update(user: Prisma.UserUpdateInput,id: string): Promise<User> {
+  /*async update(user: Prisma.UserUpdateInput,id: string): Promise<User> {
     const userToUpdate = await this.prisma.user.findFirst({
       where: {
         AND: [
@@ -55,9 +55,9 @@ export class UserService {
       throw new HttpException(`User not found`, HttpStatus.BAD_REQUEST);
     }
     
-  }
+  }*/
   
-  async delete(id: string): Promise<User> {
+  /*async delete(id: string): Promise<User> {
     return this.prisma.user.findFirst({
       where: {
         AND: [
@@ -84,5 +84,5 @@ export class UserService {
         console.log(err)
         throw new HttpException('An error occured while retrieving user data', HttpStatus.INTERNAL_SERVER_ERROR);
       })
-  }
+  }*/
 }

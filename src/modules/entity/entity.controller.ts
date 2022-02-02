@@ -1,9 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Entity, Prisma } from '@prisma/client';
 
 // Services
-import { EntityService } from 'src/entity/entity.service';
+import { EntityService } from 'src/modules/entity/entity.service';
 
 @ApiTags('entities')
 @Controller('api/entities')
@@ -13,7 +12,7 @@ export class EntityController {
   }
   
   @Post()
-  async create(@Body() entity: Entity): Promise<Entity> {
-    return await this.entityService.create(entity);
+  async create(@Body() entity: any): Promise<any> {
+   // return await this.entityService.create(entity);
   }
 }

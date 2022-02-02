@@ -1,18 +1,18 @@
 ### Create Account
-POST {{Url}}/api/auth/register
+POST {{Url}}/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "email": "t@gmail.com",
+  "email": "testce@gmail.com",
   "password": "1234"
 }
 
 ### Login
-POST {{Url}}/api/auth/login
+POST {{Url}}/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email": "t@gmail.com",
+  "email": "test@gmail.com",
   "password": "1234"
 }
 
