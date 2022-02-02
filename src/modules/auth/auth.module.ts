@@ -21,7 +21,11 @@ import { EntityProviders } from 'src/core/providers/entity.providers';
       },
     }),
   ],
-  providers: [AuthService, JwtStrategy, ...EntityProviders],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    ...EntityProviders
+  ],
   controllers: [AuthController]
 })
 export class AuthModule {}

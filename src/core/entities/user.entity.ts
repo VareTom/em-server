@@ -1,15 +1,16 @@
 import {
   AllowNull,
   Column,
-  CreatedAt,
   DataType,
-  DeletedAt,
+  Default,
+  IsEmail,
+  IsUUID,
   Model,
-  PrimaryKey, Sequelize,
-  Table, Unique,
-  UpdatedAt
+  PrimaryKey,
+  Table,
+  Unique
 } from 'sequelize-typescript';
-
+import { IsString } from 'class-validator';
 
 @Table({
   timestamps: true,
@@ -17,24 +18,22 @@ import {
 })
 export class User extends Model<User> {
   
-  @Column({
-    type: DataType.UUID,
-    defaultValue: DataType.UUIDV4,
-    allowNull: false,
-    unique: true,
-    primaryKey: true
-  })
+  @PrimaryKey
+  @IsUUID(4)
+  @Default(DataType.UUIDV4)
+  @AllowNull(false)
+  @Unique
+  @Column
   id: string;
   
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-    unique: true
-  })
+  @IsEmail
+  @AllowNull(false)
+  @Unique
+  @Column
   email: string
   
-  @Column({
-    type: DataType.STRING
-  })
+  @IsString()
+  @AllowNull(false)
+  @Column
   password: string
 }
