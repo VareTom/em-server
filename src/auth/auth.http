@@ -3,8 +3,8 @@ POST {{Url}}/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "t@gmail.com",
-  "password": "1234"
+  "email": "test@gmail.com",
+  "password": "hey"
 }
 
 ### Login
