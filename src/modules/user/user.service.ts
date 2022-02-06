@@ -17,9 +17,9 @@ export class UserService {
     private userRepository: typeof User
   ) {}
 
-  async getOne(id: string): Promise<UserOutputDto> {
+  async getOne(uuid: string): Promise<UserOutputDto> {
     const user = await this.userRepository.findOne({
-      where: {id: id}
+      where: {uuid: uuid}
     }).then(user => user.toJSON());
     
     if (!user) {
@@ -29,12 +29,12 @@ export class UserService {
     return user;
   }
   
-  async update(user: UserUpdateInputDto,id: string): Promise<UserOutputDto> {
+  async update(user: UserUpdateInputDto,uuid: string): Promise<UserOutputDto> {
     return this.userRepository.update(user,{
-      where: { id: id }
+      where: { uuid: uuid }
     })
       .then(() => {
-        return this.userRepository.findOne({where: { id: id }})
+        return this.userRepository.findOne({where: { uuid: uuid }})
           .then(user => {
             user = user.toJSON();
             delete user.password;

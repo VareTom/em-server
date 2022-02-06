@@ -5,6 +5,9 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { EntityService } from 'src/modules/entity/entity.service';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 
+// DTOs
+import { EntityCreateInputDto } from 'src/core/dtos/entity/entityCreateInputDto';
+
 @ApiTags('entities')
 @Controller('entities')
 export class EntityController {
@@ -12,9 +15,11 @@ export class EntityController {
   constructor(private readonly entityService: EntityService) {
   }
   
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post()
-  async create(@Body() entity: any): Promise<any> {
-   // return await this.entityService.create(entity);
+  async create(@Body() entity: EntityCreateInputDto): Promise<any> {
+   return await this.entityService.create(entity);
   }
   
   @UseGuards(JwtAuthGuard)
