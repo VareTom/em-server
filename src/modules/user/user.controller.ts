@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
 // Services
 import { UserService } from 'src/modules/user/user.service';
@@ -28,6 +28,9 @@ export class UserController {
   
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
+  @ApiBody({
+    type: UserUpdateInputDto
+  })
   @Put(':id')
   async update(@Param('id') id: string,
                @Body() user: UserUpdateInputDto): Promise<UserOutputDto> {

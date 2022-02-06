@@ -13,7 +13,6 @@ import { USER_REPOSITORY } from 'src/core/constants';
 // DTOs
 import { UserCreateInputDto } from 'src/core/dtos/user/userCreateInputDto';
 import { UserCreateOutputDto } from 'src/core/dtos/user/userCreateOutputDto';
-import { UserChangePasswordInput } from 'src/core/dtos/user/userChangePasswordInput';
 
 
 @Injectable()

@@ -1,9 +1,6 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 
-// Service
-import { JwtService } from '@nestjs/jwt';
-
-// Entity
+// Entities
 import { User } from 'src/core/entities/user.entity';
 
 // Constants

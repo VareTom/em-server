@@ -1,5 +1,5 @@
 ### Create Account
-POST {{Url}}/api/v1/auth/register
+POST {{url}}/{{prefix}}/auth/register
 Content-Type: application/json
 
 {
@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### Login
-POST {{Url}}/api/v1/auth/login
+POST {{url}}/{{prefix}}/auth/login
 Content-Type: application/json
 
 {

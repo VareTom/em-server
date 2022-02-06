@@ -2,20 +2,20 @@ import { Module } from '@nestjs/common';
 import { DatabaseModule } from 'src/core/database/database.module';
 
 // Controllers
-import { EntityController } from 'src/modules/entity/entity.controller';
+import { ExpenditureController } from './expenditure.controller';
 
 // Services
-import { EntityService } from 'src/modules/entity/entity.service';
+import { ExpenditureService } from './expenditure.service';
 
 // Providers
 import { EntitiesProviders } from 'src/core/providers/entities.providers';
 
 @Module({
   imports: [DatabaseModule],
-  controllers: [EntityController],
+  controllers: [ExpenditureController],
   providers: [
-    EntityService,
+    ExpenditureService,
     ...EntitiesProviders
   ]
 })
-export class EntityModule {}
+export class ExpenditureModule {}

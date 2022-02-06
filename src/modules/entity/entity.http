@@ -1,4 +1,5 @@
-POST {{Url}}/api/entities
+###
+POST {{url}}/api/entities
 Content-Type: application/json
 
 {
@@ -6,4 +7,7 @@ Content-Type: application/json
   "authorId": "1fc2d445-2e5a-4abb-a8a1-2256392cca22"
 }
 
-###
+### Get entities of specific user
+GET {{url}}/api/v1/entities/7eb2dff3-77d3-4534-bde7-f2617aa70348/entities
+Authorization: Bearer {{bearerToken}}
+Accept: application/json
