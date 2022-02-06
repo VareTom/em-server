@@ -1,26 +1,23 @@
 import {
-  AllowNull, BelongsToMany,
+  AllowNull, BelongsTo,
   Column,
   DataType,
-  Default, HasMany,
-  IsEmail,
+  Default, ForeignKey,
+  IsDate,
   IsUUID,
   Model,
   PrimaryKey,
   Table,
   Unique
 } from 'sequelize-typescript';
-import { IsString } from 'class-validator';
-
-// Entities
+import { IsNumber, IsString } from 'class-validator';
 import { Entity } from 'src/core/entities/entity.entity';
-import { UserEntity } from 'src/core/entities/user-entity.entity';
 
 @Table({
   timestamps: true,
   paranoid: true,
 })
-export class User extends Model<User> {
+export class Expenditure extends Model<Expenditure> {
   
   @PrimaryKey
   @IsUUID(4)
@@ -30,17 +27,25 @@ export class User extends Model<User> {
   @Column
   uuid: string;
   
-  @IsEmail
-  @AllowNull(false)
-  @Unique
-  @Column
-  email: string;
-  
   @IsString()
   @AllowNull(false)
   @Column
-  password: string;
+  name: string;
   
-  @BelongsToMany(() => Entity, ()=> UserEntity)
-  entities: Entity[];
+  @IsNumber()
+  @AllowNull(false)
+  @Column
+  priceInCent: number;
+  
+  @IsDate
+  @AllowNull(true)
+  @Column
+  boughtAt: Date;
+  
+  @ForeignKey(() => Entity)
+  @Column
+  entityUuid: string;
+  
+  @BelongsTo(() => Entity)
+  entity: Entity
 }

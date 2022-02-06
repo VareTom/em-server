@@ -8,14 +8,14 @@ import { UserController } from 'src/modules/user/user.controller';
 import { UserService } from 'src/modules/user/user.service';
 
 // Providers
-import { EntityProviders } from 'src/core/providers/entity.providers';
+import { EntitiesProviders } from 'src/core/providers/entities.providers';
 
 @Module({
   imports: [DatabaseModule],
   controllers: [UserController],
   providers: [
     UserService,
-    ...EntityProviders
+    ...EntitiesProviders
   ]
 })
 export class UserModule {}

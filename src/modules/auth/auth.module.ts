@@ -7,7 +7,7 @@ import { AuthController } from 'src/modules/auth/auth.controller';
 import { JwtStrategy } from 'src/modules/auth/strategies/jwt.strategy';
 
 //  Providers
-import { EntityProviders } from 'src/core/providers/entity.providers';
+import { EntitiesProviders } from 'src/core/providers/entities.providers';
 
 @Module({
   imports: [
@@ -24,7 +24,7 @@ import { EntityProviders } from 'src/core/providers/entity.providers';
   providers: [
     AuthService,
     JwtStrategy,
-    ...EntityProviders
+    ...EntitiesProviders
   ],
   controllers: [AuthController]
 })

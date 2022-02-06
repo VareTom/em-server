@@ -37,8 +37,7 @@ export class AuthService {
   
         const jwt = this.jwt.sign({user: user});
         if (!jwt) throw new HttpException('Token creation failed', HttpStatus.INTERNAL_SERVER_ERROR);
-  
-        console.log(user)
+        
         delete user.password
         return {token: jwt, user: user};
       })
