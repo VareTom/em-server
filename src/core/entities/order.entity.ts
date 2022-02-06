@@ -16,6 +16,7 @@ import { Client } from 'src/core/entities/client.entity';
 import { Service } from 'src/core/entities/service.entity';
 import { IsNumber } from 'class-validator';
 import { OrderService } from 'src/core/entities/order-service.entity';
+import { Entity } from 'src/core/entities/entity.entity';
 
 @Table({
   timestamps: true,
@@ -55,4 +56,11 @@ export class Order extends Model<Order> {
   
   @BelongsTo(() => Client)
   client: Client;
+  
+  @ForeignKey(() => Entity)
+  @Column
+  entityUuid: string;
+  
+  @BelongsTo(() => Entity)
+  entity: Entity;
 }
