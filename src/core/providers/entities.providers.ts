@@ -2,7 +2,7 @@ import {
   ADDRESS_REPOSITORY, CAR_REPOSITORY,
   CLIENT_REPOSITORY,
   ENTITY_REPOSITORY,
-  EXPENDITURE_REPOSITORY, ORDER_REPOSITORY,
+  EXPENDITURE_REPOSITORY, ORDER_REPOSITORY, ORDER_SERVICE_REPOSITORY,
   SERVICE_REPOSITORY,
   USER_ENTITY_REPOSITORY,
   USER_REPOSITORY
@@ -18,6 +18,7 @@ import { Client } from 'src/core/entities/client.entity';
 import { Address } from 'src/core/entities/address.entity';
 import { Order } from 'src/core/entities/order.entity';
 import { Car } from 'src/core/entities/car.entity';
+import { OrderService } from 'src/core/entities/order-service.entity';
 
 export const EntitiesProviders = [
   {
@@ -55,5 +56,9 @@ export const EntitiesProviders = [
   {
     provide: CAR_REPOSITORY,
     useValue: Car
+  },
+  {
+    provide: ORDER_SERVICE_REPOSITORY,
+    useValue: OrderService
   }
 ]

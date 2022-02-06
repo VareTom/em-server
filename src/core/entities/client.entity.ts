@@ -1,8 +1,9 @@
 import {
   AllowNull,
+  BelongsTo,
   Column,
   DataType,
-  Default, HasMany,
+  Default, ForeignKey, HasMany,
   HasOne,
   IsUUID,
   Model,
@@ -37,13 +38,22 @@ export class Client extends Model<Client> {
   @Column
   lastName: string;
   
-  /*@HasOne(() => Address) // TODO:: finish it
+  @AllowNull(true)
+  @Column
+  options: string;
+  
+  @ForeignKey(() => Address)
+  @Column
+  addressUuid: string;
+  
+ /* @HasOne(() => Address)
   address: Address;*/
   //addressUuid: string;
   
-  @HasMany(() => Car)
-  cars: Car[];
-  
   @HasMany(() => Order)
   orders: Order[];
+  
+  // V1
+  /*@HasMany(() => Car)
+  cars: Car[];*/
 }

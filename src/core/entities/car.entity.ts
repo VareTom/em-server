@@ -1,9 +1,9 @@
+import { IsString } from 'class-validator';
 import {
-  AllowNull, BelongsTo,
+  AllowNull,
   Column,
   DataType,
   Default,
-  ForeignKey,
   IsUUID,
   Model,
   PrimaryKey,
@@ -12,8 +12,6 @@ import {
 } from 'sequelize-typescript';
 
 // Entities
-import { Client } from 'src/core/entities/client.entity';
-import { IsString } from 'class-validator';
 
 @Table({
   timestamps: true,
@@ -47,11 +45,12 @@ export class Car extends Model<Car> {
   @AllowNull(true)
   @Column
   color?: string;
-  
-  @ForeignKey(() => Client)
+ 
+  // V1
+ /* @ForeignKey(() => Client)
   @Column
   ownerUuid: string;
   
   @BelongsTo(() => Client)
-  owner: Client;
+  owner: Client;*/
 }

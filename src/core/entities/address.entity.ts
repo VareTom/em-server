@@ -1,8 +1,8 @@
 import {
-  AllowNull,
+  AllowNull, BelongsTo,
   Column,
   DataType,
-  Default,
+  Default, ForeignKey,
   HasOne,
   IsUUID,
   Model,
@@ -54,9 +54,6 @@ export class Address extends Model<Address> {
   @Column
   country: string;
   
-  
-  /*@HasOne(() => Client)
-  clientUuid: string;*/
-  
-  // TODO:: add relation to user
+  @HasOne(() => Client)
+  client: Client;
 }

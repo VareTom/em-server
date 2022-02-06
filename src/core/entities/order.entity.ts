@@ -15,6 +15,7 @@ import {
 import { Client } from 'src/core/entities/client.entity';
 import { Service } from 'src/core/entities/service.entity';
 import { IsNumber } from 'class-validator';
+import { OrderService } from 'src/core/entities/order-service.entity';
 
 @Table({
   timestamps: true,
@@ -45,8 +46,8 @@ export class Order extends Model<Order> {
   @Column
   validatedAt?: Date;
   
-  /*@HasMany(() => Service)
-  services: Service[]; // TODO:: N-N with order*/
+  @BelongsToMany(() => Service, () => OrderService)
+  services: Service[];
   
   @ForeignKey(() => Client)
   @Column

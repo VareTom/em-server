@@ -1,5 +1,5 @@
 import {
-  AllowNull, BelongsTo,
+  AllowNull, BelongsTo, BelongsToMany,
   Column,
   DataType,
   Default,
@@ -15,6 +15,7 @@ import { IsNumber, IsString } from 'class-validator';
 // Entities
 import { Entity } from 'src/core/entities/entity.entity';
 import { Order } from 'src/core/entities/order.entity';
+import { OrderService } from 'src/core/entities/order-service.entity';
 
 @Table({
   timestamps: true,
@@ -48,15 +49,15 @@ export class Service extends Model<Service> {
   @IsNumber()
   @AllowNull(false)
   @Column
-  priceInCent: number
+  priceInCent: number;
   
   @ForeignKey(() => Entity)
   @Column
   entityUuid: string;
   
   @BelongsTo(() => Entity)
-  entity: Entity
+  entity: Entity;
   
- /* @HasMany(() => Order)
-  orders?: Order[]*/
+  @BelongsToMany(() => Order, () => OrderService)
+  orders?: Order[];
 }
