@@ -46,9 +46,9 @@ export class Entity extends Model<Entity> {
   @ForeignKey(() => User)
   @Column
   authorUuid: string;
-  
-  @BelongsToMany(() => User, () => UserEntity)
-  members: User[];
+
+  @HasMany(() => UserEntity)
+  userEntities: UserEntity[];
   
   @HasMany(() => Service)
   services: Service[];

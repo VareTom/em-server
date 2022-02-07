@@ -37,7 +37,6 @@ export class EntityService {
           isAdmin: true
         })
             .then(createdRelation => {
-              console.log(createdRelation);
               const returnedEntity: EntityCreateOutputDto = {
                 uuid: createdEntity.uuid,
                 name: createdEntity.name,

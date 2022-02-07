@@ -13,7 +13,6 @@ import {
 import { IsString } from 'class-validator';
 
 // Entities
-import { Entity } from 'src/core/entities/entity.entity';
 import { UserEntity } from 'src/core/entities/user-entity.entity';
 
 @Table({
@@ -41,6 +40,6 @@ export class User extends Model<User> {
   @Column
   password: string;
   
-  @BelongsToMany(() => Entity, ()=> UserEntity)
-  entities: Entity[];
+  @HasMany(() => UserEntity)
+  userEntities: UserEntity[];
 }

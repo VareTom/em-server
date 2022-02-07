@@ -6,6 +6,8 @@ import { JwtService } from '@nestjs/jwt';
 
 // Entities
 import { User } from 'src/core/entities/user.entity';
+import { UserEntity } from 'src/core/entities/user-entity.entity';
+import { Entity } from 'src/core/entities/entity.entity';
 
 // Constants
 import { USER_REPOSITORY } from 'src/core/constants';
@@ -13,9 +15,6 @@ import { USER_REPOSITORY } from 'src/core/constants';
 // DTOs
 import { UserCreateInputDto } from 'src/core/dtos/user/userCreateInputDto';
 import { UserCreateOutputDto } from 'src/core/dtos/user/userCreateOutputDto';
-import { UserEntity } from 'src/core/entities/user-entity.entity';
-import { Entity } from 'src/core/entities/entity.entity';
-
 
 @Injectable()
 export class AuthService {
@@ -33,9 +32,10 @@ export class AuthService {
       ]
     })
       .then(async user => {
-        user = user.toJSON();
         if (!user) throw new HttpException('No user found with this email', HttpStatus.NOT_FOUND);
-  
+        user = user.toJSON();
+        // TODO:: clean response
+
         const isValid = await bcrypt.compare(userCreateInput.password, user.password);
         if (!isValid) throw new HttpException('Password not match', HttpStatus.BAD_REQUEST);
   
