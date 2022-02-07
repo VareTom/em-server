@@ -13,6 +13,8 @@ import { USER_REPOSITORY } from 'src/core/constants';
 // DTOs
 import { UserCreateInputDto } from 'src/core/dtos/user/userCreateInputDto';
 import { UserCreateOutputDto } from 'src/core/dtos/user/userCreateOutputDto';
+import { UserEntity } from 'src/core/entities/user-entity.entity';
+import { Entity } from 'src/core/entities/entity.entity';
 
 
 @Injectable()
@@ -25,7 +27,10 @@ export class AuthService {
     return this.userRepository.findOne({
       where: {
         email: userCreateInput.email
-      }
+      },
+      include: [
+        { model: UserEntity, include: [ Entity ] }
+      ]
     })
       .then(async user => {
         user = user.toJSON();
