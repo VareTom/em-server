@@ -28,9 +28,12 @@ export class EntityService {
   async create(entity: EntityCreateInputDto): Promise<EntityCreateOutputDto> {
     return await this.entityRepository.create(entity)
       .then(createdEntity => {
-        console.log(createdEntity);
         const returnedEntity: EntityCreateOutputDto = {
-          ...createdEntity
+          uuid: createdEntity.uuid,
+          name: createdEntity.name,
+          description: createdEntity.description ?? null,
+          authorUuid: createdEntity.authorUuid,
+          createdAt: createdEntity.createdAt
         }
         return returnedEntity;
       })
