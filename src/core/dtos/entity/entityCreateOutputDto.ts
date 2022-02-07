@@ -1,8 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDate, IsInstance, IsString } from 'class-validator';
-
-// Entities
-import { User } from 'src/core/entities/user.entity';
+import { IsBoolean, IsDate, IsString } from 'class-validator';
 
 export class EntityCreateOutputDto {
   

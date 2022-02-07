@@ -29,33 +29,45 @@ export class EntityService {
   ) {}
   
   async create(entity: EntityCreateInputDto): Promise<EntityCreateOutputDto> {
-    return this.entityRepository.create(entity)
-      .then(createdEntity => {
-        return this.userEntityRepository.create({
-          userUuid: createdEntity.authorUuid,
-          entityUuid: createdEntity.uuid,
-          isAdmin: true
-        })
-            .then(createdRelation => {
-              const returnedEntity: EntityCreateOutputDto = {
-                uuid: createdEntity.uuid,
-                name: createdEntity.name,
-                description: createdEntity.description ?? null,
-                authorUuid: createdEntity.authorUuid,
-                createdAt: createdEntity.createdAt,
-                isAdmin: createdRelation.isAdmin
+    const userEntites = await this.entityRepository.findOne({
+      where: {
+        name: entity.name
+      },
+      include: [
+        {
+          model: UserEntity,
+          include: [
+            {
+              model: User,
+              where: {
+                uuid: entity.authorUuid
               }
-              return returnedEntity;
-            })
-            .catch(err => {
-              console.log(err)
-              throw new HttpException('Cannot create the relation between you and your new entity.', HttpStatus.INTERNAL_SERVER_ERROR)
-            })
-      })
-      .catch(err => {
-        console.log(err);
-        throw new HttpException('Cannot create entity', HttpStatus.BAD_REQUEST);
-      })
+            }
+          ]
+        }
+      ]
+    })
+    console.log(userEntites)
+    if (userEntites) throw new HttpException('You are already part of an entity of that name!', HttpStatus.BAD_REQUEST);
+
+    const createdEntity = await this.entityRepository.create(entity)
+    if (!createdEntity) throw new HttpException('Cannot create entity', HttpStatus.BAD_REQUEST);
+
+    const createdRelation = await this.userEntityRepository.create({
+      userUuid: createdEntity.authorUuid,
+      entityUuid: createdEntity.uuid,
+      isAdmin: true
+    })
+    if (!createdRelation) throw new HttpException('Cannot create the relation between you and your new entity.', HttpStatus.INTERNAL_SERVER_ERROR);
+
+    return {
+      uuid: createdEntity.uuid,
+      name: createdEntity.name,
+      description: createdEntity.description ?? null,
+      authorUuid: createdEntity.authorUuid,
+      createdAt: createdEntity.createdAt,
+      isAdmin: createdRelation.isAdmin
+    };
   }
   
   async getAllForUser(id: string): Promise<any | []> {

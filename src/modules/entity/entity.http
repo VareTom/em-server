@@ -4,7 +4,7 @@ Authorization: Bearer {{bearerToken}}
 Content-Type: application/json
 
 {
-  "name": "tocorp",
+  "name": "tockkorp",
   "description": "My corp",
   "authorUuid": "cde9e935-ab0e-44c9-8f99-91943d837e85"
 }

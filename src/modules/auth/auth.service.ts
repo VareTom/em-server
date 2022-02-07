@@ -15,6 +15,7 @@ import { USER_REPOSITORY } from 'src/core/constants';
 // DTOs
 import { UserCreateInputDto } from 'src/core/dtos/user/userCreateInputDto';
 import { UserCreateOutputDto } from 'src/core/dtos/user/userCreateOutputDto';
+import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';
 
 @Injectable()
 export class AuthService {
@@ -23,32 +24,27 @@ export class AuthService {
               private readonly jwt: JwtService) {}
   
   async login(userCreateInput: UserCreateInputDto): Promise<UserCreateOutputDto> {
-    return this.userRepository.findOne({
+    const user = await this.userRepository.findOne({
       where: {
         email: userCreateInput.email
       },
       include: [
         { model: UserEntity, include: [ Entity ] }
       ]
-    })
-      .then(async user => {
-        if (!user) throw new HttpException('No user found with this email', HttpStatus.NOT_FOUND);
-        user = user.toJSON();
-        // TODO:: clean response
+    });
 
-        const isValid = await bcrypt.compare(userCreateInput.password, user.password);
-        if (!isValid) throw new HttpException('Password not match', HttpStatus.BAD_REQUEST);
-  
-        const jwt = this.jwt.sign({user: user});
-        if (!jwt) throw new HttpException('Token creation failed', HttpStatus.INTERNAL_SERVER_ERROR);
-        
-        delete user.password
-        return {token: jwt, user: user};
-      })
-      .catch(err => {
-        console.log(err)
-        throw new HttpException(`User not found`, HttpStatus.INTERNAL_SERVER_ERROR);
-      });
+    if (!user) throw new HttpException('No user found with this email', HttpStatus.NOT_FOUND);
+
+    const isValid = await bcrypt.compare(userCreateInput.password, user.password);
+    if (!isValid) throw new HttpException('Password not match', HttpStatus.BAD_REQUEST);
+
+    const jwt = this.jwt.sign({user: user});
+    if (!jwt) throw new HttpException('Token creation failed', HttpStatus.INTERNAL_SERVER_ERROR);
+
+    return {
+      token: jwt,
+      user: new UserOutputDto(user)
+    };
   }
   
   async register(userCreateInput: UserCreateInputDto): Promise<UserCreateOutputDto> {
