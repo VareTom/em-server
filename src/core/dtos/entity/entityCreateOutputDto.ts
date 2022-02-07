@@ -26,4 +26,9 @@ export class EntityCreateOutputDto {
   @ApiProperty()
   @IsBoolean()
   isAdmin: boolean;
+  
+  // members?? user without entites -> redundant
+  /*@ApiProperty()
+  @IsInstance()
+  isAdmin: boolean;*/
 }

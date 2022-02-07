@@ -24,8 +24,16 @@ export class EntityController {
   
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @Get(':id/entities')
-  async getAllForUser(@Param('id') id: string): Promise<any> {
-    return await this.entityService.getAllForUser(id);
+  @Get(':uuid/entities')
+  async getAllForUser(@Param('uuid') uuid: string): Promise<any> {
+    return await this.entityService.getAllForUser(uuid);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Post(':entityUuid/user/:userUuid')
+  async addEntityMember(@Param('entityUuid') entityUuid: string,
+                        @Param('userUuid') userUuid: string): Promise<any> {
+    return await this.entityService.addEntityMember(entityUuid, userUuid);
   }
 }

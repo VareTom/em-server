@@ -13,3 +13,8 @@ Content-Type: application/json
 GET {{url}}/{{prefix}}/entities/7eb2dff3-77d3-4534-bde7-f2617aa70348/entities
 Authorization: Bearer {{bearerToken}}
 Accept: application/json
+
+
+### Add user to entity
+POST {{url}}/{{prefix}}/entities/f4663840-b3f0-4c90-b1b3-139e187e9772/user/d61d7b72-dd13-4084-a0d1-9bbff300fbf7
+Authorization: Bearer {{bearerToken}}

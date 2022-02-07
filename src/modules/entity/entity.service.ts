@@ -29,7 +29,7 @@ export class EntityService {
   ) {}
   
   async create(entity: EntityCreateInputDto): Promise<EntityCreateOutputDto> {
-    const userEntites = await this.entityRepository.findOne({
+    const userEntities = await this.entityRepository.findOne({
       where: {
         name: entity.name
       },
@@ -47,8 +47,8 @@ export class EntityService {
         }
       ]
     })
-    console.log(userEntites)
-    if (userEntites) throw new HttpException('You are already part of an entity of that name!', HttpStatus.BAD_REQUEST);
+    console.log(userEntities)
+    if (userEntities) throw new HttpException('You are already part of an entity of that name!', HttpStatus.BAD_REQUEST);
 
     const createdEntity = await this.entityRepository.create(entity)
     if (!createdEntity) throw new HttpException('Cannot create entity', HttpStatus.BAD_REQUEST);
@@ -70,7 +70,7 @@ export class EntityService {
     };
   }
   
-  async getAllForUser(id: string): Promise<any | []> {
+  async getAllForUser(uuid: string): Promise<any | []> {
     return this.entityRepository.findAll({
       include: [User, Service, Order, Expenditure]
     })
@@ -81,5 +81,32 @@ export class EntityService {
         console.log(err);
         throw new HttpException('Cannot retrieve user entities!',HttpStatus.INTERNAL_SERVER_ERROR);
       });
+  }
+  
+  async addEntityMember(entityUuid: string, userUuid: string): Promise<any> {
+    console.log(entityUuid, userUuid)
+    const isAlreadyMember = await this.entityRepository.findOne({
+      where: { uuid: entityUuid },
+      include: [ {
+        model: UserEntity,
+        where: { userUuid: userUuid }
+      } ]
+    })
+    if (isAlreadyMember) throw new HttpException('This user is already a member of the entity.', HttpStatus.BAD_REQUEST);
+    
+    const newEntityMember = await this.userEntityRepository.create({
+      userUuid: userUuid,
+      entityUuid: entityUuid,
+      isAdmin: false
+    })
+    console.log(newEntityMember);
+    if (!newEntityMember) throw new HttpException('Cannot link this user to the entity.', HttpStatus.INTERNAL_SERVER_ERROR);
+    
+    return await this.userRepository.findAll({
+      include: [ {
+        model: UserEntity,
+        where: { entityUuid: entityUuid}
+      } ]
+    })
   }
 }
