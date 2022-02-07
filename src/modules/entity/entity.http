@@ -1,0 +1,15 @@
+### Create an entity
+POST {{url}}/{{prefix}}/entities
+Authorization: Bearer {{bearerToken}}
+Content-Type: application/json
+
+{
+  "name": "toc",
+  "description": "My entity",
+  "authorUuid": "1fc2d445-2e5a-4abb-a8a1-2256392cca22"
+}
+
+### Get entities of specific user
+GET {{url}}/{{prefix}}/entities/7eb2dff3-77d3-4534-bde7-f2617aa70348/entities
+Authorization: Bearer {{bearerToken}}
+Accept: application/json

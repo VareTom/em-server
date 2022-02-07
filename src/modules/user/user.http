@@ -1,0 +1,15 @@
+### Get user info for specific user
+GET {{Url}}/api/v1/users/08bb13d4-b727-4dee-a500-187da99d927f
+Authorization: Bearer {{bearerToken}}
+Accept: application/json
+
+### Update user info
+PUT {{Url}}/api/v1/users/08bb13d4-b727-4dee-a500-187da99d927f
+Authorization: Bearer {{bearerToken}}
+Content-Type: application/json
+
+{
+  "email": "test@gmail.com"
+}
+
+###

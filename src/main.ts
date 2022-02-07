@@ -12,24 +12,25 @@ async function bootstrap() {
   // Swawgger configuration
   const config = new DocumentBuilder()
     .setTitle('`Em API')
-    .setDescription('The API for `Em')
+    .setDescription('The `Em API description')
     .setVersion('1.0.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
-  // CORS options
+  
+  // Cors options
   const corsOptions = {
-    "origin": true,
-    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-    "preflightContinue": false,
-    "credentials": true,
-    "optionsSuccessStatus": 204,
-    "Access-Control-Allow-Headers": "*"
+    origin: true,
+    methods: 'GET,PUT,PATCH,HEAD,DELETE,POST',
+    preflightContinue: false,
+    credentials: true,
+    optionsSuccessStatus: 204,
+    'Access-Control-Allow-Headers': '*'
   };
-
+  
   app.enableCors(corsOptions);
   app.useGlobalPipes(new ValidationPipe());
+  app.setGlobalPrefix('api/v1')
   app.use(cookieParser());
   await app.listen(port);
   
