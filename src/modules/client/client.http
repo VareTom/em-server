@@ -1,0 +1,18 @@
+### Create new client with address
+POST {{url}}/{{prefix}}/clients
+Authorization: Bearer {{bearerToken}}
+Content-Type: application/json
+
+{
+  "firstName": "tome",
+  "lastName": "vare",
+  "options": "bmw série 1 bleu",
+  "address": {
+    "street": "Esplanade Césaria",
+    "number": "8",
+    "locality": "Mons",
+    "country": "Belgique"
+  }
+}
+
+###
