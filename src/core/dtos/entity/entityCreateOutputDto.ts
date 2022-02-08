@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDate, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsInstance, IsString } from 'class-validator';
+import { EntityMemberDto } from 'src/core/dtos/entity/entityMemberDto';
 
 export class EntityCreateOutputDto {
   
@@ -22,13 +23,20 @@ export class EntityCreateOutputDto {
   @ApiProperty()
   @IsDate()
   createdAt: Date;
-
-  @ApiProperty()
-  @IsBoolean()
-  isAdmin: boolean;
   
-  // members?? user without entites -> redundant
-  /*@ApiProperty()
-  @IsInstance()
-  isAdmin: boolean;*/
+  @ApiProperty()
+  @IsInstance(EntityMemberDto)
+  members?: EntityMemberDto[];
+  
+  constructor(json: Partial<EntityCreateOutputDto>) {
+    this.uuid = json.uuid;
+    this.name = json.name;
+    this.description = json.description ?? null;
+    this.authorUuid = json.authorUuid;
+    this.createdAt = json.createdAt;
+    
+    if (json.members && json.members.length > 0) {
+      this.members = json.members.map(member => new EntityMemberDto(member));
+    }
+  }
 }

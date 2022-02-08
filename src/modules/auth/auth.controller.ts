@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Param, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 
 // Swagger
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -17,6 +17,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {
   }
   
+  //@UseInterceptors(ClassSerializerInterceptor)
   @Post('register')
   async register(@Body() user: UserCreateInputDto): Promise<UserCreateOutputDto> {
     return await this.authService.register(user);

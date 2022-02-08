@@ -59,15 +59,21 @@ export class EntityService {
       isAdmin: true
     })
     if (!createdRelation) throw new HttpException('Cannot create the relation between you and your new entity.', HttpStatus.INTERNAL_SERVER_ERROR);
-
-    return {
+    
+    const entityAuthor = await this.userRepository.findOne({where: {uuid: createdEntity.authorUuid }}).then(author => author.toJSON());
+    if (!entityAuthor) throw new HttpException('Cannot retrieve entity author informations', HttpStatus.INTERNAL_SERVER_ERROR);
+    
+    return new EntityCreateOutputDto({
       uuid: createdEntity.uuid,
       name: createdEntity.name,
-      description: createdEntity.description ?? null,
+      description: createdEntity.description,
       authorUuid: createdEntity.authorUuid,
       createdAt: createdEntity.createdAt,
-      isAdmin: createdRelation.isAdmin
-    };
+      members: [{
+        ...entityAuthor,
+        isAdmin: createdRelation.isAdmin,
+      }]
+    });
   }
   
   async getAllForUser(uuid: string): Promise<any | []> {
@@ -83,7 +89,7 @@ export class EntityService {
       });
   }
   
-  async addEntityMember(entityUuid: string, userUuid: string): Promise<any> {
+  async addEntityMember(entityUuid: string, userUuid: string): Promise<EntityCreateOutputDto> {
     console.log(entityUuid, userUuid)
     const isAlreadyMember = await this.entityRepository.findOne({
       where: { uuid: entityUuid },
@@ -99,14 +105,34 @@ export class EntityService {
       entityUuid: entityUuid,
       isAdmin: false
     })
-    console.log(newEntityMember);
     if (!newEntityMember) throw new HttpException('Cannot link this user to the entity.', HttpStatus.INTERNAL_SERVER_ERROR);
     
-    return await this.userRepository.findAll({
-      include: [ {
+    const entityWithMembers = await this.entityRepository.findOne({
+      where: { uuid: entityUuid },
+      include: [{
         model: UserEntity,
-        where: { entityUuid: entityUuid}
-      } ]
-    })
+        include: [User]
+      }]
+    }).then(entity => entity.toJSON())
+    if (!entityWithMembers) throw new HttpException('Cannot retrieve entity informations!', HttpStatus.INTERNAL_SERVER_ERROR);
+    
+    let returnedObject = {
+      uuid: entityWithMembers.uuid,
+      name: entityWithMembers.name,
+      description: entityWithMembers.description,
+      authorUuid: entityWithMembers.authorUuid,
+      createdAt: entityWithMembers.createdAt,
+      members: []
+    }
+    
+    if (entityWithMembers.userEntities.length > 0) {
+      entityWithMembers.userEntities.forEach(member => {
+        returnedObject.members.push({
+          ...member.user,
+          isAdmin: member.isAdmin
+        })
+      })
+    }
+    return new EntityCreateOutputDto(returnedObject);
   }
 }

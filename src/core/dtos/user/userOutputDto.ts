@@ -3,12 +3,16 @@ import { ApiProperty } from '@nestjs/swagger';
 
 // DTOs
 import { EntityCreateOutputDto } from 'src/core/dtos/entity/entityCreateOutputDto';
+import { Exclude, Type } from 'class-transformer';
 
 export class UserOutputDto {
 
   @ApiProperty()
   @IsString()
   uuid: string;
+  
+  @Exclude()
+  password: string;
 
   @ApiProperty()
   @IsEmail()
@@ -29,7 +33,11 @@ export class UserOutputDto {
   @ApiProperty()
   @IsInstance(EntityCreateOutputDto)
   entities?: EntityCreateOutputDto[] = [];
-
+  
+ /* constructor(partial: Partial<UserOutputDto>) {
+    Object.assign(this, partial);
+  }*/
+  
   constructor(json: any) {
     this.uuid = json.uuid;
     this.email = json.email;
@@ -44,8 +52,7 @@ export class UserOutputDto {
           authorUuid: userEntity.entity.authorUuid,
           name: userEntity.entity.name,
           description: userEntity.entity.description ?? null,
-          createdAt: userEntity.entity.createdAt,
-          isAdmin: userEntity.isAdmin
+          createdAt: userEntity.entity.createdAt
         })
       })
     }

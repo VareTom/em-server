@@ -4,9 +4,9 @@ Authorization: Bearer {{bearerToken}}
 Content-Type: application/json
 
 {
-  "name": "tockkorp",
-  "description": "My corp",
-  "authorUuid": "cde9e935-ab0e-44c9-8f99-91943d837e85"
+  "name": "tockdddkorp",
+  "description": "My cfffforp",
+  "authorUuid": "d61d7b72-dd13-4084-a0d1-9bbff300fbf7"
 }
 
 ### Get entities of specific user
@@ -16,5 +16,5 @@ Accept: application/json
 
 
 ### Add user to entity
-POST {{url}}/{{prefix}}/entities/f4663840-b3f0-4c90-b1b3-139e187e9772/user/d61d7b72-dd13-4084-a0d1-9bbff300fbf7
+POST {{url}}/{{prefix}}/entities/f453b4e8-20d9-411d-a67b-99a93b058ec6/user/319dde3f-5031-4623-8cff-0362983b6b57
 Authorization: Bearer {{bearerToken}}

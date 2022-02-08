@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+  UseInterceptors
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 // Services
@@ -7,6 +16,7 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 
 // DTOs
 import { EntityCreateInputDto } from 'src/core/dtos/entity/entityCreateInputDto';
+import { EntityCreateOutputDto } from 'src/core/dtos/entity/entityCreateOutputDto';
 
 @ApiTags('entities')
 @Controller('entities')
@@ -17,8 +27,9 @@ export class EntityController {
   
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
+  @UseInterceptors(ClassSerializerInterceptor)
   @Post()
-  async create(@Body() entity: EntityCreateInputDto): Promise<any> {
+  async create(@Body() entity: EntityCreateInputDto): Promise<EntityCreateOutputDto> {
    return await this.entityService.create(entity);
   }
   
@@ -31,9 +42,10 @@ export class EntityController {
   
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
+  @UseInterceptors(ClassSerializerInterceptor)
   @Post(':entityUuid/user/:userUuid')
   async addEntityMember(@Param('entityUuid') entityUuid: string,
-                        @Param('userUuid') userUuid: string): Promise<any> {
+                        @Param('userUuid') userUuid: string): Promise<EntityCreateOutputDto> {
     return await this.entityService.addEntityMember(entityUuid, userUuid);
   }
 }
