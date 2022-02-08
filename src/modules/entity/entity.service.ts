@@ -47,7 +47,6 @@ export class EntityService {
         }
       ]
     })
-    console.log(userEntities)
     if (userEntities) throw new HttpException('You are already part of an entity of that name!', HttpStatus.BAD_REQUEST);
 
     const createdEntity = await this.entityRepository.create(entity)
@@ -90,7 +89,6 @@ export class EntityService {
   }
   
   async addEntityMember(entityUuid: string, userUuid: string): Promise<EntityCreateOutputDto> {
-    console.log(entityUuid, userUuid)
     const isAlreadyMember = await this.entityRepository.findOne({
       where: { uuid: entityUuid },
       include: [ {
