@@ -39,7 +39,12 @@ export class User extends Model<User> {
   @AllowNull(false)
   @Column
   password: string;
-  
+
+  @IsString()
+  @AllowNull(true)
+  @Column
+  activeEntityUuid?: string;
+
   @HasMany(() => UserEntity)
   userEntities: UserEntity[];
 }

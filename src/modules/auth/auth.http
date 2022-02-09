@@ -3,7 +3,7 @@ POST {{url}}/{{prefix}}/auth/register
 Content-Type: application/json
 
 {
-  "email": "debughg@debugd.com",
+  "email": "test@gmail.com",
   "password": "hey"
 }
 

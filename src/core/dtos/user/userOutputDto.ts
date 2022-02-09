@@ -17,6 +17,10 @@ export class UserOutputDto {
   @ApiProperty()
   @IsEmail()
   email: string;
+
+  @ApiProperty()
+  @IsString()
+  activeEntityUuid?: string;
   
   @ApiProperty()
   @IsDate()
@@ -41,6 +45,7 @@ export class UserOutputDto {
   constructor(json: any) {
     this.uuid = json.uuid;
     this.email = json.email;
+    this.activeEntityUuid = json.activeEntityUuid ?? null;
     this.createdAt = json.createdAt ?? null;
     this.updatedAt = json.updatedAt ?? null;
     this.deletedAt = json.deletedAt ?? null;
