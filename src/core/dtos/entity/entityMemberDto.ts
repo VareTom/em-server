@@ -16,6 +16,10 @@ export class EntityMemberDto {
   
   @ApiProperty()
   @IsDate()
+  addAt: Date;
+  
+  @ApiProperty()
+  @IsDate()
   createdAt?: Date;
   
   @Exclude()

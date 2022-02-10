@@ -10,7 +10,7 @@ Content-Type: application/json
 }
 
 ### Get entities of specific user
-GET {{url}}/{{prefix}}/entities/7eb2dff3-77d3-4534-bde7-f2617aa70348/entities
+GET {{url}}/{{prefix}}/entities/d61d7b72-dd13-4084-a0d1-9bbff300fbf7
 Authorization: Bearer {{bearerToken}}
 Accept: application/json
 

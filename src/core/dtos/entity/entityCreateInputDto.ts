@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class EntityCreateInputDto {
   
@@ -8,6 +8,7 @@ export class EntityCreateInputDto {
   name: string;
   
   @ApiProperty()
+  @IsOptional()
   @IsString()
   description?: string;
   
