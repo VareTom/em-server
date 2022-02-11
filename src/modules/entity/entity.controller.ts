@@ -8,7 +8,7 @@ import {
   UseGuards,
   UseInterceptors
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // Services
 import { EntityService } from 'src/modules/entity/entity.service';
@@ -27,6 +27,10 @@ export class EntityController {
   
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiCreatedResponse({
+    type: EntityCreateOutputDto
+  })
   @UseInterceptors(ClassSerializerInterceptor)
   @Post()
   async create(@Body() entity: EntityCreateInputDto): Promise<EntityCreateOutputDto> {
@@ -35,6 +39,12 @@ export class EntityController {
   
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiCreatedResponse({
+    type: EntityCreateOutputDto,
+    isArray: true
+  })
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':userUuid')
   async getAllForUser(@Param('userUuid') userUuid: string): Promise<EntityCreateOutputDto[]> {
     return await this.entityService.getAllForUser(userUuid);
@@ -42,6 +52,10 @@ export class EntityController {
   
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiCreatedResponse({
+    type: EntityCreateOutputDto
+  })
   @UseInterceptors(ClassSerializerInterceptor)
   @Post(':entityUuid/user/:userUuid')
   async addEntityMember(@Param('entityUuid') entityUuid: string,

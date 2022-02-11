@@ -1,0 +1,17 @@
+### Create new expenditure
+POST {{url}}/{{prefix}}/expenditures/
+Content-Type: application/json
+Authorization: Bearer {{bearerToken}}
+
+{
+  "name": "Savon de marseille",
+  "priceInCent": 1200,
+  "entityUuid": "f4663840-b3f0-4c90-b1b3-139e187e9772"
+}
+
+### Get all expenditures for specific entity
+GET {{url}}/{{prefix}}/expenditures/f4663840-b3f0-4c90-b1b3-139e187e9772
+Accept: application/json
+Authorization: Bearer {{bearerToken}}
+
+###

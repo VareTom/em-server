@@ -1,5 +1,5 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Body, ClassSerializerInterceptor, Controller, Post, UseGuards, UseInterceptors } from '@nestjs/common';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // Services
 import { AddressService } from 'src/modules/address/address.service';
@@ -19,6 +19,8 @@ export class AddressController {
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @UseInterceptors(ClassSerializerInterceptor)
   @Post()
   async create(@Body() address: any): Promise<any> {
     return await this.addressService.create(address);

@@ -1,5 +1,14 @@
-import { Body, Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Param,
+  Put,
+  UseGuards,
+  UseInterceptors
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // Services
 import { UserService } from 'src/modules/user/user.service';
@@ -21,19 +30,26 @@ export class UserController {
   
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @Get(':id')
-  async findOne(@Param('id') id: string): Promise<UserOutputDto> {
-    return await this.userService.getOne(id);
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiCreatedResponse({
+    type: UserOutputDto
+  })
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Get(':uuid')
+  async findOne(@Param('uuid') uuid: string): Promise<UserOutputDto> {
+    return await this.userService.getOne(uuid);
   }
   
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiBody({
-    type: UserUpdateInputDto
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiCreatedResponse({
+    type: UserOutputDto
   })
-  @Put(':id')
-  async update(@Param('id') id: string,
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Put(':uuid')
+  async update(@Param('uuid') uuid: string,
                @Body() user: UserUpdateInputDto): Promise<UserOutputDto> {
-    return await this.userService.update(user,id);
+    return await this.userService.update(user,uuid);
   }
 }

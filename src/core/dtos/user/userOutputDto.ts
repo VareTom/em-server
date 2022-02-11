@@ -34,7 +34,10 @@ export class UserOutputDto {
   @IsDate()
   deletedAt?: Date;
 
-  @ApiProperty()
+  @ApiProperty({
+    type: EntityCreateOutputDto,
+    isArray: true
+  })
   @IsInstance(EntityCreateOutputDto)
   entities?: EntityCreateOutputDto[] = [];
   

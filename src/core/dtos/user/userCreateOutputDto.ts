@@ -9,7 +9,9 @@ export class UserCreateOutputDto {
   @IsNotEmpty()
   token: string;
   
-  @ApiProperty()
+  @ApiProperty({
+    type: UserOutputDto
+  })
   @IsInstance(UserOutputDto)
   user: UserOutputDto;
 }

@@ -24,7 +24,9 @@ export class EntityCreateOutputDto {
   @IsDate()
   createdAt: Date;
   
-  @ApiProperty()
+  @ApiProperty({
+    type: EntityMemberDto
+  })
   @IsInstance(EntityMemberDto)
   members?: EntityMemberDto[];
   

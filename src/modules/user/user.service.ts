@@ -9,6 +9,8 @@ import { USER_REPOSITORY } from 'src/core/constants';
 // DTOs
 import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';
 import { UserUpdateInputDto } from 'src/core/dtos/user/userUpdateInputDto';
+import { UserEntity } from 'src/core/entities/user-entity.entity';
+import { Entity } from 'src/core/entities/entity.entity';
 
 @Injectable()
 export class UserService {
@@ -19,14 +21,16 @@ export class UserService {
 
   async getOne(uuid: string): Promise<UserOutputDto> {
     const user = await this.userRepository.findOne({
-      where: {uuid: uuid}
-    }).then(user => user.toJSON());
+      where: {uuid: uuid},
+      include: [
+        { model: UserEntity, include: [ Entity ] }
+      ]
+    });
     
     if (!user) {
       throw new HttpException(`User doesn't exist`, HttpStatus.BAD_REQUEST);
     }
-    delete user.password;
-    return user;
+    return new UserOutputDto(user);
   }
   
   async update(user: UserUpdateInputDto,uuid: string): Promise<UserOutputDto> {

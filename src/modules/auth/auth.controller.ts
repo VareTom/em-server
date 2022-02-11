@@ -1,7 +1,7 @@
 import { Body, ClassSerializerInterceptor, Controller, Param, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 
 // Swagger
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // Services
 import { AuthService } from 'src/modules/auth/auth.service';
@@ -9,6 +9,7 @@ import { AuthService } from 'src/modules/auth/auth.service';
 // DTOs
 import { UserCreateInputDto } from 'src/core/dtos/user/userCreateInputDto';
 import { UserCreateOutputDto } from 'src/core/dtos/user/userCreateOutputDto';
+import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -17,12 +18,21 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {
   }
   
-  //@UseInterceptors(ClassSerializerInterceptor)
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiCreatedResponse({
+    type: UserCreateOutputDto
+  })
+  @UseInterceptors(ClassSerializerInterceptor)
   @Post('register')
   async register(@Body() user: UserCreateInputDto): Promise<UserCreateOutputDto> {
     return await this.authService.register(user);
   }
   
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiCreatedResponse({
+    type: UserCreateOutputDto
+  })
+  @UseInterceptors(ClassSerializerInterceptor)
   @Post('login')
   async login(@Body() user: UserCreateInputDto): Promise<UserCreateOutputDto> {
     return await this.authService.login(user);

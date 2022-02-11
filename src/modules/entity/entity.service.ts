@@ -70,12 +70,14 @@ export class EntityService {
       createdAt: createdEntity.createdAt,
       members: [{
         ...entityAuthor,
+        addAt: createdRelation.createdAt,
         isAdmin: createdRelation.isAdmin,
       }]
     });
   }
   
-  async getAllForUser(userUuid: string): Promise<EntityCreateOutputDto | []> {
+  // EntityCreateOutputDto | []
+  async getAllForUser(userUuid: string): Promise<EntityCreateOutputDto[] | []> {
     return this.entityRepository.findAll({
       include: [
         {
@@ -91,19 +93,21 @@ export class EntityService {
         }
       ]
     })
-      .then(entities => { // TODO:: clean that shit
-        const returnedEntities: EntityCreateOutputDto = entities.map(entity => {
-          const entityData = {
-            uuid: entity.uuid,
-            name: entity.name,
-            description: entity.description,
-            authorUuid: entity.authorUuid,
-            createdAt: entity.createdAt,
-            members: []
-          }
+      .then(entities => {
+        const entitiesFormatted = []
+        entities.forEach((entity,index) => {
+          entitiesFormatted.push({
+              uuid: entity.uuid,
+              name: entity.name,
+              description: entity.description,
+              authorUuid: entity.authorUuid,
+              createdAt: entity.createdAt,
+              members: []
+          })
           if (entity.userEntities.length > 0) {
             entity.userEntities.forEach(member => {
-              entityData.members.push({
+              member.user = member.user.toJSON();
+              entitiesFormatted[index].members.push({
                 ...member.user,
                 isAdmin: member.isAdmin,
                 addAt: member.createdAt
@@ -111,8 +115,7 @@ export class EntityService {
             })
           }
         })
-        
-        return new EntityCreateOutputDto(returnedEntities);
+        return entitiesFormatted.map(entity => new EntityCreateOutputDto(entity));
       })
       .catch(err => {
         console.log(err);
