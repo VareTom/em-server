@@ -8,7 +8,7 @@ Authorization: Bearer {{bearerToken}}
   "priceInCent": 1200,
   "code": "NI",
   "description": "Je frotte frotte le tableau de bord",
-  "entityUuid": "f4663840-b3f0-4c90-b1b3-139e187e9772"
+  "entityUuid": "c13c3a98-2101-4327-837b-c38140e2f22a"
 }
 
 ### Get all services for specific entity
