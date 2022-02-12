@@ -41,7 +41,7 @@ export const databaseProviders = [{
       Order,
       OrderService
     ]);
-    await sequelize.sync({alter: true}); //{force: true}
+    await sequelize.sync({alter: true});
     return sequelize;
   },
 }];

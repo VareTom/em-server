@@ -31,7 +31,8 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Unauthorized'})
-  @ApiCreatedResponse({
+  @ApiResponse({
+    status: 200,
     type: UserOutputDto
   })
   @UseInterceptors(ClassSerializerInterceptor)
@@ -43,7 +44,8 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Unauthorized'})
-  @ApiCreatedResponse({
+  @ApiResponse({
+    status: 200,
     type: UserOutputDto
   })
   @UseInterceptors(ClassSerializerInterceptor)

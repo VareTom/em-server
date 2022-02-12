@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class EntityCreateInputDto {
   
@@ -9,10 +9,9 @@ export class EntityCreateInputDto {
   
   @ApiProperty()
   @IsOptional()
-  @IsString()
   description?: string;
   
   @ApiProperty()
-  @IsString()
+  @IsUUID()
   authorUuid: string;
 }

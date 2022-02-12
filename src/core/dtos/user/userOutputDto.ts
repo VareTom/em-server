@@ -1,14 +1,14 @@
-import { IsDate, IsEmail, IsInstance, IsString } from 'class-validator';
+import { IsDate, IsEmail, IsInstance, IsString, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 
 // DTOs
 import { EntityCreateOutputDto } from 'src/core/dtos/entity/entityCreateOutputDto';
-import { Exclude, Type } from 'class-transformer';
 
 export class UserOutputDto {
 
   @ApiProperty()
-  @IsString()
+  @IsUUID()
   uuid: string;
   
   @Exclude()

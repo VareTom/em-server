@@ -42,9 +42,9 @@ export class Service extends Model<Service> {
   description?: string;
   
   @IsString()
-  @AllowNull(false)
+  @AllowNull(true)
   @Column
-  code: string;
+  code?: string;
   
   @IsNumber()
   @AllowNull(false)

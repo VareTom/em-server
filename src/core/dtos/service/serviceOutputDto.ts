@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsDate, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
-export class ExpenditureOutputDto {
+export class ServiceOutputDto {
   
   @ApiProperty()
   @IsUUID()
@@ -14,13 +14,12 @@ export class ExpenditureOutputDto {
   name: string;
   
   @ApiProperty()
-  @IsNumber()
-  @IsNotEmpty()
-  priceInCent: number;
+  @IsOptional()
+  description?: string;
   
   @ApiProperty()
   @IsOptional()
-  boughtAt?: Date;
+  priceInCent: string;
   
   @ApiProperty()
   @IsDate()
@@ -30,8 +29,8 @@ export class ExpenditureOutputDto {
   constructor(json: any) {
     this.uuid = json.uuid;
     this.name = json.name;
+    this.description = json.description;
     this.priceInCent = json.priceInCent;
     this.createdAt = json.createdAt;
-    this.boughtAt = json.boughtAt;
   }
 }

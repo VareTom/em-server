@@ -29,7 +29,8 @@ export class AuthController {
   }
   
   @ApiResponse({ status: 401, description: 'Unauthorized'})
-  @ApiCreatedResponse({
+  @ApiResponse({
+    status: 200,
     type: UserCreateOutputDto
   })
   @UseInterceptors(ClassSerializerInterceptor)

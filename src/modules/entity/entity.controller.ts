@@ -40,7 +40,8 @@ export class EntityController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Unauthorized'})
-  @ApiCreatedResponse({
+  @ApiResponse({
+    status: 200,
     type: EntityCreateOutputDto,
     isArray: true
   })

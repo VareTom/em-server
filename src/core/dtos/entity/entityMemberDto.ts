@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDate, IsEmail, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsEmail, IsNotEmpty, IsString, IsUUID } from 'class-validator';
 import { Exclude } from 'class-transformer';
 
 export class EntityMemberDto {
   @ApiProperty()
-  @IsString()
+  @IsUUID()
+  @IsNotEmpty()
   uuid: string;
   
   @Exclude()

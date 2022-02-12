@@ -1,21 +1,25 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
-export class ExpenditureCreateInputDto {
+export class ServiceCreateInputDto {
   
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  name:string;
+  name: string;
+  
+  @ApiProperty()
+  @IsOptional()
+  description?: string;
+  
+  @ApiProperty()
+  @IsOptional()
+  code?: string;
   
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
   priceInCent: number;
-  
-  @ApiProperty()
-  @IsOptional()
-  boughtAt?: Date;
   
   @ApiProperty()
   @IsUUID()

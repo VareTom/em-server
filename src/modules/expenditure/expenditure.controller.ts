@@ -41,7 +41,8 @@ export class ExpenditureController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Unauthorized'})
-  @ApiCreatedResponse({
+  @ApiResponse({
+    status: 200,
     type: ExpenditureOutputDto,
     isArray: true
   })

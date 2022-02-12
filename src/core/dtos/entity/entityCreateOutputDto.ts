@@ -1,23 +1,25 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDate, IsInstance, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsInstance, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 import { EntityMemberDto } from 'src/core/dtos/entity/entityMemberDto';
 
 export class EntityCreateOutputDto {
   
   @ApiProperty()
-  @IsString()
+  @IsUUID()
+  @IsNotEmpty()
   uuid: string;
   
   @ApiProperty()
   @IsString()
+  @IsNotEmpty()
   name: string;
   
   @ApiProperty()
-  @IsString()
+  @IsOptional()
   description?: string;
   
   @ApiProperty()
-  @IsString()
+  @IsUUID()
   authorUuid: string;
   
   @ApiProperty()
