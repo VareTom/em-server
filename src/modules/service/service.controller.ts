@@ -46,9 +46,9 @@ export class ServiceController {
     isArray: true
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  @Get(':uuid')
-  async findAllForEntity(@Param('uuid') uuid: string): Promise<ServiceOutputDto[]> {
-    return await this.serviceService.getAllForEntity(uuid);
+  @Get(':entityUuid')
+  async findAllForEntity(@Param('entityUuid') entityUuid: string): Promise<ServiceOutputDto[]> {
+    return await this.serviceService.getAllForEntity(entityUuid);
   }
   
 }

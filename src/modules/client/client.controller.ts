@@ -1,9 +1,19 @@
-import { Body, ClassSerializerInterceptor, Controller, Post, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+  UseInterceptors
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // DTOs
-
+import { ClientOutputDto } from 'src/core/dtos/client/clientOutputDto';
+import { ClientAddressCreateInputDto } from 'src/core/dtos/client/clientAddressCreateInputDto';
 
 // Services
 import { ClientService } from 'src/modules/client/client.service';
@@ -18,10 +28,27 @@ export class ClientController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiCreatedResponse({
+    type: ClientOutputDto
+  })
   @UseInterceptors(ClassSerializerInterceptor)
   @Post()
-  async create(@Body() client: any): Promise<any> {
+  async create(@Body() client: ClientAddressCreateInputDto): Promise<ClientOutputDto> {
     return await this.clientService.create(client);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    status: 200,
+    type: ClientOutputDto,
+    isArray: true
+  })
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Get(':entityUuid')
+  async findAllForEntity(@Param('entityUuid') entityUuid: string): Promise<ClientOutputDto[]> {
+    return await this.clientService.getAllForEntity(entityUuid);
   }
 
 }

@@ -4,9 +4,9 @@ Authorization: Bearer {{bearerToken}}
 Content-Type: application/json
 
 {
-  "name": "tockdddkorp",
-  "description": "My cfffforp",
-  "authorUuid": "d61d7b72-dd13-4084-a0d1-9bbff300fbf7"
+  "name": "TocCorp",
+  "description": "My Corp",
+  "authorUuid": "304671dd-f28e-4fd0-96a2-9856882524e7"
 }
 
 ### Get entities of specific user

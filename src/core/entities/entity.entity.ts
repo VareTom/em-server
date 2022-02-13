@@ -1,6 +1,6 @@
 import {
   AllowNull,
-  BelongsToMany,
+  
   Column,
   DataType,
   Default, ForeignKey, HasMany,
@@ -18,6 +18,7 @@ import { UserEntity } from 'src/core/entities/user-entity.entity';
 import { Service } from 'src/core/entities/service.entity';
 import { Expenditure } from 'src/core/entities/expenditure.entity';
 import { Order } from 'src/core/entities/order.entity';
+import { Client } from 'src/core/entities/client.entity';
 
 @Table({
   timestamps: true,
@@ -58,4 +59,7 @@ export class Entity extends Model<Entity> {
   
   @HasMany(() => Order)
   orders: Order[];
+  
+  @HasMany(() => Client)
+  clients: Client[];
 }

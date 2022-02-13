@@ -16,13 +16,4 @@ export class AddressController {
   
   constructor(private readonly addressService: AddressService) {
   }
-
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiResponse({ status: 401, description: 'Unauthorized'})
-  @UseInterceptors(ClassSerializerInterceptor)
-  @Post()
-  async create(@Body() address: any): Promise<any> {
-    return await this.addressService.create(address);
-  }
 }

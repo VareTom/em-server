@@ -12,9 +12,4 @@ export class AddressService {
     @Inject(ADDRESS_REPOSITORY)
     private addressRepository: typeof Address
   ) {}
-  
-  async create(address: any): Promise<any> {
-  
-  }
-  
 }

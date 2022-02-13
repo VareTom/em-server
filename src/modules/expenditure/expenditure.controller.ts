@@ -19,7 +19,7 @@ import { ExpenditureCreateInputDto } from 'src/core/dtos/expenditure/expenditure
 import { ExpenditureOutputDto } from 'src/core/dtos/expenditure/expenditureOutputDto';
 import { EntityCreateOutputDto } from 'src/core/dtos/entity/entityCreateOutputDto';
 
-@ApiTags('expenditure')
+@ApiTags('expenditures')
 @Controller('expenditures')
 export class ExpenditureController {
   
@@ -47,9 +47,9 @@ export class ExpenditureController {
     isArray: true
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  @Get(':uuid')
-  async findAllForEntity(@Param('uuid') uuid: string): Promise<ExpenditureOutputDto[]> {
-    return await this.expenditureService.getAllForEntity(uuid);
+  @Get(':entityUuid')
+  async findAllForEntity(@Param('entityUuid') entityUuid: string): Promise<ExpenditureOutputDto[]> {
+    return await this.expenditureService.getAllForEntity(entityUuid);
   }
   
 }

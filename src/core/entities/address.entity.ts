@@ -55,5 +55,5 @@ export class Address extends Model<Address> {
   country: string;
   
   @HasOne(() => Client)
-  client: Client;
+  client?: Client;
 }
