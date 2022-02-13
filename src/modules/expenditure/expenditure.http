@@ -4,9 +4,9 @@ Content-Type: application/json
 Authorization: Bearer {{bearerToken}}
 
 {
-  "name": "Savon de marseille",
-  "priceInCent": 1200,
-  "entityUuid": "f4663840-b3f0-4c90-b1b3-139e187e9772"
+  "name": "Eau courante",
+  "priceInCent": 100,
+  "entityUuid": "ee30a7b5-8390-447d-81f9-b0d17a74b353"
 }
 
 ### Get all expenditures for specific entity

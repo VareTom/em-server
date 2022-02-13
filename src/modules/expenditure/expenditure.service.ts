@@ -1,6 +1,10 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { EXPENDITURE_REPOSITORY } from 'src/core/constants';
+
+// Entities
 import { Expenditure } from 'src/core/entities/expenditure.entity';
+
+// DTOs
 import { ExpenditureCreateInputDto } from 'src/core/dtos/expenditure/expenditureCreateInputDto';
 import { ExpenditureOutputDto } from 'src/core/dtos/expenditure/expenditureOutputDto';
 

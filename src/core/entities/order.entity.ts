@@ -35,7 +35,7 @@ export class Order extends Model<Order> {
   @IsNumber()
   @AllowNull(true)
   @Column
-  duration?: number;
+  durationInMinute?: number;
   
   @IsDate
   @AllowNull(true)

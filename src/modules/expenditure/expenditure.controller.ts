@@ -17,7 +17,6 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 // DTOs
 import { ExpenditureCreateInputDto } from 'src/core/dtos/expenditure/expenditureCreateInputDto';
 import { ExpenditureOutputDto } from 'src/core/dtos/expenditure/expenditureOutputDto';
-import { EntityCreateOutputDto } from 'src/core/dtos/entity/entityCreateOutputDto';
 
 @ApiTags('expenditures')
 @Controller('expenditures')

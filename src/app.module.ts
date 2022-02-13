@@ -9,6 +9,7 @@ import { ServiceModule } from 'src/modules/service/service.module';
 import { OrderModule } from 'src/modules/order/order.module';
 import { ExpenditureModule } from 'src/modules/expenditure/expenditure.module';
 import { AddressModule } from 'src/modules/address/address.module';
+import { StatisticsModule } from 'src/modules/statistics/statistics.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { AddressModule } from 'src/modules/address/address.module';
     ServiceModule,
     OrderModule,
     ExpenditureModule,
-    AddressModule
+    AddressModule,
+    StatisticsModule
   ]
 })
 export class AppModule {}
