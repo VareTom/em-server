@@ -10,7 +10,7 @@ import {
   Table,
   Unique
 } from 'sequelize-typescript';
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 // Entities
 import { Client } from 'src/core/entities/client.entity';
@@ -43,6 +43,11 @@ export class Address extends Model<Address> {
   @AllowNull(false)
   @Column
   number: number;
+  
+  @IsNumber()
+  @AllowNull(false)
+  @Column
+  postalCode: number;
   
   @IsString()
   @AllowNull(false)

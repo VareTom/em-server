@@ -18,6 +18,11 @@ export class AddressCreateInputDto {
   box?: string;
   
   @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
+  postalCode: number;
+  
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   locality: string;

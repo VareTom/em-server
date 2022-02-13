@@ -23,6 +23,11 @@ export class AddressOutputDto {
   box?: string;
   
   @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
+  postalCode: number;
+  
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   locality: string;
