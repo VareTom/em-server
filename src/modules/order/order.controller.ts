@@ -1,4 +1,13 @@
-import { Body, ClassSerializerInterceptor, Controller, Post, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+  UseInterceptors
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // Services
@@ -26,6 +35,19 @@ export class OrderController {
   @Post()
   async create(@Body() order: OrderCreateInputDto): Promise<OrderOutputDto> {
     return await this.orderService.create(order);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiCreatedResponse({
+    type: OrderOutputDto,
+    isArray: true
+  })
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Get(':entityUuid')
+  async findAllForEntity(@Param('entityUuid') entityUuid: string): Promise<OrderOutputDto[]> {
+    return await this.orderService.findAllForEntity(entityUuid);
   }
   
 }

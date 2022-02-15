@@ -9,7 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const port = process.env.PORT;
   
-  // Swawgger configuration
+  // Swagger configuration
   const config = new DocumentBuilder()
     .setTitle('`Em API')
     .setDescription('The `Em API description')

@@ -37,6 +37,11 @@ export class Order extends Model<Order> {
   @Column
   durationInMinute?: number;
   
+  @IsNumber()
+  @AllowNull(false)
+  @Column
+  totalInCent: number;
+  
   @IsDate
   @AllowNull(true)
   @Column

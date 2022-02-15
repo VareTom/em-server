@@ -1,4 +1,4 @@
-GET {{url}}/{{prefix}}/statistics/ee30a7b5-8390-447d-81f9-b0d17a74b353
+GET {{url}}/{{prefix}}/statistics/628c61c8-3df5-46f2-8984-36fd7d7fc199
 Authorization: Bearer {{bearerToken}}
 Accept: application/json
 

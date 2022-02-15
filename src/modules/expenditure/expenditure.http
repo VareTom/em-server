@@ -4,9 +4,9 @@ Content-Type: application/json
 Authorization: Bearer {{bearerToken}}
 
 {
-  "name": "Eau courante",
-  "priceInCent": 100,
-  "entityUuid": "ee30a7b5-8390-447d-81f9-b0d17a74b353"
+  "name": "Karcher",
+  "priceInCent": 22000,
+  "entityUuid": "628c61c8-3df5-46f2-8984-36fd7d7fc199"
 }
 
 ### Get all expenditures for specific entity

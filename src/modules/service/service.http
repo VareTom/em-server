@@ -5,10 +5,10 @@ Authorization: Bearer {{bearerToken}}
 
 {
   "name": "Nettoyage Intérieur",
-  "priceInCent": 1200,
+  "priceInCent": 2000,
   "code": "NI",
   "description": "Je frotte frotte le tableau de bord",
-  "entityUuid": "c13c3a98-2101-4327-837b-c38140e2f22a"
+  "entityUuid": "628c61c8-3df5-46f2-8984-36fd7d7fc199"
 }
 
 ### Get all services for specific entity
