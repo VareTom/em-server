@@ -39,10 +39,6 @@ export class Client extends Model<Client> {
   @Column
   lastName: string;
   
-  @AllowNull(true)
-  @Column
-  options: string;
-  
   @BelongsTo(() => Address)
   address: Address;
   
@@ -60,7 +56,6 @@ export class Client extends Model<Client> {
   @BelongsTo(() => Entity)
   entity: Entity;
   
-  // V1
-  /*@HasMany(() => Car)
-  cars: Car[];*/
+  @HasMany(() => Car)
+  cars: Car[];
 }

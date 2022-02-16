@@ -14,11 +14,15 @@ Content-Type: application/json
     "postalCode": 7000,
     "locality": "Mons",
     "country": "Belgique"
+  },
+  "car": {
+    "merch": "BMW",
+    "model": "Série 1"
   }
 }
 
 ### Get all expenditures for specific entity
-GET {{url}}/{{prefix}}/clients/ee30a7b5-8390-447d-81f9-b0d17a74b353
+GET {{url}}/{{prefix}}/clients/628c61c8-3df5-46f2-8984-36fd7d7fc199
 Accept: application/json
 Authorization: Bearer {{bearerToken}}
 

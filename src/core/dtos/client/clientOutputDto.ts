@@ -1,6 +1,7 @@
 import { AddressOutputDto } from 'src/core/dtos/address/addressOutputDto';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+import { CarOutputDto } from 'src/core/dtos/car/carOutputDto';
 
 export class ClientOutputDto {
   
@@ -26,6 +27,13 @@ export class ClientOutputDto {
   @IsOptional()
   address?: AddressOutputDto;
   
+  @ApiProperty({
+    type: ClientOutputDto,
+    isArray: true
+  })
+  @IsOptional()
+  cars: CarOutputDto[];
+  
   @ApiProperty()
   @IsDate()
   @IsNotEmpty()
@@ -37,6 +45,7 @@ export class ClientOutputDto {
     this.lastName = json.lastName;
     this.options = json.options;
     if (json.address) this.address = new AddressOutputDto(json.address);
+    this.cars = json.cars.map(car => new CarOutputDto(car));
     this.createdAt = json.createdAt;
   }
 }

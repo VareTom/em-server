@@ -39,7 +39,8 @@ export const databaseProviders = [{
       Client,
       Address,
       Order,
-      OrderService
+      OrderService,
+      Car
     ]);
     await sequelize.sync({alter: true});
     return sequelize;

@@ -13,7 +13,7 @@ import { ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs
 
 // DTOs
 import { ClientOutputDto } from 'src/core/dtos/client/clientOutputDto';
-import { ClientAddressCreateInputDto } from 'src/core/dtos/client/clientAddressCreateInputDto';
+import { ClientFullCreateInputDto } from 'src/core/dtos/client/clientFullCreateInputDto';
 
 // Services
 import { ClientService } from 'src/modules/client/client.service';
@@ -33,7 +33,7 @@ export class ClientController {
   })
   @UseInterceptors(ClassSerializerInterceptor)
   @Post()
-  async create(@Body() client: ClientAddressCreateInputDto): Promise<ClientOutputDto> {
+  async create(@Body() client: ClientFullCreateInputDto): Promise<ClientOutputDto> {
     return await this.clientService.create(client);
   }
   

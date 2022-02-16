@@ -27,7 +27,8 @@ export class EntityCreateOutputDto {
   createdAt: Date;
   
   @ApiProperty({
-    type: EntityMemberDto
+    type: EntityMemberDto,
+    isArray: true
   })
   @IsInstance(EntityMemberDto)
   members?: EntityMemberDto[];
