@@ -63,7 +63,7 @@ export class OrderService {
         }
       ]
     })
-    if (!orders) throw new HttpException('Cannot retrieve orders', HttpStatus.INTERNAL_SERVER_ERROR);
+    if (orders.length <= 0) throw new HttpException('Cannot retrieve orders', HttpStatus.INTERNAL_SERVER_ERROR);
     
     return orders.map(order => new OrderOutputDto(order));
   }

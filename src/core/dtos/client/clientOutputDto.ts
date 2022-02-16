@@ -46,7 +46,7 @@ export class ClientOutputDto {
     this.lastName = json.lastName;
     this.options = json.options;
     if (json.address) this.address = new AddressOutputDto(json.address);
-    this.cars = json.cars.map(car => new CarOutputDto(car));
+    if (json.cars) this.cars = json.cars.map(car => new CarOutputDto(car));
     this.createdAt = json.createdAt;
   }
 }
