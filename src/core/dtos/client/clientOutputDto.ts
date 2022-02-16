@@ -1,6 +1,6 @@
 import { AddressOutputDto } from 'src/core/dtos/address/addressOutputDto';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+import { ArrayMinSize, IsArray, IsDate, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 import { CarOutputDto } from 'src/core/dtos/car/carOutputDto';
 
 export class ClientOutputDto {
@@ -28,10 +28,11 @@ export class ClientOutputDto {
   address?: AddressOutputDto;
   
   @ApiProperty({
-    type: ClientOutputDto,
+    type: CarOutputDto,
     isArray: true
   })
-  @IsOptional()
+  @IsArray()
+  @ArrayMinSize(1)
   cars: CarOutputDto[];
   
   @ApiProperty()

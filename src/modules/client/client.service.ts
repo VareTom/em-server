@@ -16,7 +16,7 @@ import { ClientFullCreateInputDto } from 'src/core/dtos/client/clientFullCreateI
 export class ClientService {
   constructor(@Inject(CLIENT_REPOSITORY) private clientRepository: typeof Client,
               @Inject(CAR_REPOSITORY) private carRepository: typeof Car,
-              @Inject(ADDRESS_REPOSITORY) private addressRepository: typeof Address,) {
+              @Inject(ADDRESS_REPOSITORY) private addressRepository: typeof Address) {
   }
 
   async create(clientInput: ClientFullCreateInputDto): Promise<ClientOutputDto> {

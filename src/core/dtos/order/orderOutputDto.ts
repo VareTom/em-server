@@ -40,7 +40,8 @@ export class OrderOutputDto {
   createdAt: Date;
   
   @ApiProperty({
-    type: ServiceOutputDto
+    type: ServiceOutputDto,
+    isArray: true
   })
   @IsArray()
   @ArrayMinSize(1)
