@@ -12,8 +12,4 @@ export class ClientCreateInputDto {
   @ApiProperty()
   @IsOptional()
   lastName?: string;
-  
-  @ApiProperty()
-  @IsOptional()
-  options?: string;
 }

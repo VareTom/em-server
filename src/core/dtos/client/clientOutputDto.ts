@@ -21,10 +21,6 @@ export class ClientOutputDto {
   
   @ApiProperty()
   @IsOptional()
-  options?: string;
-  
-  @ApiProperty()
-  @IsOptional()
   address?: AddressOutputDto;
   
   @ApiProperty({
@@ -44,7 +40,6 @@ export class ClientOutputDto {
     this.uuid = json.uuid;
     this.firstName = json.firstName;
     this.lastName = json.lastName;
-    this.options = json.options;
     if (json.address) this.address = new AddressOutputDto(json.address);
     if (json.cars) this.cars = json.cars.map(car => new CarOutputDto(car));
     this.createdAt = json.createdAt;
