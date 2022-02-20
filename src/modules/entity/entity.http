@@ -1,0 +1,20 @@
+### Create an entity
+POST {{url}}/{{prefix}}/entities
+Authorization: Bearer {{bearerToken}}
+Content-Type: application/json
+
+{
+  "name": "TocCorp",
+  "description": "My Corp",
+  "authorUuid": "9a141a63-d014-40a4-a832-a1ca658a89b8"
+}
+
+### Get entities of specific user
+GET {{url}}/{{prefix}}/entities/d61d7b72-dd13-4084-a0d1-9bbff300fbf7
+Authorization: Bearer {{bearerToken}}
+Accept: application/json
+
+
+### Add user to entity
+POST {{url}}/{{prefix}}/entities/f453b4e8-20d9-411d-a67b-99a93b058ec6/user/319dde3f-5031-4623-8cff-0362983b6b57
+Authorization: Bearer {{bearerToken}}

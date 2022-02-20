@@ -1,0 +1,19 @@
+### Create new service
+POST {{url}}/{{prefix}}/services/
+Content-Type: application/json
+Authorization: Bearer {{bearerToken}}
+
+{
+  "name": "Nettoyage Intérieur",
+  "priceInCent": 2000,
+  "code": "NI",
+  "description": "Je frotte frotte le tableau de bord",
+  "entityUuid": "628c61c8-3df5-46f2-8984-36fd7d7fc199"
+}
+
+### Get all services for specific entity
+GET {{url}}/{{prefix}}/services/f4663840-b3f0-4c90-b1b3-139e187e9772
+Accept: application/json
+Authorization: Bearer {{bearerToken}}
+
+###

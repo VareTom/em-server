@@ -1,0 +1,17 @@
+### Create new expenditure
+POST {{url}}/{{prefix}}/expenditures/
+Content-Type: application/json
+Authorization: Bearer {{bearerToken}}
+
+{
+  "name": "Karcher",
+  "priceInCent": 22000,
+  "entityUuid": "628c61c8-3df5-46f2-8984-36fd7d7fc199"
+}
+
+### Get all expenditures for specific entity
+GET {{url}}/{{prefix}}/expenditures/f4663840-b3f0-4c90-b1b3-139e187e9772
+Accept: application/json
+Authorization: Bearer {{bearerToken}}
+
+###

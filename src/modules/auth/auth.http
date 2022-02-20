@@ -1,0 +1,17 @@
+### Create Account
+POST {{url}}/{{prefix}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@gmail.com",
+  "password": "hey"
+}
+
+### Login
+POST {{url}}/{{prefix}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@gmail.com",
+  "password": "hey"
+}

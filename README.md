@@ -1,16 +1,14 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+`Em Server`
 
-## Installation
+## Urls
 
-```bash
-$ npm install
-```
+### Git
+
+Front : `https://github.com/VareTom/tclean-front`
 
 ## Running the app
 
@@ -38,15 +36,6 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Stay in touch
+## Documentation
 
-```bash
-# show models
-$ npx prisma studio
 
-# create migration (only dev)
-$ npx prisma migrate dev --name init
-
-# create db (prod)
-$ npx prisma db push
-```

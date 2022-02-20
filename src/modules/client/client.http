@@ -1,0 +1,22 @@
+### Create new client with address
+POST {{url}}/{{prefix}}/clients
+Authorization: Bearer {{bearerToken}}
+Content-Type: application/json
+
+{
+  "client": {
+    "firstName": "Thddm",
+    "entityUuid": "628c61c8-3df5-46f2-8984-36fd7d7fc199"
+  },
+  "car": {
+    "merch": "BMW",
+    "model": "Série 1"
+  }
+}
+
+### Get all expenditures for specific entity
+GET {{url}}/{{prefix}}/clients/628c61c8-3df5-46f2-8984-36fd7d7fc199
+Accept: application/json
+Authorization: Bearer {{bearerToken}}
+
+###

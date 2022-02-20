@@ -1,0 +1,5 @@
+GET {{url}}/{{prefix}}/statistics/628c61c8-3df5-46f2-8984-36fd7d7fc199
+Authorization: Bearer {{bearerToken}}
+Accept: application/json
+
+###
