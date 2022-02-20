@@ -9,7 +9,6 @@ export class OrderCreateInputDto {
   durationInMinute?: number;
   
   @ApiProperty()
-  @IsDate()
   @IsOptional()
   performedAt?: Date;
   

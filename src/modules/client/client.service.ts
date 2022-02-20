@@ -21,7 +21,6 @@ export class ClientService {
 
   async create(clientInput: ClientFullCreateInputDto): Promise<ClientOutputDto> {
     const createdClient = await this.clientRepository.create(clientInput.client);
-    console.log(createdClient)
     if (!createdClient) throw new HttpException('Cannot create client', HttpStatus.BAD_REQUEST);
     
     if (clientInput.address) {

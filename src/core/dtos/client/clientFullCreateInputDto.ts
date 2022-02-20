@@ -17,6 +17,6 @@ export class ClientFullCreateInputDto {
   address?: AddressCreateInputDto;
   
   @ApiProperty()
-  @IsNotEmpty()
-  car: CarCreateInputDto;
+  @IsOptional()
+  car?: CarCreateInputDto;
 }

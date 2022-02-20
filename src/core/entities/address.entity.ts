@@ -39,11 +39,6 @@ export class Address extends Model<Address> {
   @Column
   box: string;
   
-  @IsString()
-  @AllowNull(false)
-  @Column
-  number: number;
-  
   @IsNumber()
   @AllowNull(false)
   @Column

@@ -9,11 +9,6 @@ export class AddressCreateInputDto {
   street: string;
   
   @ApiProperty()
-  @IsNumber()
-  @IsNotEmpty()
-  number: number;
-  
-  @ApiProperty()
   @IsOptional()
   box?: string;
   

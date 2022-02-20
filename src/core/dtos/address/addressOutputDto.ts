@@ -14,11 +14,6 @@ export class AddressOutputDto {
   street: string;
   
   @ApiProperty()
-  @IsNumber()
-  @IsNotEmpty()
-  number: number;
-  
-  @ApiProperty()
   @IsOptional()
   box?: string;
   
@@ -45,7 +40,6 @@ export class AddressOutputDto {
   constructor(json: any) {
     this.uuid = json.uuid;
     this.street = json.street;
-    this.number = json.number;
     this.box = json.box;
     this.locality = json.locality;
     this.country = json.country;
