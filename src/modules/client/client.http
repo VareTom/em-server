@@ -5,15 +5,12 @@ Content-Type: application/json
 
 {
   "client": {
-    "firstName": "Thm",
+    "firstName": "Thddm",
     "entityUuid": "628c61c8-3df5-46f2-8984-36fd7d7fc199"
   },
-  "address": {
-    "street": "Esaplande",
-    "number": 6,
-    "postalCode": 7000,
-    "locality": "Mons",
-    "country": "Belgique"
+  "car": {
+    "merch": "BMW",
+    "model": "Série 1"
   }
 }
 
@@ -23,9 +20,3 @@ Accept: application/json
 Authorization: Bearer {{bearerToken}}
 
 ###
-
-#//,
-#  "car": {
-#    "merch": "BMW",
-#    "model": "Série 1"
-#  }

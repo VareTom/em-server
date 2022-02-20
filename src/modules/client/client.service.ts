@@ -28,7 +28,9 @@ export class ClientService {
     }
     
     if (clientInput.car) {
-      await createdClient.$create('cars', clientInput.car);
+      const createdCar = await this.carRepository.create(clientInput.car);
+      if (!createdCar) throw new HttpException('Cannot create car', HttpStatus.BAD_REQUEST);
+      await createdClient.$add('cars', createdCar);
     }
     
     const returnedClient = await this.clientRepository.findByPk(createdClient.uuid, {

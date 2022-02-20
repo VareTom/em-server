@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 import {
   AllowNull, BelongsTo,
   Column,
@@ -37,9 +37,9 @@ export class Car extends Model<Car> {
   @Column
   model: string;
   
-  @IsString()
+  @IsNumber()
   @Column
-  year?: string;
+  year?: number;
   
   @IsString()
   @Column

@@ -76,7 +76,6 @@ export class EntityService {
     });
   }
   
-  // EntityCreateOutputDto | []
   async getAllForUser(userUuid: string): Promise<EntityCreateOutputDto[] | []> {
     return this.entityRepository.findAll({
       include: [
