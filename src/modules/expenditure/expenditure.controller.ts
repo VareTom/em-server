@@ -20,6 +20,7 @@ import { ExpenditureOutputDto } from 'src/core/dtos/expenditure/expenditureOutpu
 
 @ApiTags('expenditures')
 @Controller('expenditures')
+@UseInterceptors(ClassSerializerInterceptor) // TODO in all controllers
 export class ExpenditureController {
   
   constructor(private readonly expenditureService: ExpenditureService) {
@@ -31,7 +32,6 @@ export class ExpenditureController {
   @ApiCreatedResponse({
     type: ExpenditureOutputDto
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Post()
   async create(@Body() expenditure: ExpenditureCreateInputDto): Promise<ExpenditureOutputDto> {
     return await this.expenditureService.create(expenditure);
