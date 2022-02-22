@@ -20,6 +20,7 @@ import { EntityCreateOutputDto } from 'src/core/dtos/entity/entityCreateOutputDt
 
 @ApiTags('entities')
 @Controller('entities')
+@UseInterceptors(ClassSerializerInterceptor)
 export class EntityController {
   
   constructor(private readonly entityService: EntityService) {
@@ -31,7 +32,6 @@ export class EntityController {
   @ApiCreatedResponse({
     type: EntityCreateOutputDto
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Post()
   async create(@Body() entity: EntityCreateInputDto): Promise<EntityCreateOutputDto> {
    return await this.entityService.create(entity);
@@ -45,7 +45,6 @@ export class EntityController {
     type: EntityCreateOutputDto,
     isArray: true
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':userUuid')
   async getAllForUser(@Param('userUuid') userUuid: string): Promise<EntityCreateOutputDto[]> {
     return await this.entityService.getAllForUser(userUuid);
@@ -57,7 +56,6 @@ export class EntityController {
   @ApiCreatedResponse({
     type: EntityCreateOutputDto
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Post(':entityUuid/user/:userUuid')
   async addEntityMember(@Param('entityUuid') entityUuid: string,
                         @Param('userUuid') userUuid: string): Promise<EntityCreateOutputDto> {

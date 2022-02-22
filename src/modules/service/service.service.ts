@@ -32,7 +32,7 @@ export class ServiceService {
     const services = await this.serviceRepository.findAll({
       where: { entityUuid: entityUuid }
     })
-    if (!services) throw new HttpException('Cannot retrieve all services for this entity', HttpStatus.INTERNAL_SERVER_ERROR);
+    if (services.length < 0) throw new HttpException('Cannot retrieve all services for this entity', HttpStatus.INTERNAL_SERVER_ERROR);
     
     return services.map(service => new ServiceOutputDto(service));
   }

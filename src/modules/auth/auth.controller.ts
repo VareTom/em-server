@@ -13,6 +13,7 @@ import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';
 
 @ApiTags('auth')
 @Controller('auth')
+@UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
   
   constructor(private readonly authService: AuthService) {
@@ -22,7 +23,6 @@ export class AuthController {
   @ApiCreatedResponse({
     type: UserCreateOutputDto
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Post('register')
   async register(@Body() user: UserCreateInputDto): Promise<UserCreateOutputDto> {
     return await this.authService.register(user);
@@ -33,7 +33,6 @@ export class AuthController {
     status: 200,
     type: UserCreateOutputDto
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Post('login')
   async login(@Body() user: UserCreateInputDto): Promise<UserCreateOutputDto> {
     return await this.authService.login(user);

@@ -12,6 +12,7 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 
 @ApiTags('addresses')
 @Controller('addresses')
+@UseInterceptors(ClassSerializerInterceptor)
 export class AddressController {
   
   constructor(private readonly addressService: AddressService) {

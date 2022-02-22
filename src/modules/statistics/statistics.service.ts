@@ -22,10 +22,10 @@ export class StatisticsService {
   ) {}
   
   async getForEntity(entityUuid: string): Promise<StatisticsOutputDto> {
-    const totalExpendituresInCent = await this.expenditureRepository.sum('priceInCent',{
+    let totalExpendituresInCent = await this.expenditureRepository.sum('priceInCent',{
       where: {entityUuid: entityUuid}
     })
-    if (!totalExpendituresInCent) throw new HttpException('Cannot retrieve the total of expenditures.', HttpStatus.INTERNAL_SERVER_ERROR);
+    if (!totalExpendituresInCent) totalExpendituresInCent = 0;
     
     const totalIncomes = await this.orderRepository.sum('totalInCent');
     if (totalIncomes < 0) throw new HttpException('Total incomes cannot be negative', HttpStatus.INTERNAL_SERVER_ERROR);
@@ -37,8 +37,8 @@ export class StatisticsService {
     
     return new StatisticsOutputDto({
       benefits: actualIncomes - totalExpendituresInCent,
-      totalIncomes: totalIncomes,
-      actualIncomes: actualIncomes,
+      totalIncomes: totalIncomes ?? 0,
+      actualIncomes: actualIncomes ?? 0,
       totalExpendituresInCent: totalExpendituresInCent
     })
   }

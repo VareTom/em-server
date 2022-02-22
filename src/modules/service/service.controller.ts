@@ -20,6 +20,7 @@ import { ServiceOutputDto } from 'src/core/dtos/service/serviceOutputDto';
 
 @ApiTags('services')
 @Controller('services')
+@UseInterceptors(ClassSerializerInterceptor)
 export class ServiceController {
   
   constructor(private readonly serviceService: ServiceService) {
@@ -31,7 +32,6 @@ export class ServiceController {
   @ApiCreatedResponse({
     type: ServiceOutputDto
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Post()
   async create(@Body() service: ServiceCreateInputDto): Promise<ServiceOutputDto> {
     return await this.serviceService.create(service);
@@ -45,7 +45,6 @@ export class ServiceController {
     type: ServiceOutputDto,
     isArray: true
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':entityUuid')
   async findAllForEntity(@Param('entityUuid') entityUuid: string): Promise<ServiceOutputDto[]> {
     return await this.serviceService.getAllForEntity(entityUuid);

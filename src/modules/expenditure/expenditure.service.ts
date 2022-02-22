@@ -27,7 +27,7 @@ export class ExpenditureService {
     const expenditures = await this.expenditureRepository.findAll({
       where: { entityUuid: entityUuid }
     })
-    if (!expenditures) throw new HttpException('Cannot retrieve all expenditures for this entity', HttpStatus.INTERNAL_SERVER_ERROR);
+    if (expenditures.length < 0) throw new HttpException('Cannot retrieve all expenditures for this entity', HttpStatus.INTERNAL_SERVER_ERROR);
     
     return expenditures.map(expenditure => new ExpenditureOutputDto(expenditure));
   }

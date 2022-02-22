@@ -20,6 +20,7 @@ import { OrderOutputDto } from 'src/core/dtos/order/orderOutputDto';
 
 @ApiTags('orders')
 @Controller('orders')
+@UseInterceptors(ClassSerializerInterceptor)
 export class OrderController {
   
   constructor(private readonly orderService: OrderService) {
@@ -31,7 +32,6 @@ export class OrderController {
   @ApiCreatedResponse({
     type: OrderOutputDto
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Post()
   async create(@Body() order: OrderCreateInputDto): Promise<OrderOutputDto> {
     return await this.orderService.create(order);
@@ -44,7 +44,6 @@ export class OrderController {
     type: OrderOutputDto,
     isArray: true
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':entityUuid')
   async findAllForEntity(@Param('entityUuid') entityUuid: string): Promise<OrderOutputDto[]> {
     return await this.orderService.findAllForEntity(entityUuid);

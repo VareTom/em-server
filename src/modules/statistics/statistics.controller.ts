@@ -10,6 +10,7 @@ import { StatisticsOutputDto } from 'src/core/dtos/dashboard/statisticsOutputDto
 
 @ApiTags('statistics')
 @Controller('statistics')
+@UseInterceptors(ClassSerializerInterceptor)
 export class StatisticsController {
   
   constructor(private readonly statisticsService: StatisticsService) {
@@ -22,7 +23,6 @@ export class StatisticsController {
     status: 200,
     type: StatisticsOutputDto
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':entityUuid')
   async getForEntity(@Param('entityUuid') entityUuid: string): Promise<StatisticsOutputDto> {
     return await this.statisticsService.getForEntity(entityUuid);

@@ -45,7 +45,6 @@ export class ExpenditureController {
     type: ExpenditureOutputDto,
     isArray: true
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':entityUuid')
   async findAllForEntity(@Param('entityUuid') entityUuid: string): Promise<ExpenditureOutputDto[]> {
     return await this.expenditureService.getAllForEntity(entityUuid);
