@@ -32,13 +32,13 @@ async function bootstrap() {
     preflightContinue: false,
     credentials: true,
     optionsSuccessStatus: 204,
-    'Access-Control-Allow-Headers': '*'
+    "Access-Control-Allow-Headers": "*",
   };
   
-  app.enableCors(corsOptions);
   app.useGlobalPipes(new ValidationPipe());
-  app.setGlobalPrefix('api/v1')
+  app.setGlobalPrefix('api/v1');
   app.use(cookieParser());
+  app.enableCors(corsOptions);
   await app.listen(port);
   
   Logger.log(`Swagger documentation running on http://localhost:${port}/api`, 'Swagger');
