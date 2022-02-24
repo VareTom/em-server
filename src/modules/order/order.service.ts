@@ -54,17 +54,32 @@ export class OrderService {
   
   async findAllForEntity(entityUuid: string): Promise<OrderOutputDto[]> {
     const orders = await this.orderRepository.findAll({
-      include: [
-        {
-          model: Client
-        },
-        {
-          model: Service
-        }
-      ]
+      where: {
+        entityUuid: entityUuid
+      },
+      include: [ Client, Service ]
     })
     if (orders.length < 0) throw new HttpException('Cannot retrieve orders', HttpStatus.INTERNAL_SERVER_ERROR);
     
     return orders.map(order => new OrderOutputDto(order));
+  }
+  
+  async validate(orderUuid: string): Promise<OrderOutputDto> {
+    const order = await this.orderRepository.findByPk(orderUuid, { include: [Client, Service]});
+    if (!order) throw new HttpException('Cannot find this order', HttpStatus.BAD_REQUEST);
+    
+    order.validatedAt = new Date();
+    await order.save();
+    
+    return new OrderOutputDto(order);
+  }
+  
+  async delete(orderUuid: string): Promise<OrderOutputDto> {
+    const order = await this.orderRepository.findByPk(orderUuid, { include: [Client, Service]});
+    if (!order) throw new HttpException('Cannot find this order', HttpStatus.BAD_REQUEST);
+    
+    await order.destroy();
+    
+    return new OrderOutputDto(order);
   }
 }

@@ -1,3 +1,13 @@
+DELETE {{url}}/{{prefix}}/orders/e0c493c9-5e33-424a-b066-f73df6d69cf6
+Authorization: Bearer {{bearerToken}}
+Accept: application/json
+
+###
+GET {{url}}/{{prefix}}/orders/e0c493c9-5e33-424a-b066-f73df6d69cf6/validate
+Authorization: Bearer {{bearerToken}}
+Accept: application/json
+
+###
 GET {{url}}/{{prefix}}/orders/ee30a7b5-8390-447d-81f9-b0d17a74b353
 Authorization: Bearer {{bearerToken}}
 Accept: application/json

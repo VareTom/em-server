@@ -1,7 +1,7 @@
 import {
   Body,
   ClassSerializerInterceptor,
-  Controller,
+  Controller, Delete,
   Get,
   Param,
   Post,
@@ -48,5 +48,28 @@ export class OrderController {
   async findAllForEntity(@Param('entityUuid') entityUuid: string): Promise<OrderOutputDto[]> {
     return await this.orderService.findAllForEntity(entityUuid);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    status: 200,
+    type: OrderOutputDto
+  })
+  @Get(':orderUuid/validate')
+  async validate(@Param('orderUuid') orderUuid: string): Promise<OrderOutputDto> {
+    return await this.orderService.validate(orderUuid);
+  }
   
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    status: 200,
+    type: OrderOutputDto
+  })
+  @Delete(':orderUuid')
+  async delete(@Param('orderUuid') orderUuid: string): Promise<any> {
+    return await this.orderService.delete(orderUuid);
+  }
 }

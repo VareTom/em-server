@@ -23,7 +23,7 @@ export class ServiceService {
     if (serviceWithSameName) throw new HttpException('You already have a service with this name in your entity', HttpStatus.BAD_REQUEST);
     
     const service = await this.serviceRepository.create(serviceInput);
-    if (!service) throw new HttpException('Cannot create service.', HttpStatus.BAD_REQUEST)
+    if (!service) throw new HttpException('Cannot create service.', HttpStatus.INTERNAL_SERVER_ERROR);
     
     return new ServiceOutputDto(service);
   }

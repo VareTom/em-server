@@ -39,6 +39,10 @@ export class OrderOutputDto {
   @IsNotEmpty()
   createdAt: Date;
   
+  @ApiProperty()
+  @IsOptional()
+  deletedAt?: Date;
+  
   @ApiProperty({
     type: ServiceOutputDto,
     isArray: true
@@ -60,6 +64,7 @@ export class OrderOutputDto {
     this.performedAt = json.performedAt;
     this.validatedAt = json.validatedAt;
     this.createdAt = json.createdAt;
+    this.deletedAt = json.deletedAt;
     
     this.services = json.services.map(service => new ServiceOutputDto(service)); // TODO:: list of service ?
     this.client = new ClientOutputDto(json.client);
