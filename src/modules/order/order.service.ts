@@ -65,7 +65,12 @@ export class OrderService {
   }
   
   async validate(orderUuid: string): Promise<OrderOutputDto> {
-    const order = await this.orderRepository.findByPk(orderUuid, { include: [Client, Service]});
+    const order = await this.orderRepository.findOne( {
+      where: {
+        uuid: orderUuid,
+        validatedAt: null,
+      },
+      include: [Client, Service]});
     if (!order) throw new HttpException('Cannot find this order', HttpStatus.BAD_REQUEST);
     
     order.validatedAt = new Date();
