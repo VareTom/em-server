@@ -1,4 +1,4 @@
-### Delete an order
+### Delete a service
 DELETE {{url}}/{{prefix}}/services/0d4ba42a-2a40-4161-a594-3beec1bdc285
 Authorization: Bearer {{bearerToken}}
 Accept: application/json

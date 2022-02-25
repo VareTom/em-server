@@ -12,6 +12,7 @@ import { OrderModule } from 'src/modules/order/order.module';
 import { ExpenditureModule } from 'src/modules/expenditure/expenditure.module';
 import { AddressModule } from 'src/modules/address/address.module';
 import { StatisticsModule } from 'src/modules/statistics/statistics.module';
+import { CarModule } from 'src/modules/car/car.module';
 
 // Middlewares
 import LogsMiddleware from 'src/middleware/logs.middleware';
@@ -22,6 +23,7 @@ import LogsMiddleware from 'src/middleware/logs.middleware';
     DatabaseModule,
     UserModule,
     AuthModule,
+    CarModule,
     EntityModule,
     ClientModule,
     ServiceModule,

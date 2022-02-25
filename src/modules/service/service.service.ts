@@ -40,7 +40,7 @@ export class ServiceService {
   
   async delete(serviceUuid: string): Promise<ServiceOutputDto> {
     const service = await this.serviceRepository.findByPk(serviceUuid);
-    if (!service) throw new HttpException('Cannot find this expenditure', HttpStatus.BAD_REQUEST);
+    if (!service) throw new HttpException('Cannot find this service', HttpStatus.BAD_REQUEST);
     
     await service.destroy();
     
