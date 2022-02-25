@@ -69,7 +69,7 @@ export class OrderController {
     type: OrderOutputDto
   })
   @Delete(':orderUuid')
-  async delete(@Param('orderUuid') orderUuid: string): Promise<any> {
+  async delete(@Param('orderUuid') orderUuid: string): Promise<OrderOutputDto> {
     return await this.orderService.delete(orderUuid);
   }
 }

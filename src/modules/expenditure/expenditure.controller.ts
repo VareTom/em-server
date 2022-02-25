@@ -1,7 +1,7 @@
 import {
   Body,
   ClassSerializerInterceptor,
-  Controller,
+  Controller, Delete,
   Get,
   Param,
   Post,
@@ -48,6 +48,18 @@ export class ExpenditureController {
   @Get(':entityUuid')
   async findAllForEntity(@Param('entityUuid') entityUuid: string): Promise<ExpenditureOutputDto[]> {
     return await this.expenditureService.getAllForEntity(entityUuid);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    status: 200,
+    type: ExpenditureOutputDto
+  })
+  @Delete(':expenditurerUuid')
+  async delete(@Param('expenditurerUuid') expenditurerUuid: string): Promise<ExpenditureOutputDto> {
+    return await this.expenditureService.delete(expenditurerUuid);
   }
   
 }
