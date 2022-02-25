@@ -5,7 +5,6 @@ import { CAR_REPOSITORY } from 'src/core/constants';
 
 // Entities
 import { Car } from 'src/core/entities/car.entity';
-import { ServiceOutputDto } from 'src/core/dtos/service/serviceOutputDto';
 import { CarOutputDto } from 'src/core/dtos/car/carOutputDto';
 
 @Injectable()

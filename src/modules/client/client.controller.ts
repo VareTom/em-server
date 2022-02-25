@@ -1,7 +1,7 @@
 import {
   Body,
   ClassSerializerInterceptor,
-  Controller,
+  Controller, Delete,
   Get,
   Param,
   Post,
@@ -48,6 +48,18 @@ export class ClientController {
   @Get(':entityUuid')
   async findAllForEntity(@Param('entityUuid') entityUuid: string): Promise<ClientOutputDto[]> {
     return await this.clientService.getAllForEntity(entityUuid);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    status: 200,
+    type: ClientOutputDto
+  })
+  @Delete(':clientUuid')
+  async delete(@Param('clientUuid') clientUuid: string): Promise<ClientOutputDto> {
+    return await this.clientService.delete(clientUuid);
   }
 
 }
