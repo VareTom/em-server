@@ -7,9 +7,6 @@ import { Expenditure } from 'src/core/entities/expenditure.entity';
 // DTOs
 import { ExpenditureCreateInputDto } from 'src/core/dtos/expenditure/expenditureCreateInputDto';
 import { ExpenditureOutputDto } from 'src/core/dtos/expenditure/expenditureOutputDto';
-import { OrderOutputDto } from 'src/core/dtos/order/orderOutputDto';
-import { Client } from 'src/core/entities/client.entity';
-import { Service } from 'src/core/entities/service.entity';
 
 @Injectable()
 export class ExpenditureService {

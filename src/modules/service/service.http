@@ -1,14 +1,18 @@
+### Delete an order
+DELETE {{url}}/{{prefix}}/services/0d4ba42a-2a40-4161-a594-3beec1bdc285
+Authorization: Bearer {{bearerToken}}
+Accept: application/json
+
 ### Create new service
 POST {{url}}/{{prefix}}/services/
 Content-Type: application/json
 Authorization: Bearer {{bearerToken}}
 
 {
-  "name": "Nettoyage Intérieur",
-  "priceInCent": 2000,
-  "code": "NI",
-  "description": "Je frotte frotte le tableau de bord",
-  "entityUuid": "628c61c8-3df5-46f2-8984-36fd7d7fc199"
+  "name": "Bloc Moteur ",
+  "priceInCent": 22000,
+  "code": "BM",
+  "entityUuid": "312ad27e-5c4e-4791-9065-f3b9decd4f33"
 }
 
 ### Get all services for specific entity

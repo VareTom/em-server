@@ -9,6 +9,7 @@ import { Service } from 'src/core/entities/service.entity';
 // DTOs
 import { ServiceOutputDto } from 'src/core/dtos/service/serviceOutputDto';
 import { ServiceCreateInputDto } from 'src/core/dtos/service/serviceCreateInputDto';
+import { ExpenditureOutputDto } from 'src/core/dtos/expenditure/expenditureOutputDto';
 
 
 @Injectable()
@@ -35,6 +36,15 @@ export class ServiceService {
     if (services.length < 0) throw new HttpException('Cannot retrieve all services for this entity', HttpStatus.INTERNAL_SERVER_ERROR);
     
     return services.map(service => new ServiceOutputDto(service));
+  }
+  
+  async delete(serviceUuid: string): Promise<ServiceOutputDto> {
+    const service = await this.serviceRepository.findByPk(serviceUuid);
+    if (!service) throw new HttpException('Cannot find this expenditure', HttpStatus.BAD_REQUEST);
+    
+    await service.destroy();
+    
+    return new ServiceOutputDto(service);
   }
   
 }
