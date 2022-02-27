@@ -7,6 +7,7 @@ import { Expenditure } from 'src/core/entities/expenditure.entity';
 // DTOs
 import { ExpenditureCreateInputDto } from 'src/core/dtos/expenditure/expenditureCreateInputDto';
 import { ExpenditureOutputDto } from 'src/core/dtos/expenditure/expenditureOutputDto';
+import { ExpenditureUpdateInputDto } from 'src/core/dtos/expenditure/expenditureUpdateInputDto';
 
 @Injectable()
 export class ExpenditureService {
@@ -32,11 +33,24 @@ export class ExpenditureService {
     return expenditures.map(expenditure => new ExpenditureOutputDto(expenditure));
   }
   
-  async delete(expenditurerUuid: string): Promise<ExpenditureOutputDto> {
-    const expenditure = await this.expenditureRepository.findByPk(expenditurerUuid);
+  async delete(expenditureUuid: string): Promise<ExpenditureOutputDto> {
+    const expenditure = await this.expenditureRepository.findByPk(expenditureUuid);
     if (!expenditure) throw new HttpException('Cannot find this expenditure', HttpStatus.BAD_REQUEST);
     
     await expenditure.destroy();
+    
+    return new ExpenditureOutputDto(expenditure);
+  }
+  
+  async update(expenditureUuid: string, expenditureUpdateInput: ExpenditureUpdateInputDto): Promise<ExpenditureOutputDto> {
+    const expenditure = await this.expenditureRepository.findByPk(expenditureUuid);
+    if (!expenditure) throw new HttpException('Cannot find this expenditure', HttpStatus.BAD_REQUEST);
+    
+    if (expenditure.name !== expenditureUpdateInput.name) expenditure.name = expenditureUpdateInput.name;
+    if (expenditure.priceInCent !== expenditureUpdateInput.priceInCent) expenditure.priceInCent = expenditureUpdateInput.priceInCent;
+    if (expenditure.boughtAt !== expenditureUpdateInput.boughtAt) expenditure.boughtAt = expenditureUpdateInput.boughtAt;
+  
+    await expenditure.save();
     
     return new ExpenditureOutputDto(expenditure);
   }

@@ -4,7 +4,7 @@ import {
   Controller, Delete,
   Get,
   Param,
-  Post,
+  Post, Put,
   UseGuards,
   UseInterceptors
 } from '@nestjs/common';
@@ -17,6 +17,7 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 // DTOs
 import { ExpenditureCreateInputDto } from 'src/core/dtos/expenditure/expenditureCreateInputDto';
 import { ExpenditureOutputDto } from 'src/core/dtos/expenditure/expenditureOutputDto';
+import { ExpenditureUpdateInputDto } from 'src/core/dtos/expenditure/expenditureUpdateInputDto';
 
 @ApiTags('expenditures')
 @Controller('expenditures')
@@ -60,6 +61,19 @@ export class ExpenditureController {
   @Delete(':expenditurerUuid')
   async delete(@Param('expenditurerUuid') expenditurerUuid: string): Promise<ExpenditureOutputDto> {
     return await this.expenditureService.delete(expenditurerUuid);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    status: 200,
+    type: ExpenditureOutputDto
+  })
+  @Put(':expenditurerUuid')
+  async update(@Param('expenditurerUuid') expenditurerUuid: string,
+               @Body('expenditureUpdateInput') expenditureUpdateInput: ExpenditureUpdateInputDto): Promise<ExpenditureOutputDto> {
+    return await this.expenditureService.update(expenditurerUuid, expenditureUpdateInput);
   }
   
 }
