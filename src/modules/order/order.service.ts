@@ -12,6 +12,7 @@ import { Client } from 'src/core/entities/client.entity';
 // DTOs
 import { OrderCreateInputDto } from 'src/core/dtos/order/orderCreateInputDto';
 import { OrderOutputDto } from 'src/core/dtos/order/orderOutputDto';
+import { OrderUpdateInputDto } from 'src/core/dtos/order/orderUpdateInputDto';
 
 @Injectable()
 export class OrderService {
@@ -84,6 +85,20 @@ export class OrderService {
     if (!order) throw new HttpException('Cannot find this order', HttpStatus.BAD_REQUEST);
     
     await order.destroy();
+    
+    return new OrderOutputDto(order);
+  }
+  
+  async update(orderUuid: string, orderUpdateInput: OrderUpdateInputDto): Promise<OrderOutputDto> {
+    const order = await this.serviceRepository.findByPk(orderUuid);
+    if (!order) throw new HttpException('Cannot find this order', HttpStatus.BAD_REQUEST);
+    
+    /*if (order.name !== orderUpdateInput.name) order.name = orderUpdateInput.name;
+    if (order.priceInCent !== orderUpdateInput.priceInCent) order.priceInCent = orderUpdateInput.priceInCent;
+    if (order.description !== orderUpdateInput.description) order.description = orderUpdateInput.description;
+    if (order.code !== orderUpdateInput.code) order.code = orderUpdateInput.code;
+    
+    await order.save();*/
     
     return new OrderOutputDto(order);
   }

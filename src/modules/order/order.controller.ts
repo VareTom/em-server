@@ -4,7 +4,7 @@ import {
   Controller, Delete,
   Get,
   Param,
-  Post,
+  Post, Put,
   UseGuards,
   UseInterceptors
 } from '@nestjs/common';
@@ -17,6 +17,7 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 // DTOs
 import { OrderCreateInputDto } from 'src/core/dtos/order/orderCreateInputDto';
 import { OrderOutputDto } from 'src/core/dtos/order/orderOutputDto';
+import { OrderUpdateInputDto } from 'src/core/dtos/order/orderUpdateInputDto';
 
 @ApiTags('orders')
 @Controller('orders')
@@ -71,5 +72,18 @@ export class OrderController {
   @Delete(':orderUuid')
   async delete(@Param('orderUuid') orderUuid: string): Promise<OrderOutputDto> {
     return await this.orderService.delete(orderUuid);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    status: 200,
+    type: OrderOutputDto
+  })
+  @Put(':orderUuid')
+  async update(@Param('orderUuid') orderUuid: string,
+               @Body() orderUpdateInput: OrderUpdateInputDto): Promise<OrderOutputDto> {
+    return await this.orderService.update(orderUuid, orderUpdateInput);
   }
 }
