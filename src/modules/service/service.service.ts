@@ -9,8 +9,7 @@ import { Service } from 'src/core/entities/service.entity';
 // DTOs
 import { ServiceOutputDto } from 'src/core/dtos/service/serviceOutputDto';
 import { ServiceCreateInputDto } from 'src/core/dtos/service/serviceCreateInputDto';
-import { ExpenditureOutputDto } from 'src/core/dtos/expenditure/expenditureOutputDto';
-
+import { ServiceUpdateInputDto } from 'src/core/dtos/service/serviceUpdateInputDto';
 
 @Injectable()
 export class ServiceService {
@@ -43,6 +42,20 @@ export class ServiceService {
     if (!service) throw new HttpException('Cannot find this service', HttpStatus.BAD_REQUEST);
     
     await service.destroy();
+    
+    return new ServiceOutputDto(service);
+  }
+  
+  async update(serviceUuid: string, serviceUpdateInput: ServiceUpdateInputDto): Promise<ServiceOutputDto> {
+    const service = await this.serviceRepository.findByPk(serviceUuid);
+    if (!service) throw new HttpException('Cannot find this service', HttpStatus.BAD_REQUEST);
+    
+    if (service.name !== serviceUpdateInput.name) service.name = serviceUpdateInput.name;
+    if (service.priceInCent !== serviceUpdateInput.priceInCent) service.priceInCent = serviceUpdateInput.priceInCent;
+    if (service.description !== serviceUpdateInput.description) service.description = serviceUpdateInput.description;
+    if (service.code !== serviceUpdateInput.code) service.code = serviceUpdateInput.code;
+    
+    await service.save();
     
     return new ServiceOutputDto(service);
   }
