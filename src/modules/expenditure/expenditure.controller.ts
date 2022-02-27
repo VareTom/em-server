@@ -72,7 +72,7 @@ export class ExpenditureController {
   })
   @Put(':expenditurerUuid')
   async update(@Param('expenditurerUuid') expenditurerUuid: string,
-               @Body('expenditureUpdateInput') expenditureUpdateInput: ExpenditureUpdateInputDto): Promise<ExpenditureOutputDto> {
+               @Body() expenditureUpdateInput: ExpenditureUpdateInputDto): Promise<ExpenditureOutputDto> {
     return await this.expenditureService.update(expenditurerUuid, expenditureUpdateInput);
   }
   
