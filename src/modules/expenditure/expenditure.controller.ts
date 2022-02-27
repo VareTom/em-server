@@ -21,7 +21,7 @@ import { ExpenditureUpdateInputDto } from 'src/core/dtos/expenditure/expenditure
 
 @ApiTags('expenditures')
 @Controller('expenditures')
-@UseInterceptors(ClassSerializerInterceptor) // TODO in all controllers
+@UseInterceptors(ClassSerializerInterceptor)
 export class ExpenditureController {
   
   constructor(private readonly expenditureService: ExpenditureService) {
