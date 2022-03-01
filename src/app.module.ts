@@ -13,6 +13,7 @@ import { ExpenditureModule } from 'src/modules/expenditure/expenditure.module';
 import { AddressModule } from 'src/modules/address/address.module';
 import { StatisticsModule } from 'src/modules/statistics/statistics.module';
 import { CarModule } from 'src/modules/car/car.module';
+import { MailModule } from 'src/modules/mail/mail.module';
 
 // Middlewares
 import LogsMiddleware from 'src/middleware/logs.middleware';
@@ -20,6 +21,8 @@ import LogsMiddleware from 'src/middleware/logs.middleware';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    
+    // Custom Modules
     DatabaseModule,
     UserModule,
     AuthModule,
@@ -30,7 +33,8 @@ import LogsMiddleware from 'src/middleware/logs.middleware';
     OrderModule,
     ExpenditureModule,
     AddressModule,
-    StatisticsModule
+    StatisticsModule,
+    MailModule
   ]
 })
 export class AppModule {

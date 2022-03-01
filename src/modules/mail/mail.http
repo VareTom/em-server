@@ -1,0 +1,11 @@
+POST {{url}}/{{prefix}}/mails/contact
+Content-Type: application/json
+Authorization: Bearer {{bearerToken}}
+
+{
+  "email": "tomvarewyck98@gmail.com",
+  "subject": "Test",
+  "message": "Message test"
+}
+
+###
