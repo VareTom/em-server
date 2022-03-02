@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 
 // Services
@@ -23,13 +23,12 @@ export class AuthService {
               private userRepository: typeof User,
               private readonly jwt: JwtService) {}
   
-  async validateUser(email: string, pass: string): Promise<any> {
-    const user = await this.userRepository.findOne({where: {email: email}});
-    if (user && await bcrypt.compare(pass, user.password)) {
-      const { password, ...result } = user;
-      return result;
+  async validateUser(uuid: string): Promise<UserOutputDto> {
+    const user = await this.userRepository.findByPk(uuid);
+    if (!user) {
+      throw new UnauthorizedException();
     }
-    return null;
+    return new UserOutputDto(user);
   }
   
   async login(userCreateInput: UserCreateInputDto): Promise<UserCreateOutputDto> {
@@ -47,12 +46,13 @@ export class AuthService {
     const isValid = await bcrypt.compare(userCreateInput.password, user.password);
     if (!isValid) throw new HttpException('Password not match', HttpStatus.BAD_REQUEST);
 
-    const jwt = this.jwt.sign({user: user});
+    const formattedUser = new UserOutputDto(user);
+    const jwt = this.jwt.sign({user: formattedUser});
     if (!jwt) throw new HttpException('Token creation failed', HttpStatus.INTERNAL_SERVER_ERROR);
 
     return {
       token: jwt,
-      user: new UserOutputDto(user)
+      user: formattedUser
     };
   }
   

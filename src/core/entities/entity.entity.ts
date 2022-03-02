@@ -48,8 +48,8 @@ export class Entity extends Model<Entity> {
   @Column
   authorUuid: string;
 
-  @HasMany(() => UserEntity)
-  userEntities: UserEntity[];
+  @HasMany(() => User)
+  users: User[];
   
   @HasMany(() => Service)
   services: Service[];

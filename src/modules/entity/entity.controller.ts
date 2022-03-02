@@ -12,6 +12,8 @@ import { ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs
 
 // Services
 import { EntityService } from 'src/modules/entity/entity.service';
+
+// Guards
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 
 // DTOs
@@ -37,19 +39,8 @@ export class EntityController {
    return await this.entityService.create(entity);
   }
   
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiResponse({ status: 401, description: 'Unauthorized'})
-  @ApiResponse({
-    status: 200,
-    type: EntityCreateOutputDto,
-    isArray: true
-  })
-  @Get(':userUuid')
-  async getAllForUser(@Param('userUuid') userUuid: string): Promise<EntityCreateOutputDto[]> {
-    return await this.entityService.getAllForUser(userUuid);
-  }
-  
+  // TODO:: get list members
+  // TODO:: refacto to send mail invitation + invitation code
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Unauthorized'})

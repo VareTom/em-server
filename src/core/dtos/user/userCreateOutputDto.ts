@@ -14,5 +14,6 @@ export class UserCreateOutputDto {
     type: UserOutputDto
   })
   @IsInstance(UserOutputDto)
+  @IsNotEmpty()
   user: UserOutputDto;
 }

@@ -3,7 +3,7 @@ POST {{url}}/{{prefix}}/auth/register
 Content-Type: application/json
 
 {
-  "email": "testarmoii@gmail.com",
+  "email": "test@gmail.com",
   "password": "hey"
 }
 
@@ -12,6 +12,6 @@ POST {{url}}/{{prefix}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "testarmoii@gmail.com",
+  "email": "test@gmail.com",
   "password": "hey"
 }
