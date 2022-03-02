@@ -6,7 +6,6 @@ import { JwtService } from '@nestjs/jwt';
 
 // Entities
 import { User } from 'src/core/entities/user.entity';
-import { UserEntity } from 'src/core/entities/user-entity.entity';
 import { Entity } from 'src/core/entities/entity.entity';
 
 // Constants

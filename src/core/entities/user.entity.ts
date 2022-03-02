@@ -13,7 +13,6 @@ import {
 import { IsBoolean, IsString } from 'class-validator';
 
 // Entities
-import { UserEntity } from 'src/core/entities/user-entity.entity';
 import { Entity } from 'src/core/entities/entity.entity';
 
 @Table({
@@ -46,10 +45,6 @@ export class User extends Model<User> {
   @Default(false)
   @Column
   isSuperAdmin: boolean;
-
-  @IsUUID(4)
-  @Column
-  activeEntityUuid?: string;
   
   @ForeignKey(() => Entity)
   @Column

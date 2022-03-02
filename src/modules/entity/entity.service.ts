@@ -4,10 +4,9 @@ import { Op } from 'sequelize';
 // Entities
 import { Entity } from 'src/core/entities/entity.entity';
 import { User } from 'src/core/entities/user.entity';
-import { UserEntity } from 'src/core/entities/user-entity.entity';
 
 // Constants
-import { ENTITY_REPOSITORY, USER_ENTITY_REPOSITORY, USER_REPOSITORY } from 'src/core/constants';
+import { ENTITY_REPOSITORY, USER_REPOSITORY } from 'src/core/constants';
 
 // DTOs
 import { EntityCreateInputDto } from 'src/core/dtos/entity/entityCreateInputDto';
@@ -21,9 +20,7 @@ export class EntityService {
     @Inject(ENTITY_REPOSITORY)
     private entityRepository: typeof Entity,
     @Inject(USER_REPOSITORY)
-    private userRepository: typeof User,
-    @Inject(USER_ENTITY_REPOSITORY)
-    private userEntityRepository: typeof UserEntity,
+    private userRepository: typeof User
   ) {}
   
   async create(entity: EntityCreateInputDto): Promise<EntityCreateOutputDto> {

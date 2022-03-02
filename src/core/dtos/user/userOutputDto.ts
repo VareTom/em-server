@@ -21,10 +21,6 @@ export class UserOutputDto {
   @ApiProperty()
   @IsBoolean()
   isSuperAdmin: boolean;
-
-  @ApiProperty()
-  @IsString()
-  activeEntityUuid?: string;
   
   @ApiProperty()
   @IsDate()
@@ -49,7 +45,6 @@ export class UserOutputDto {
     this.uuid = json.uuid;
     this.email = json.email;
     this.isSuperAdmin = json.isSuperAdmin;
-    this.activeEntityUuid = json.activeEntityUuid ?? null;
     this.createdAt = json.createdAt;
     this.updatedAt = json.updatedAt;
     this.deletedAt = json.deletedAt ?? null;
