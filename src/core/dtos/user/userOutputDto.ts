@@ -54,6 +54,6 @@ export class UserOutputDto {
     this.updatedAt = json.updatedAt;
     this.deletedAt = json.deletedAt ?? null;
 
-    if (json.userEntity) this.entity = new EntityCreateOutputDto(json.userEntity);
+    if (json.entity) this.entity = new EntityCreateOutputDto(json.entity);
   }
 }

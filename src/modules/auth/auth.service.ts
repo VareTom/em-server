@@ -36,10 +36,9 @@ export class AuthService {
       where: {
         email: userCreateInput.email
       },
-      include: [
-        { model: UserEntity, include: [ Entity ] }
-      ]
+      include: [ Entity ]
     });
+    console.log(user)
 
     if (!user) throw new HttpException('No user found with this email', HttpStatus.NOT_FOUND);
 
