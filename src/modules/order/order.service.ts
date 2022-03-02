@@ -90,16 +90,28 @@ export class OrderService {
   }
   
   async update(orderUuid: string, orderUpdateInput: OrderUpdateInputDto): Promise<OrderOutputDto> {
-    const order = await this.serviceRepository.findByPk(orderUuid);
+    const order = await this.orderRepository.findByPk(orderUuid);
     if (!order) throw new HttpException('Cannot find this order', HttpStatus.BAD_REQUEST);
+  
+    const services = await this.serviceRepository.findAll({
+      where: {
+        uuid: { [Op.in]: orderUpdateInput.servicesUuid }
+      }
+    });
+    if (services.length <= 0) throw new HttpException('Cannot retrieve services to associate', HttpStatus.BAD_REQUEST);
+  
+    const client = await this.clientRepository.findByPk(orderUpdateInput.clientUuid);
+    if (!client) throw new HttpException('Cannot retrieve client', HttpStatus.BAD_REQUEST);
+  
+    const totalInCent = services.reduce((partialSum, a) => partialSum + a.priceInCent, 0)
     
-    /*if (order.name !== orderUpdateInput.name) order.name = orderUpdateInput.name;
-    if (order.priceInCent !== orderUpdateInput.priceInCent) order.priceInCent = orderUpdateInput.priceInCent;
-    if (order.description !== orderUpdateInput.description) order.description = orderUpdateInput.description;
-    if (order.code !== orderUpdateInput.code) order.code = orderUpdateInput.code;
+    //await order.$set('servicesUuid', services);
+    order.totalInCent = totalInCent;
+    order.services = services;
+    order.client = client;
+  
+    await order.save();
     
-    await order.save();*/
-    
-    return new OrderOutputDto(order);
+    return new OrderOutputDto(order)
   }
 }

@@ -6,7 +6,7 @@ Content-Type: application/json
 {
   "name": "TocCorp",
   "description": "My Corp",
-  "authorUuid": "9a141a63-d014-40a4-a832-a1ca658a89b8"
+  "authorUuid": "67c543df-4d47-4875-b769-b7c9294ecdc9"
 }
 
 ### Get entities of specific user

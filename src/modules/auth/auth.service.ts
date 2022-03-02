@@ -23,6 +23,15 @@ export class AuthService {
               private userRepository: typeof User,
               private readonly jwt: JwtService) {}
   
+  async validateUser(email: string, pass: string): Promise<any> {
+    const user = await this.userRepository.findOne({where: {email: email}});
+    if (user && await bcrypt.compare(pass, user.password)) {
+      const { password, ...result } = user;
+      return result;
+    }
+    return null;
+  }
+  
   async login(userCreateInput: UserCreateInputDto): Promise<UserCreateOutputDto> {
     const user = await this.userRepository.findOne({
       where: {
