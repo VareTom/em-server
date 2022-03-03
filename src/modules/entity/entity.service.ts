@@ -11,6 +11,7 @@ import { ENTITY_REPOSITORY, USER_REPOSITORY } from 'src/core/constants';
 // DTOs
 import { EntityCreateInputDto } from 'src/core/dtos/entity/entityCreateInputDto';
 import { EntityCreateOutputDto } from 'src/core/dtos/entity/entityCreateOutputDto';
+import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';
 
 
 @Injectable()
@@ -38,6 +39,18 @@ export class EntityService {
     await user.$set('entity',createdEntity);
     
     return new EntityCreateOutputDto(createdEntity);
+  }
+  
+  async getMembers(entityUuid: string): Promise<UserOutputDto[]> {
+    return this.userRepository.findAll({
+      where: { entityUuid: entityUuid }
+    })
+      .then(members => {
+      return members.map(member => new UserOutputDto(member));
+    })
+      .catch(err => {
+        throw new HttpException('Cannot retrieve members for this entity', HttpStatus.INTERNAL_SERVER_ERROR);
+      })
   }
   
   async addEntityMember(entityUuid: string, userUuid: string): Promise<EntityCreateOutputDto> {

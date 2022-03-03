@@ -19,6 +19,7 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 // DTOs
 import { EntityCreateInputDto } from 'src/core/dtos/entity/entityCreateInputDto';
 import { EntityCreateOutputDto } from 'src/core/dtos/entity/entityCreateOutputDto';
+import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';
 
 @ApiTags('entities')
 @Controller('entities')
@@ -37,6 +38,18 @@ export class EntityController {
   @Post()
   async create(@Body() entity: EntityCreateInputDto): Promise<EntityCreateOutputDto> {
    return await this.entityService.create(entity);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    type: UserOutputDto,
+    isArray: true
+  })
+  @Get(':entityUuid/members')
+  async getMembers(@Param('entityUuid') entityUuid: string): Promise<UserOutputDto[]> {
+    return await this.entityService.getMembers(entityUuid);
   }
   
   // TODO:: get list members
