@@ -4,7 +4,7 @@ import {
   Controller, Delete,
   Get,
   Param,
-  Post, Put,
+  Post, Put, Query,
   UseGuards,
   UseInterceptors
 } from '@nestjs/common';
@@ -18,6 +18,9 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { ExpenditureCreateInputDto } from 'src/core/dtos/expenditure/expenditureCreateInputDto';
 import { ExpenditureOutputDto } from 'src/core/dtos/expenditure/expenditureOutputDto';
 import { ExpenditureUpdateInputDto } from 'src/core/dtos/expenditure/expenditureUpdateInputDto';
+
+// Enums
+import { FiltersPeriodEnum } from 'src/core/enums/filters-period.enum';
 
 @ApiTags('expenditures')
 @Controller('expenditures')
@@ -47,8 +50,9 @@ export class ExpenditureController {
     isArray: true
   })
   @Get(':entityUuid')
-  async findAllForEntity(@Param('entityUuid') entityUuid: string): Promise<ExpenditureOutputDto[]> {
-    return await this.expenditureService.getAllForEntity(entityUuid);
+  async findAllForEntity(@Param('entityUuid') entityUuid: string,
+                         @Query('period') period: FiltersPeriodEnum): Promise<ExpenditureOutputDto[]> {
+    return await this.expenditureService.getAllForEntity(entityUuid, period);
   }
   
   @UseGuards(JwtAuthGuard)
