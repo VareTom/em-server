@@ -20,6 +20,10 @@ export class UserOutputDto {
   
   @ApiProperty()
   @IsBoolean()
+  isConfirmed: boolean;
+  
+  @ApiProperty()
+  @IsBoolean()
   isSuperAdmin: boolean;
   
   @ApiProperty()
@@ -44,6 +48,7 @@ export class UserOutputDto {
   constructor(json: any) {
     this.uuid = json.uuid;
     this.email = json.email;
+    this.isConfirmed = json.isConfirmed;
     this.isSuperAdmin = json.isSuperAdmin;
     this.createdAt = json.createdAt;
     this.updatedAt = json.updatedAt;

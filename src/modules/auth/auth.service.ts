@@ -70,4 +70,16 @@ export class AuthService {
     
     return {token: jwt, user: new UserOutputDto(userCreated)};
   }
+  
+  async isValidCode(code: number): Promise<boolean> {
+    return this.userRepository.findOne({
+      where: {registrationCode: code}
+    })
+      .then(user => {
+        return !!user;
+      })
+      .catch(err => {
+        throw new HttpException('Cannot retrieve user with this code', HttpStatus.BAD_REQUEST);
+      })
+  }
 }

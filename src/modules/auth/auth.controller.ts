@@ -37,4 +37,14 @@ export class AuthController {
   async login(@Body() user: UserCreateInputDto): Promise<UserCreateOutputDto> {
     return await this.authService.login(user);
   }
+  
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    status: 200,
+    type: Boolean
+  })
+  @Post('valid/code')
+  async isValidCode(@Body() codeInput: any): Promise<boolean> {
+    return await this.authService.isValidCode(codeInput.code);
+  }
 }
