@@ -1,7 +1,7 @@
 import {
   Body,
   ClassSerializerInterceptor,
-  Controller,
+  Controller, Delete,
   Get,
   Param,
   Post,
@@ -63,5 +63,18 @@ export class EntityController {
   async addEntityMember(@Param('entityUuid') entityUuid: string,
                         @Body() userInput: UserCreateInputDto): Promise<UserOutputDto> {
     return await this.entityService.inviteMember(entityUuid, userInput);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    status: 200,
+    type: UserOutputDto
+  })
+  @Delete(':entityUuid/user/:userUuid')
+  async removeMember(@Param('entityUuid') entityUuid: string,
+               @Param('userUuid') userUuid: string,): Promise<UserOutputDto> {
+    return await this.entityService.removeMember(entityUuid, userUuid);
   }
 }

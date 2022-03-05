@@ -40,7 +40,7 @@ export class AuthService {
       },
       include: [ Entity ]
     });
-    if (!user) throw new HttpException('No user found with this email', HttpStatus.NOT_FOUND);
+    if (!user) throw new HttpException('User not found or not confirmed', HttpStatus.BAD_REQUEST);
 
     const isValid = await bcrypt.compare(userCreateInput.password, user.password);
     if (!isValid) throw new HttpException('Password not match', HttpStatus.BAD_REQUEST);

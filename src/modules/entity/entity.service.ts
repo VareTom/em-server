@@ -57,7 +57,6 @@ export class EntityService {
       })
   }
   
-  // TODO:: refacto register in auth + reset code to null
   async inviteMember(entityUuid: string, userCreateInput: UserCreateInputDto): Promise<UserOutputDto> {
     const entity = await this.entityRepository.findByPk(entityUuid);
     if (!entity) throw new HttpException('Cannot find this entity', HttpStatus.BAD_REQUEST);
@@ -101,5 +100,20 @@ export class EntityService {
     }
     
     return new UserOutputDto(user);
+  }
+  
+  async removeMember(entityUuid: string, userUuid: string): Promise<UserOutputDto> {
+    return this.userRepository.findOne({
+      where: {
+        uuid: userUuid,
+        entityUuid: entityUuid
+      }
+    })
+      .then(async user => {
+        if (!user) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+        
+        await user.destroy();
+        return new UserOutputDto(user);
+      })
   }
 }
