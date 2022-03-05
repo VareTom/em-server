@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body {
+            color: #323259;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        .flex-row {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+        }
+
+        .flex-column {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+        }
+
+        .full-height {
+            height: 100%;
+        }
+
+        .full-width {
+            width: 100%;
+        }
+
+        .flex-end {
+            position: absolute;
+            right: 50px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: end;
+            -ms-flex-pack: end;
+            justify-content: flex-end;
+        }
+
+        .center {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+        }
+
+        .uppercase {
+            text-transform: uppercase;
+        }
+
+        .margin {
+            margin: 10px 0;
+        }
+
+        button {
+            cursor: pointer;
+            text-transform: uppercase;
+            text-decoration: none;
+            height: 40px;
+            padding: 0 20px;
+            font-size: 14px;
+            border-radius: 13px;
+            background: -o-linear-gradient(left, #42aaff, #0095ff);
+            background: -webkit-gradient(linear, left top, right top, from(#42aaff), to(#0095ff));
+            background: linear-gradient(to right, #42aaff, #0095ff);
+            border: none;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="flex-column">
+    <p>
+        Monsieur, Madame,
+        <br><br>
+        Vous êtes invité à rejoindre `Em,
+        <br>
+        Cliquer sur le bouton ci-dessous afin de finaliser la création de votre compte!
+        <br>
+        Votre code de validation: <b> {{ registrationCode }} </b>
+        <br>
+    </p>
+</div>
+
+<div class="flex-column center margin">
+    <a href={{url}}>
+        <button class="uppercase">
+            Je m'inscris!
+        </button>
+    </a>
+</div>
+
+<div class="flex-column">
+    <br>
+    <p>
+        A très bientôt,
+        <br>
+        L'équipe `Em.
+    </p>
+</div>
+
+</body>
+</html>

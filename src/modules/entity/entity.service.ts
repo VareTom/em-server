@@ -12,12 +12,16 @@ import { ENTITY_REPOSITORY, USER_REPOSITORY } from 'src/core/constants';
 import { EntityCreateInputDto } from 'src/core/dtos/entity/entityCreateInputDto';
 import { EntityCreateOutputDto } from 'src/core/dtos/entity/entityCreateOutputDto';
 import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';
+import { UserCreateInputDto } from 'src/core/dtos/user/userCreateInputDto';
 
+// Services
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class EntityService {
   
   constructor(
+    private readonly mailerService: MailerService,
     @Inject(ENTITY_REPOSITORY)
     private entityRepository: typeof Entity,
     @Inject(USER_REPOSITORY)
@@ -53,51 +57,49 @@ export class EntityService {
       })
   }
   
-  async addEntityMember(entityUuid: string, userUuid: string): Promise<EntityCreateOutputDto> {
-    return new EntityCreateOutputDto(null);
-    /*const isAlreadyMember = await this.entityRepository.findOne({
-      where: { uuid: entityUuid },
-      include: [ {
-        model: UserEntity,
-        where: { userUuid: userUuid }
-      } ]
-    })
-    if (isAlreadyMember) throw new HttpException('This user is already a member of the entity.', HttpStatus.BAD_REQUEST);
+  // TODO:: refacto register in auth + reset code to null
+  async inviteMember(entityUuid: string, userCreateInput: UserCreateInputDto): Promise<UserOutputDto> {
+    const entity = await this.entityRepository.findByPk(entityUuid);
+    if (!entity) throw new HttpException('Cannot find this entity', HttpStatus.BAD_REQUEST);
     
-    const newEntityMember = await this.userEntityRepository.create({
-      userUuid: userUuid,
-      entityUuid: entityUuid,
-      isAdmin: false
-    })
-    if (!newEntityMember) throw new HttpException('Cannot link this user to the entity.', HttpStatus.INTERNAL_SERVER_ERROR);
+    const [user, created] = await this.userRepository.findOrCreate({
+      where: {email: userCreateInput.email}
+    });
+    if (!created) throw new HttpException('Email already registered', HttpStatus.BAD_REQUEST);
     
-    const entityWithMembers = await this.entityRepository.findOne({
-      where: { uuid: entityUuid },
-      include: [{
-        model: UserEntity,
-        include: [User]
-      }]
-    }).then(entity => entity.toJSON())
-    if (!entityWithMembers) throw new HttpException('Cannot retrieve entity informations!', HttpStatus.INTERNAL_SERVER_ERROR);
+    await user.$set('entity', entity);
     
-    let returnedObject = {
-      uuid: entityWithMembers.uuid,
-      name: entityWithMembers.name,
-      description: entityWithMembers.description,
-      authorUuid: entityWithMembers.authorUuid,
-      createdAt: entityWithMembers.createdAt,
-      members: []
-    }
+    const registrationCode = Math.floor(100000 + Math.random() * 900000);
+    user.registrationCode = registrationCode;
     
-    if (entityWithMembers.userEntities.length > 0) {
-      entityWithMembers.userEntities.forEach(member => {
-        returnedObject.members.push({
-          ...member.user,
-          isAdmin: member.isAdmin,
-          addAt: member.createdAt
-        })
+    await user.save();
+  
+    try {
+      let url;
+      if (process.env.NODE_ENV === 'development') {
+        url = `http://localhost:4200/auth/register?code=${registrationCode}&email=${user.email}`;
+      } else {
+        url = `https://em.varetom.be/auth/register?code=${registrationCode}&email=${user.email}`
+      }
+      const data = {
+        registrationCode,
+        url: url
+      }
+      
+      await this.mailerService.sendMail({
+        to: user.email,
+        from: process.env.MAIL_NO_REPLY,
+        subject: 'Invitation à rejoindre `Em',
+        template: 'invitation',
+        context: {
+          ...data
+        }
       })
+    } catch (e) {
+      console.log(e);
+      throw new HttpException('Cannot send email', HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    return new EntityCreateOutputDto(returnedObject);*/
+    
+    return new UserOutputDto(user);
   }
 }

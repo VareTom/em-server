@@ -4,17 +4,16 @@ Authorization: Bearer {{bearerToken}}
 Content-Type: application/json
 
 {
-  "name": "TocCorp",
-  "description": "My Corp",
-  "authorUuid": "a65b8df7-b5cb-4d2a-97b6-9266111ce7fd"
+  "name": "TocK",
+  "description": "Tom Varewyck Corp",
+  "authorUuid": "9d4c9bb6-5259-4c83-b9a6-75bd51245080"
 }
 
-### Get entities of specific user
-GET {{url}}/{{prefix}}/entities/d61d7b72-dd13-4084-a0d1-9bbff300fbf7
+### Invite user to entity
+POST {{url}}/{{prefix}}/entities/5d947763-b1cb-4a3a-b9fe-dd9beac89ea6/invite
 Authorization: Bearer {{bearerToken}}
-Accept: application/json
+Content-Type: application/json
 
-
-### Add user to entity
-POST {{url}}/{{prefix}}/entities/f453b4e8-20d9-411d-a67b-99a93b058ec6/user/319dde3f-5031-4623-8cff-0362983b6b57
-Authorization: Bearer {{bearerToken}}
+{
+  "email": "tomvarewyck98@gmail.com"
+}

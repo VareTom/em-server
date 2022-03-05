@@ -20,6 +20,7 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { EntityCreateInputDto } from 'src/core/dtos/entity/entityCreateInputDto';
 import { EntityCreateOutputDto } from 'src/core/dtos/entity/entityCreateOutputDto';
 import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';
+import { UserCreateInputDto } from 'src/core/dtos/user/userCreateInputDto';
 
 @ApiTags('entities')
 @Controller('entities')
@@ -52,17 +53,15 @@ export class EntityController {
     return await this.entityService.getMembers(entityUuid);
   }
   
-  // TODO:: get list members
-  // TODO:: refacto to send mail invitation + invitation code
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Unauthorized'})
   @ApiCreatedResponse({
-    type: EntityCreateOutputDto
+    type: UserOutputDto
   })
-  @Post(':entityUuid/user/:userUuid')
+  @Post(':entityUuid/invite')
   async addEntityMember(@Param('entityUuid') entityUuid: string,
-                        @Param('userUuid') userUuid: string): Promise<EntityCreateOutputDto> {
-    return await this.entityService.addEntityMember(entityUuid, userUuid);
+                        @Body() userInput: UserCreateInputDto): Promise<UserOutputDto> {
+    return await this.entityService.inviteMember(entityUuid, userInput);
   }
 }
