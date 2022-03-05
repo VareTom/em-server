@@ -10,6 +10,8 @@ import { AuthService } from 'src/modules/auth/auth.service';
 import { UserCreateInputDto } from 'src/core/dtos/user/userCreateInputDto';
 import { UserCreateOutputDto } from 'src/core/dtos/user/userCreateOutputDto';
 import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';
+import { UserRegisterInputDto } from 'src/core/dtos/user/userRegisterInputDto';
+import { UserLoginInputDto } from 'src/core/dtos/user/userLoginInputDto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -24,7 +26,7 @@ export class AuthController {
     type: UserCreateOutputDto
   })
   @Post('register')
-  async register(@Body() user: UserCreateInputDto): Promise<UserCreateOutputDto> {
+  async register(@Body() user: UserRegisterInputDto): Promise<UserCreateOutputDto> {
     return await this.authService.register(user);
   }
   
@@ -34,7 +36,7 @@ export class AuthController {
     type: UserCreateOutputDto
   })
   @Post('login')
-  async login(@Body() user: UserCreateInputDto): Promise<UserCreateOutputDto> {
+  async login(@Body() user: UserLoginInputDto): Promise<UserCreateOutputDto> {
     return await this.authService.login(user);
   }
   

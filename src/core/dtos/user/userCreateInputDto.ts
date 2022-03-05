@@ -6,9 +6,4 @@ export class UserCreateInputDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
-  
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  password?: string;
 }

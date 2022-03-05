@@ -15,6 +15,8 @@ import { USER_REPOSITORY } from 'src/core/constants';
 import { UserCreateInputDto } from 'src/core/dtos/user/userCreateInputDto';
 import { UserCreateOutputDto } from 'src/core/dtos/user/userCreateOutputDto';
 import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';
+import { UserRegisterInputDto } from 'src/core/dtos/user/userRegisterInputDto';
+import { UserLoginInputDto } from 'src/core/dtos/user/userLoginInputDto';
 
 @Injectable()
 export class AuthService {
@@ -30,15 +32,14 @@ export class AuthService {
     return new UserOutputDto(user);
   }
   
-  async login(userCreateInput: UserCreateInputDto): Promise<UserCreateOutputDto> {
+  async login(userCreateInput: UserLoginInputDto): Promise<UserCreateOutputDto> {
     const user = await this.userRepository.findOne({
       where: {
-        email: userCreateInput.email
+        email: userCreateInput.email,
+        isConfirmed: true
       },
       include: [ Entity ]
     });
-    console.log(user)
-
     if (!user) throw new HttpException('No user found with this email', HttpStatus.NOT_FOUND);
 
     const isValid = await bcrypt.compare(userCreateInput.password, user.password);
@@ -54,21 +55,25 @@ export class AuthService {
     };
   }
   
-  async register(userCreateInput: UserCreateInputDto): Promise<UserCreateOutputDto> {
-    const isEmailExists = await this.userRepository.findOne({
+  async register(registerInput: UserRegisterInputDto): Promise<UserCreateOutputDto> {
+    const user = await this.userRepository.findOne({
       where: {
-        email: userCreateInput.email.toLowerCase()
-      }
+        email: registerInput.email.toLowerCase(),
+        registrationCode: registerInput.code
+      },
+      include: [ Entity ]
     })
-    if (isEmailExists) throw new HttpException('Email already registered', HttpStatus.BAD_REQUEST);
-
-    userCreateInput.password = await bcrypt.hash(userCreateInput.password, 10);
-    const userCreated = await this.userRepository.create(userCreateInput).then(user => user.toJSON());
+    if (!user) throw new HttpException('User not found!', HttpStatus.BAD_REQUEST);
+  
+    user.password = await bcrypt.hash(registerInput.password, 10);
+    user.registrationCode = null;
+    user.isConfirmed = true;
+    await user.save();
     
-    const jwt = this.jwt.sign({user: userCreated});
+    const jwt = this.jwt.sign({user: user});
     if (!jwt) throw new HttpException('Token creation failed', HttpStatus.INTERNAL_SERVER_ERROR);
     
-    return {token: jwt, user: new UserOutputDto(userCreated)};
+    return {token: jwt, user: new UserOutputDto(user)};
   }
   
   async isValidCode(code: number): Promise<boolean> {
