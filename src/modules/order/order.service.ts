@@ -2,7 +2,7 @@ import { HttpException, HttpService, HttpStatus, Inject, Injectable } from '@nes
 import { Op, or } from 'sequelize';
 
 // Constants
-import { CLIENT_REPOSITORY, ORDER_REPOSITORY, SERVICE_REPOSITORY } from 'src/core/constants';
+import { CLIENT_REPOSITORY, DATE_REFERENCE, ORDER_REPOSITORY, SERVICE_REPOSITORY } from 'src/core/constants';
 
 // Entities
 import { Order } from 'src/core/entities/order.entity';
@@ -13,6 +13,7 @@ import { Client } from 'src/core/entities/client.entity';
 import { OrderCreateInputDto } from 'src/core/dtos/order/orderCreateInputDto';
 import { OrderOutputDto } from 'src/core/dtos/order/orderOutputDto';
 import { OrderUpdateInputDto } from 'src/core/dtos/order/orderUpdateInputDto';
+import { FiltersPeriodEnum } from 'src/core/enums/filters-period.enum';
 
 @Injectable()
 export class OrderService {
@@ -53,10 +54,18 @@ export class OrderService {
     return new OrderOutputDto(order)
   }
   
-  async findAllForEntity(entityUuid: string): Promise<OrderOutputDto[]> {
+  async findAllForEntity(entityUuid: string, period: FiltersPeriodEnum): Promise<OrderOutputDto[]> {
+    let periodClause;
+    if (period === FiltersPeriodEnum.ALL_TIME) periodClause = DATE_REFERENCE;
+    if (period === FiltersPeriodEnum.MONTHLY) {
+      const date = new Date(), y = date.getFullYear(), m = date.getMonth();
+      periodClause = new Date(y, m, 2);
+    }
+    
     const orders = await this.orderRepository.findAll({
       where: {
-        entityUuid: entityUuid
+        entityUuid: entityUuid,
+        createdAt: {[Op.gte]: periodClause}
       },
       include: [ Client, Service ]
     })

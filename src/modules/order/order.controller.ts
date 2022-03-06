@@ -4,7 +4,7 @@ import {
   Controller, Delete,
   Get,
   Param,
-  Post, Put,
+  Post, Put, Query,
   UseGuards,
   UseInterceptors
 } from '@nestjs/common';
@@ -18,6 +18,7 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { OrderCreateInputDto } from 'src/core/dtos/order/orderCreateInputDto';
 import { OrderOutputDto } from 'src/core/dtos/order/orderOutputDto';
 import { OrderUpdateInputDto } from 'src/core/dtos/order/orderUpdateInputDto';
+import { FiltersPeriodEnum } from 'src/core/enums/filters-period.enum';
 
 @ApiTags('orders')
 @Controller('orders')
@@ -46,8 +47,9 @@ export class OrderController {
     isArray: true
   })
   @Get(':entityUuid')
-  async findAllForEntity(@Param('entityUuid') entityUuid: string): Promise<OrderOutputDto[]> {
-    return await this.orderService.findAllForEntity(entityUuid);
+  async findAllForEntity(@Param('entityUuid') entityUuid: string,
+                         @Query('period') period: FiltersPeriodEnum): Promise<OrderOutputDto[]> {
+    return await this.orderService.findAllForEntity(entityUuid, period);
   }
 
   @UseGuards(JwtAuthGuard)
