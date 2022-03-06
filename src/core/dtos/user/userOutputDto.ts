@@ -1,4 +1,4 @@
-import { IsDate, IsEmail, IsInstance, IsString, IsUUID } from 'class-validator';
+import { IsBoolean, IsDate, IsEmail, IsInstance, IsOptional, IsString, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 
@@ -17,52 +17,43 @@ export class UserOutputDto {
   @ApiProperty()
   @IsEmail()
   email: string;
-
+  
   @ApiProperty()
-  @IsString()
-  activeEntityUuid?: string;
+  @IsBoolean()
+  isConfirmed: boolean;
+  
+  @ApiProperty()
+  @IsBoolean()
+  isSuperAdmin: boolean;
   
   @ApiProperty()
   @IsDate()
-  createdAt?: Date;
+  createdAt: Date;
   
   @ApiProperty()
   @IsDate()
-  updatedAt?: Date;
+  updatedAt: Date;
   
   @ApiProperty()
+  @IsOptional()
   @IsDate()
   deletedAt?: Date;
 
   @ApiProperty({
-    type: EntityCreateOutputDto,
-    isArray: true
+    type: EntityCreateOutputDto
   })
   @IsInstance(EntityCreateOutputDto)
-  entities?: EntityCreateOutputDto[] = [];
-  
- /* constructor(partial: Partial<UserOutputDto>) {
-    Object.assign(this, partial);
-  }*/
+  entity?: EntityCreateOutputDto;
   
   constructor(json: any) {
     this.uuid = json.uuid;
     this.email = json.email;
-    this.activeEntityUuid = json.activeEntityUuid ?? null;
-    this.createdAt = json.createdAt ?? null;
-    this.updatedAt = json.updatedAt ?? null;
+    this.isConfirmed = json.isConfirmed;
+    this.isSuperAdmin = json.isSuperAdmin;
+    this.createdAt = json.createdAt;
+    this.updatedAt = json.updatedAt;
     this.deletedAt = json.deletedAt ?? null;
 
-    if (json.userEntities && json.userEntities.length > 0) {
-      json.userEntities.forEach(userEntity => {
-        this.entities.push({
-          uuid: userEntity.entity.uuid,
-          authorUuid: userEntity.entity.authorUuid,
-          name: userEntity.entity.name,
-          description: userEntity.entity.description ?? null,
-          createdAt: userEntity.entity.createdAt
-        })
-      })
-    }
+    if (json.entity) this.entity = new EntityCreateOutputDto(json.entity);
   }
 }

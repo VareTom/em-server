@@ -9,7 +9,7 @@ import { Service } from 'src/core/entities/service.entity';
 // DTOs
 import { ServiceOutputDto } from 'src/core/dtos/service/serviceOutputDto';
 import { ServiceCreateInputDto } from 'src/core/dtos/service/serviceCreateInputDto';
-
+import { ServiceUpdateInputDto } from 'src/core/dtos/service/serviceUpdateInputDto';
 
 @Injectable()
 export class ServiceService {
@@ -23,7 +23,7 @@ export class ServiceService {
     if (serviceWithSameName) throw new HttpException('You already have a service with this name in your entity', HttpStatus.BAD_REQUEST);
     
     const service = await this.serviceRepository.create(serviceInput);
-    if (!service) throw new HttpException('Cannot create service.', HttpStatus.BAD_REQUEST)
+    if (!service) throw new HttpException('Cannot create service.', HttpStatus.INTERNAL_SERVER_ERROR);
     
     return new ServiceOutputDto(service);
   }
@@ -32,9 +32,32 @@ export class ServiceService {
     const services = await this.serviceRepository.findAll({
       where: { entityUuid: entityUuid }
     })
-    if (!services) throw new HttpException('Cannot retrieve all services for this entity', HttpStatus.INTERNAL_SERVER_ERROR);
+    if (services.length < 0) throw new HttpException('Cannot retrieve all services for this entity', HttpStatus.INTERNAL_SERVER_ERROR);
     
     return services.map(service => new ServiceOutputDto(service));
+  }
+  
+  async delete(serviceUuid: string): Promise<ServiceOutputDto> {
+    const service = await this.serviceRepository.findByPk(serviceUuid);
+    if (!service) throw new HttpException('Cannot find this service', HttpStatus.BAD_REQUEST);
+    
+    await service.destroy();
+    
+    return new ServiceOutputDto(service);
+  }
+  
+  async update(serviceUuid: string, serviceUpdateInput: ServiceUpdateInputDto): Promise<ServiceOutputDto> {
+    const service = await this.serviceRepository.findByPk(serviceUuid);
+    if (!service) throw new HttpException('Cannot find this service', HttpStatus.BAD_REQUEST);
+    
+    if (service.name !== serviceUpdateInput.name) service.name = serviceUpdateInput.name;
+    if (service.priceInCent !== serviceUpdateInput.priceInCent) service.priceInCent = serviceUpdateInput.priceInCent;
+    if (service.description !== serviceUpdateInput.description) service.description = serviceUpdateInput.description;
+    if (service.code !== serviceUpdateInput.code) service.code = serviceUpdateInput.code;
+    
+    await service.save();
+    
+    return new ServiceOutputDto(service);
   }
   
 }

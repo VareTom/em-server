@@ -1,12 +1,19 @@
 import { NestFactory } from '@nestjs/core';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { Logger, LogLevel, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import 'dotenv/config';
 import * as cookieParser from 'cookie-parser';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
+function getLogLevels(isProduction: boolean): LogLevel[] {
+  if (isProduction) return ['log', 'warn', 'error'];
+  return ['error', 'warn', 'log', 'verbose', 'debug'];
+}
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: getLogLevels(process.env.NODE_ENV === 'production')
+  });
   const port = process.env.PORT;
   
   // Swagger configuration
@@ -25,13 +32,13 @@ async function bootstrap() {
     preflightContinue: false,
     credentials: true,
     optionsSuccessStatus: 204,
-    'Access-Control-Allow-Headers': '*'
+    "Access-Control-Allow-Headers": "*",
   };
   
-  app.enableCors(corsOptions);
   app.useGlobalPipes(new ValidationPipe());
-  app.setGlobalPrefix('api/v1')
+  app.setGlobalPrefix('api/v1');
   app.use(cookieParser());
+  app.enableCors(corsOptions);
   await app.listen(port);
   
   Logger.log(`Swagger documentation running on http://localhost:${port}/api`, 'Swagger');

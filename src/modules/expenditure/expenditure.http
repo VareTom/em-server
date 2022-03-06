@@ -1,12 +1,16 @@
+DELETE {{url}}/{{prefix}}/expenditures/4607f217-aee5-435b-bebe-3304cb47a26e
+Authorization: Bearer {{bearerToken}}
+Accept: application/json
+
 ### Create new expenditure
 POST {{url}}/{{prefix}}/expenditures/
 Content-Type: application/json
 Authorization: Bearer {{bearerToken}}
 
 {
-  "name": "Karcher",
+  "name": "Vélo",
   "priceInCent": 22000,
-  "entityUuid": "628c61c8-3df5-46f2-8984-36fd7d7fc199"
+  "entityUuid": "312ad27e-5c4e-4791-9065-f3b9decd4f33"
 }
 
 ### Get all expenditures for specific entity

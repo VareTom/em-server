@@ -49,4 +49,13 @@ export class ClientService {
     
     return clients.map(client => new ClientOutputDto(client));
   }
+  
+  async delete(clientUuid: string): Promise<ClientOutputDto> {
+    const client = await this.clientRepository.findByPk(clientUuid, { include: [ Address, Car ] });
+    if (!client) throw new HttpException('Cannot find this client', HttpStatus.BAD_REQUEST);
+    
+    await client.destroy();
+    
+    return new ClientOutputDto(client);
+  }
 }

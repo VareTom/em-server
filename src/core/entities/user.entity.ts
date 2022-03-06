@@ -1,8 +1,8 @@
 import {
-  AllowNull, BelongsToMany,
+  AllowNull, BelongsTo, BelongsToMany,
   Column,
   DataType,
-  Default, HasMany,
+  Default, ForeignKey, HasMany,
   IsEmail,
   IsUUID,
   Model,
@@ -10,10 +10,10 @@ import {
   Table,
   Unique
 } from 'sequelize-typescript';
-import { IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 // Entities
-import { UserEntity } from 'src/core/entities/user-entity.entity';
+import { Entity } from 'src/core/entities/entity.entity';
 
 @Table({
   timestamps: true,
@@ -35,16 +35,31 @@ export class User extends Model<User> {
   @Column
   email: string;
   
-  @IsString()
+  @IsBoolean()
   @AllowNull(false)
+  @Default(false)
+  @Column
+  isConfirmed: boolean;
+  
+  @IsNumber()
+  @Unique
+  @Column
+  registrationCode: number;
+  
+  @IsString()
   @Column
   password: string;
-
-  @IsString()
-  @AllowNull(true)
+  
+  @IsBoolean()
+  @AllowNull(false)
+  @Default(false)
   @Column
-  activeEntityUuid?: string;
-
-  @HasMany(() => UserEntity)
-  userEntities: UserEntity[];
+  isSuperAdmin: boolean;
+  
+  @ForeignKey(() => Entity)
+  @Column
+  entityUuid: string;
+  
+  @BelongsTo(() => Entity)
+  entity: Entity
 }

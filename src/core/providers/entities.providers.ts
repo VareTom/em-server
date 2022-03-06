@@ -4,14 +4,12 @@ import {
   ENTITY_REPOSITORY,
   EXPENDITURE_REPOSITORY, ORDER_REPOSITORY, ORDER_SERVICE_REPOSITORY,
   SERVICE_REPOSITORY,
-  USER_ENTITY_REPOSITORY,
   USER_REPOSITORY
 } from 'src/core/constants';
 
 // Entities
 import { User } from 'src/core/entities/user.entity';
 import { Entity } from 'src/core/entities/entity.entity';
-import { UserEntity } from 'src/core/entities/user-entity.entity';
 import { Service } from 'src/core/entities/service.entity';
 import { Expenditure } from 'src/core/entities/expenditure.entity';
 import { Client } from 'src/core/entities/client.entity';
@@ -28,10 +26,6 @@ export const EntitiesProviders = [
   {
     provide: ENTITY_REPOSITORY,
     useValue: Entity
-  },
-  {
-    provide: USER_ENTITY_REPOSITORY,
-    useValue: UserEntity
   },
   {
     provide: SERVICE_REPOSITORY,

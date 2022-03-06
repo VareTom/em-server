@@ -36,6 +36,10 @@ export class ClientOutputDto {
   @IsNotEmpty()
   createdAt: Date;
   
+  @ApiProperty()
+  @IsOptional()
+  deletedAt?: Date;
+  
   constructor(json: any) {
     this.uuid = json.uuid;
     this.firstName = json.firstName;
@@ -43,5 +47,6 @@ export class ClientOutputDto {
     if (json.address) this.address = new AddressOutputDto(json.address);
     if (json.cars) this.cars = json.cars.map(car => new CarOutputDto(car));
     this.createdAt = json.createdAt;
+    this.deletedAt = json.deletedAt;
   }
 }

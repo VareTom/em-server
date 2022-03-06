@@ -27,11 +27,16 @@ export class ExpenditureOutputDto {
   @IsNotEmpty()
   createdAt: Date;
   
+  @ApiProperty()
+  @IsOptional()
+  deletedAt?: Date;
+  
   constructor(json: any) {
     this.uuid = json.uuid;
     this.name = json.name;
     this.priceInCent = json.priceInCent;
     this.createdAt = json.createdAt;
     this.boughtAt = json.boughtAt;
+    this.deletedAt = json.deletedAt;
   }
 }

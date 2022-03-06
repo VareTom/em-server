@@ -1,8 +1,31 @@
+### Create order
+PUT {{url}}/{{prefix}}/orders/
+Authorization: Bearer {{bearerToken}}
+Content-Type: application/json
+
+{
+  "servicesUuid": [
+    "8932c7ee-129c-4b85-b793-ccc01b5625fd"
+  ],
+  "clientUuid": "c3544fa0-560d-4ac4-ad8c-520beda189ea"
+}
+
+### Delete an order
+DELETE {{url}}/{{prefix}}/orders/e0c493c9-5e33-424a-b066-f73df6d69cf6
+Authorization: Bearer {{bearerToken}}
+Accept: application/json
+
+### Validate order
+GET {{url}}/{{prefix}}/orders/e0c493c9-5e33-424a-b066-f73df6d69cf6/validate
+Authorization: Bearer {{bearerToken}}
+Accept: application/json
+
+### Get all orders for specific entity
 GET {{url}}/{{prefix}}/orders/ee30a7b5-8390-447d-81f9-b0d17a74b353
 Authorization: Bearer {{bearerToken}}
 Accept: application/json
 
-###
+### Create order
 POST {{url}}/{{prefix}}/orders
 Authorization: Bearer {{bearerToken}}
 Content-Type: application/json

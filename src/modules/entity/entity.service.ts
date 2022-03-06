@@ -1,171 +1,119 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Op } from 'sequelize';
 
 // Entities
 import { Entity } from 'src/core/entities/entity.entity';
-import { Service } from 'src/core/entities/service.entity';
-import { Order } from 'src/core/entities/order.entity';
-import { Expenditure } from 'src/core/entities/expenditure.entity';
 import { User } from 'src/core/entities/user.entity';
-import { UserEntity } from 'src/core/entities/user-entity.entity';
 
 // Constants
-import { ENTITY_REPOSITORY, USER_ENTITY_REPOSITORY, USER_REPOSITORY } from 'src/core/constants';
+import { ENTITY_REPOSITORY, USER_REPOSITORY } from 'src/core/constants';
 
 // DTOs
 import { EntityCreateInputDto } from 'src/core/dtos/entity/entityCreateInputDto';
 import { EntityCreateOutputDto } from 'src/core/dtos/entity/entityCreateOutputDto';
+import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';
+import { UserCreateInputDto } from 'src/core/dtos/user/userCreateInputDto';
 
+// Services
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class EntityService {
   
   constructor(
+    private readonly mailerService: MailerService,
     @Inject(ENTITY_REPOSITORY)
     private entityRepository: typeof Entity,
     @Inject(USER_REPOSITORY)
-    private userRepository: typeof User,
-    @Inject(USER_ENTITY_REPOSITORY)
-    private userEntityRepository: typeof UserEntity,
+    private userRepository: typeof User
   ) {}
   
   async create(entity: EntityCreateInputDto): Promise<EntityCreateOutputDto> {
-    const userEntities = await this.entityRepository.findOne({
+    const user = await this.userRepository.findOne({
       where: {
-        name: entity.name
-      },
-      include: [
-        {
-          model: UserEntity,
-          include: [
-            {
-              model: User,
-              where: {
-                uuid: entity.authorUuid
-              }
-            }
-          ]
-        }
-      ]
+        uuid: entity.authorUuid,
+        entityUuid: { [Op.is]: null }
+      }
     })
-    if (userEntities) throw new HttpException('You are already part of an entity of that name!', HttpStatus.BAD_REQUEST);
+    if (!user) throw new HttpException('Cannot retrieve author!', HttpStatus.BAD_REQUEST);
 
-    const createdEntity = await this.entityRepository.create(entity)
+    const createdEntity = await this.entityRepository.create(entity);
     if (!createdEntity) throw new HttpException('Cannot create entity', HttpStatus.BAD_REQUEST);
-
-    const createdRelation = await this.userEntityRepository.create({
-      userUuid: createdEntity.authorUuid,
-      entityUuid: createdEntity.uuid,
-      isAdmin: true
-    })
-    if (!createdRelation) throw new HttpException('Cannot create the relation between you and your new entity.', HttpStatus.INTERNAL_SERVER_ERROR);
     
-    const entityAuthor = await this.userRepository.findOne({where: {uuid: createdEntity.authorUuid }}).then(author => author.toJSON());
-    if (!entityAuthor) throw new HttpException('Cannot retrieve entity author informations', HttpStatus.INTERNAL_SERVER_ERROR);
+    await user.$set('entity',createdEntity);
     
-    return new EntityCreateOutputDto({
-      uuid: createdEntity.uuid,
-      name: createdEntity.name,
-      description: createdEntity.description,
-      authorUuid: createdEntity.authorUuid,
-      createdAt: createdEntity.createdAt,
-      members: [{
-        ...entityAuthor,
-        addAt: createdRelation.createdAt,
-        isAdmin: createdRelation.isAdmin,
-      }]
-    });
+    return new EntityCreateOutputDto(createdEntity);
   }
   
-  async getAllForUser(userUuid: string): Promise<EntityCreateOutputDto[] | []> {
-    return this.entityRepository.findAll({
-      include: [
-        {
-          model: UserEntity,
-          include: [
-            {
-              model: User,
-              where: {
-                uuid: userUuid
-              }
-            }
-          ]
-        }
-      ]
+  async getMembers(entityUuid: string): Promise<UserOutputDto[]> {
+    return this.userRepository.findAll({
+      where: { entityUuid: entityUuid }
     })
-      .then(entities => {
-        const entitiesFormatted = []
-        entities.forEach((entity,index) => {
-          entitiesFormatted.push({
-              uuid: entity.uuid,
-              name: entity.name,
-              description: entity.description,
-              authorUuid: entity.authorUuid,
-              createdAt: entity.createdAt,
-              members: []
-          })
-          if (entity.userEntities.length > 0) {
-            entity.userEntities.forEach(member => {
-              member.user = member.user.toJSON();
-              entitiesFormatted[index].members.push({
-                ...member.user,
-                isAdmin: member.isAdmin,
-                addAt: member.createdAt
-              })
-            })
-          }
-        })
-        return entitiesFormatted.map(entity => new EntityCreateOutputDto(entity));
-      })
+      .then(members => {
+      return members.map(member => new UserOutputDto(member));
+    })
       .catch(err => {
-        console.log(err);
-        throw new HttpException('Cannot retrieve user entities!',HttpStatus.INTERNAL_SERVER_ERROR);
-      });
+        throw new HttpException('Cannot retrieve members for this entity', HttpStatus.INTERNAL_SERVER_ERROR);
+      })
   }
   
-  async addEntityMember(entityUuid: string, userUuid: string): Promise<EntityCreateOutputDto> {
-    const isAlreadyMember = await this.entityRepository.findOne({
-      where: { uuid: entityUuid },
-      include: [ {
-        model: UserEntity,
-        where: { userUuid: userUuid }
-      } ]
-    })
-    if (isAlreadyMember) throw new HttpException('This user is already a member of the entity.', HttpStatus.BAD_REQUEST);
+  async inviteMember(entityUuid: string, userCreateInput: UserCreateInputDto): Promise<UserOutputDto> {
+    const entity = await this.entityRepository.findByPk(entityUuid);
+    if (!entity) throw new HttpException('Cannot find this entity', HttpStatus.BAD_REQUEST);
     
-    const newEntityMember = await this.userEntityRepository.create({
-      userUuid: userUuid,
-      entityUuid: entityUuid,
-      isAdmin: false
-    })
-    if (!newEntityMember) throw new HttpException('Cannot link this user to the entity.', HttpStatus.INTERNAL_SERVER_ERROR);
+    const [user, created] = await this.userRepository.findOrCreate({
+      where: {email: userCreateInput.email}
+    });
+    if (!created) throw new HttpException('Email already registered', HttpStatus.BAD_REQUEST);
     
-    const entityWithMembers = await this.entityRepository.findOne({
-      where: { uuid: entityUuid },
-      include: [{
-        model: UserEntity,
-        include: [User]
-      }]
-    }).then(entity => entity.toJSON())
-    if (!entityWithMembers) throw new HttpException('Cannot retrieve entity informations!', HttpStatus.INTERNAL_SERVER_ERROR);
+    await user.$set('entity', entity);
     
-    let returnedObject = {
-      uuid: entityWithMembers.uuid,
-      name: entityWithMembers.name,
-      description: entityWithMembers.description,
-      authorUuid: entityWithMembers.authorUuid,
-      createdAt: entityWithMembers.createdAt,
-      members: []
-    }
+    const registrationCode = Math.floor(100000 + Math.random() * 900000);
+    user.registrationCode = registrationCode;
     
-    if (entityWithMembers.userEntities.length > 0) {
-      entityWithMembers.userEntities.forEach(member => {
-        returnedObject.members.push({
-          ...member.user,
-          isAdmin: member.isAdmin,
-          addAt: member.createdAt
-        })
+    await user.save();
+  
+    try {
+      let url;
+      if (process.env.NODE_ENV === 'development') {
+        url = `http://localhost:4200/auth/register?code=${registrationCode}&email=${user.email}`;
+      } else {
+        url = `https://em.varetom.be/auth/register?code=${registrationCode}&email=${user.email}`
+      }
+      const data = {
+        registrationCode,
+        url: url
+      }
+      
+      await this.mailerService.sendMail({
+        to: user.email,
+        from: process.env.MAIL_NO_REPLY,
+        subject: 'Invitation à rejoindre `Em',
+        template: 'invitation',
+        context: {
+          ...data
+        }
       })
+    } catch (e) {
+      console.log(e);
+      throw new HttpException('Cannot send email', HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    return new EntityCreateOutputDto(returnedObject);
+    
+    return new UserOutputDto(user);
+  }
+  
+  async removeMember(entityUuid: string, userUuid: string): Promise<UserOutputDto> {
+    return this.userRepository.findOne({
+      where: {
+        uuid: userUuid,
+        entityUuid: entityUuid
+      }
+    })
+      .then(async user => {
+        if (!user) throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+        
+        await user.destroy();
+        return new UserOutputDto(user);
+      })
   }
 }

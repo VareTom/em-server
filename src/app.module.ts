@@ -1,5 +1,7 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+
+// Custom Modules
 import { DatabaseModule } from 'src/core/database/database.module';
 import { UserModule } from 'src/modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -10,20 +12,35 @@ import { OrderModule } from 'src/modules/order/order.module';
 import { ExpenditureModule } from 'src/modules/expenditure/expenditure.module';
 import { AddressModule } from 'src/modules/address/address.module';
 import { StatisticsModule } from 'src/modules/statistics/statistics.module';
+import { CarModule } from 'src/modules/car/car.module';
+import { MailModule } from 'src/modules/mail/mail.module';
+
+// Middlewares
+import LogsMiddleware from 'src/middleware/logs.middleware';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    
+    // Custom Modules
     DatabaseModule,
     UserModule,
     AuthModule,
+    CarModule,
     EntityModule,
     ClientModule,
     ServiceModule,
     OrderModule,
     ExpenditureModule,
     AddressModule,
-    StatisticsModule
+    StatisticsModule,
+    MailModule
   ]
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+        .apply(LogsMiddleware)
+        .forRoutes('*');
+  }
+}

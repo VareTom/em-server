@@ -1,0 +1,4 @@
+### Delete a car
+DELETE {{url}}/{{prefix}}/cars/15917809-e888-45e5-9783-472ac0ddeaf3
+Authorization: Bearer {{bearerToken}}
+Accept: application/json

@@ -10,9 +10,12 @@ import { AuthService } from 'src/modules/auth/auth.service';
 import { UserCreateInputDto } from 'src/core/dtos/user/userCreateInputDto';
 import { UserCreateOutputDto } from 'src/core/dtos/user/userCreateOutputDto';
 import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';
+import { UserRegisterInputDto } from 'src/core/dtos/user/userRegisterInputDto';
+import { UserLoginInputDto } from 'src/core/dtos/user/userLoginInputDto';
 
 @ApiTags('auth')
 @Controller('auth')
+@UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
   
   constructor(private readonly authService: AuthService) {
@@ -22,9 +25,8 @@ export class AuthController {
   @ApiCreatedResponse({
     type: UserCreateOutputDto
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Post('register')
-  async register(@Body() user: UserCreateInputDto): Promise<UserCreateOutputDto> {
+  async register(@Body() user: UserRegisterInputDto): Promise<UserCreateOutputDto> {
     return await this.authService.register(user);
   }
   
@@ -33,9 +35,18 @@ export class AuthController {
     status: 200,
     type: UserCreateOutputDto
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Post('login')
-  async login(@Body() user: UserCreateInputDto): Promise<UserCreateOutputDto> {
+  async login(@Body() user: UserLoginInputDto): Promise<UserCreateOutputDto> {
     return await this.authService.login(user);
+  }
+  
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    status: 200,
+    type: Boolean
+  })
+  @Post('valid/code')
+  async isValidCode(@Body() codeInput: any): Promise<boolean> {
+    return await this.authService.isValidCode(codeInput.code);
   }
 }

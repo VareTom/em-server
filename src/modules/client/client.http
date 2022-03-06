@@ -1,3 +1,8 @@
+### Delete a client
+DELETE {{url}}/{{prefix}}/clients/34d13785-5044-47f4-bf38-438968b405a6
+Authorization: Bearer {{bearerToken}}
+Accept: application/json
+
 ### Create new client with address
 POST {{url}}/{{prefix}}/clients
 Authorization: Bearer {{bearerToken}}

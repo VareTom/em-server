@@ -1,7 +1,7 @@
 import {
   Body,
   ClassSerializerInterceptor,
-  Controller,
+  Controller, Delete,
   Get,
   Param,
   Post,
@@ -20,6 +20,7 @@ import { ClientService } from 'src/modules/client/client.service';
 
 @ApiTags('clients')
 @Controller('clients')
+@UseInterceptors(ClassSerializerInterceptor)
 export class ClientController {
 
   constructor(private readonly clientService: ClientService) {
@@ -31,7 +32,6 @@ export class ClientController {
   @ApiCreatedResponse({
     type: ClientOutputDto
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Post()
   async create(@Body() client: ClientFullCreateInputDto): Promise<ClientOutputDto> {
     return await this.clientService.create(client);
@@ -45,10 +45,21 @@ export class ClientController {
     type: ClientOutputDto,
     isArray: true
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':entityUuid')
   async findAllForEntity(@Param('entityUuid') entityUuid: string): Promise<ClientOutputDto[]> {
     return await this.clientService.getAllForEntity(entityUuid);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    status: 200,
+    type: ClientOutputDto
+  })
+  @Delete(':clientUuid')
+  async delete(@Param('clientUuid') clientUuid: string): Promise<ClientOutputDto> {
+    return await this.clientService.delete(clientUuid);
   }
 
 }

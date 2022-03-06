@@ -23,6 +23,7 @@ import { UserUpdateInputDto } from 'src/core/dtos/user/userUpdateInputDto';
 
 @ApiTags('users')
 @Controller('users')
+@UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
 
   constructor(private readonly userService: UserService) {
@@ -35,7 +36,6 @@ export class UserController {
     status: 200,
     type: UserOutputDto
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':uuid')
   async findOne(@Param('uuid') uuid: string): Promise<UserOutputDto> {
     return await this.userService.getOne(uuid);
@@ -48,7 +48,6 @@ export class UserController {
     status: 200,
     type: UserOutputDto
   })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Put(':uuid')
   async update(@Param('uuid') uuid: string,
                @Body() user: UserUpdateInputDto): Promise<UserOutputDto> {

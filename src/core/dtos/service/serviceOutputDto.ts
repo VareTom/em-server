@@ -30,6 +30,10 @@ export class ServiceOutputDto {
   @IsNotEmpty()
   createdAt: Date;
   
+  @ApiProperty()
+  @IsOptional()
+  deletedAt?: Date;
+  
   constructor(json: any) {
     this.uuid = json.uuid;
     this.name = json.name;
@@ -37,5 +41,6 @@ export class ServiceOutputDto {
     this.description = json.description;
     this.priceInCent = json.priceInCent;
     this.createdAt = json.createdAt;
+    this.deletedAt = json.deletedAt;
   }
 }

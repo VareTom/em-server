@@ -14,7 +14,6 @@ import { IsString } from 'class-validator';
 
 // Entities
 import { User } from 'src/core/entities/user.entity';
-import { UserEntity } from 'src/core/entities/user-entity.entity';
 import { Service } from 'src/core/entities/service.entity';
 import { Expenditure } from 'src/core/entities/expenditure.entity';
 import { Order } from 'src/core/entities/order.entity';
@@ -48,8 +47,8 @@ export class Entity extends Model<Entity> {
   @Column
   authorUuid: string;
 
-  @HasMany(() => UserEntity)
-  userEntities: UserEntity[];
+  @HasMany(() => User)
+  users: User[];
   
   @HasMany(() => Service)
   services: Service[];

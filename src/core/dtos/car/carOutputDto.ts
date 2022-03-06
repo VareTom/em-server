@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsDate, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CarOutputDto {
   
@@ -26,11 +26,22 @@ export class CarOutputDto {
   @IsOptional()
   color?: string;
   
+  @ApiProperty()
+  @IsDate()
+  @IsNotEmpty()
+  createdAt: Date;
+  
+  @ApiProperty()
+  @IsOptional()
+  deletedAt?: Date;
+  
   constructor(json: Partial<CarOutputDto>) {
     this.uuid = json.uuid;
     this.merch = json.merch;
     this.model = json.model;
     this.year = json.year;
     this.color = json.color;
+    this.createdAt = json.createdAt;
+    this.deletedAt = json.deletedAt;
   }
 }
