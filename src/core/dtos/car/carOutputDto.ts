@@ -19,6 +19,11 @@ export class CarOutputDto {
   model: string;
   
   @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  plate: string;
+  
+  @ApiProperty()
   @IsOptional()
   year?: number;
   
@@ -41,6 +46,7 @@ export class CarOutputDto {
     this.model = json.model;
     this.year = json.year;
     this.color = json.color;
+    this.plate = json.plate;
     this.createdAt = json.createdAt;
     this.deletedAt = json.deletedAt;
   }

@@ -13,6 +13,11 @@ export class CarCreateInputDto {
   model: string;
   
   @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  plate: string;
+  
+  @ApiProperty()
   @IsOptional()
   year?: number;
   
