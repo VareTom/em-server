@@ -37,6 +37,11 @@ export class Car extends Model<Car> {
   @Column
   model: string;
   
+  @IsString()
+  @AllowNull(false)
+  @Column
+  plate: string;
+  
   @IsNumber()
   @Column
   year?: number;

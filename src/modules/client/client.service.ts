@@ -58,4 +58,14 @@ export class ClientService {
     
     return new ClientOutputDto(client);
   }
+  
+  async getClientDetails(userUuid: string): Promise<ClientOutputDto> {
+    const client = await this.clientRepository.findOne({
+      where: {uuid: userUuid},
+      include: [ Address, Car ]
+    });
+    if (!client) throw new HttpException('Cannot retrieve this client', HttpStatus.BAD_REQUEST);
+    
+    return new ClientOutputDto(client);
+  }
 }

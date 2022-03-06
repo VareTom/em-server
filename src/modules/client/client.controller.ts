@@ -61,5 +61,17 @@ export class ClientController {
   async delete(@Param('clientUuid') clientUuid: string): Promise<ClientOutputDto> {
     return await this.clientService.delete(clientUuid);
   }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    status: 200,
+    type: ClientOutputDto
+  })
+  @Get(':userUuid/details')
+  async clientDetails(@Param('userUuid') userUuid: string): Promise<ClientOutputDto> {
+    return await this.clientService.getClientDetails(userUuid);
+  }
 
 }
