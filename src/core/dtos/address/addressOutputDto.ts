@@ -41,6 +41,7 @@ export class AddressOutputDto {
     this.uuid = json.uuid;
     this.street = json.street;
     this.box = json.box;
+    this.postalCode = json.postalCode;
     this.locality = json.locality;
     this.country = json.country;
     this.createdAt = json.createdAt;
