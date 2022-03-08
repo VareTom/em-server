@@ -18,6 +18,8 @@ import { ClientFullCreateInputDto } from 'src/core/dtos/client/clientFullCreateI
 // Services
 import { ClientService } from 'src/modules/client/client.service';
 import { ClientCreateInputDto } from 'src/core/dtos/client/clientCreateInputDto';
+import { AddressCreateInputDto } from 'src/core/dtos/address/addressCreateInputDto';
+import { CarCreateInputDto } from 'src/core/dtos/car/carCreateInputDto';
 
 @ApiTags('clients')
 @Controller('clients')
@@ -36,6 +38,32 @@ export class ClientController {
   @Post()
   async create(@Body() client: ClientFullCreateInputDto): Promise<ClientOutputDto> {
     return await this.clientService.create(client);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiCreatedResponse({
+    type: ClientOutputDto
+  })
+  @Post(':clientUuid/address')
+  async createAddress(
+      @Param('clientUuid') clientUuid: string,
+      @Body() address: AddressCreateInputDto): Promise<ClientOutputDto> {
+    return await this.clientService.createAddress(clientUuid, address);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiCreatedResponse({
+    type: ClientOutputDto
+  })
+  @Post(':clientUuid/car')
+  async createCar(
+    @Param('clientUuid') clientUuid: string,
+    @Body() car: CarCreateInputDto): Promise<ClientOutputDto> {
+    return await this.clientService.createCar(clientUuid, car);
   }
   
   @UseGuards(JwtAuthGuard)

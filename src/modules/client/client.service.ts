@@ -12,6 +12,8 @@ import { Car } from 'src/core/entities/car.entity';
 import { ClientOutputDto } from 'src/core/dtos/client/clientOutputDto';
 import { ClientFullCreateInputDto } from 'src/core/dtos/client/clientFullCreateInputDto';
 import { ClientCreateInputDto } from 'src/core/dtos/client/clientCreateInputDto';
+import { AddressCreateInputDto } from 'src/core/dtos/address/addressCreateInputDto';
+import { CarCreateInputDto } from 'src/core/dtos/car/carCreateInputDto';
 
 @Injectable()
 export class ClientService {
@@ -39,6 +41,27 @@ export class ClientService {
     });
     
     return new ClientOutputDto(returnedClient);
+  }
+  
+  //TODO:: verify no address link
+  async createAddress(clientUuid: string, addressInput: AddressCreateInputDto): Promise<ClientOutputDto> {
+    const client = await this.clientRepository.findByPk(clientUuid, { include: [ Address, Car ] });
+    if (!client) throw new HttpException('Cannot find this client', HttpStatus.BAD_REQUEST);
+  
+    await client.$create('address', addressInput);
+    
+    return new ClientOutputDto(client);
+  }
+  
+  async createCar(clientUuid: string, carInput: CarCreateInputDto): Promise<ClientOutputDto> {
+    const client = await this.clientRepository.findByPk(clientUuid, { include: [ Address, Car ] });
+    if (!client) throw new HttpException('Cannot find this client', HttpStatus.BAD_REQUEST);
+  
+    const createdCar = await this.carRepository.create(carInput);
+    if (!createdCar) throw new HttpException('Cannot create car', HttpStatus.BAD_REQUEST);
+    await client.$add('cars', createdCar);
+    
+    return new ClientOutputDto(client);
   }
   
   async update(clientUuid: string,clientInput: ClientCreateInputDto): Promise<ClientOutputDto> {
