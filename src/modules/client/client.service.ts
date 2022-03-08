@@ -11,6 +11,7 @@ import { Car } from 'src/core/entities/car.entity';
 // DTOs
 import { ClientOutputDto } from 'src/core/dtos/client/clientOutputDto';
 import { ClientFullCreateInputDto } from 'src/core/dtos/client/clientFullCreateInputDto';
+import { ClientCreateInputDto } from 'src/core/dtos/client/clientCreateInputDto';
 
 @Injectable()
 export class ClientService {
@@ -40,6 +41,17 @@ export class ClientService {
     return new ClientOutputDto(returnedClient);
   }
   
+  async update(clientUuid: string,clientInput: ClientCreateInputDto): Promise<ClientOutputDto> {
+    const client = await this.clientRepository.findByPk(clientUuid, { include: [ Address, Car ] });
+    if (!client) throw new HttpException('Cannot find this client', HttpStatus.BAD_REQUEST);
+    
+    client.firstName = clientInput.firstName;
+    client.lastName = clientInput.lastName;
+    await client.save();
+    
+    return new ClientOutputDto(client);
+  }
+  
   async getAllForEntity(entityUuid: string): Promise<ClientOutputDto[]> {
     const clients = await this.clientRepository.findAll({
       where: {entityUuid: entityUuid},
@@ -55,6 +67,25 @@ export class ClientService {
     if (!client) throw new HttpException('Cannot find this client', HttpStatus.BAD_REQUEST);
     
     await client.destroy();
+    
+    return new ClientOutputDto(client);
+  }
+  
+  async deleteAddress(clientUuid: string): Promise<ClientOutputDto> {
+    const client = await this.clientRepository.findByPk(clientUuid, { include: [ Address, Car ] });
+    if (!client) throw new HttpException('Cannot find this client', HttpStatus.BAD_REQUEST);
+    
+    await client.address.destroy();
+    
+    return new ClientOutputDto(client);
+  }
+  
+  async deleteCar(clientUuid: string,carUuid: string): Promise<ClientOutputDto> {
+    const client = await this.clientRepository.findByPk(clientUuid, { include: [ Address, Car ] });
+    if (!client) throw new HttpException('Cannot find this client', HttpStatus.BAD_REQUEST);
+    
+    const carToDelete = client.cars.find(car => car.uuid === carUuid);
+    await carToDelete.destroy();
     
     return new ClientOutputDto(client);
   }

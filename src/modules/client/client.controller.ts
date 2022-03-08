@@ -4,7 +4,7 @@ import {
   Controller, Delete,
   Get,
   Param,
-  Post,
+  Post, Put,
   UseGuards,
   UseInterceptors
 } from '@nestjs/common';
@@ -17,6 +17,7 @@ import { ClientFullCreateInputDto } from 'src/core/dtos/client/clientFullCreateI
 
 // Services
 import { ClientService } from 'src/modules/client/client.service';
+import { ClientCreateInputDto } from 'src/core/dtos/client/clientCreateInputDto';
 
 @ApiTags('clients')
 @Controller('clients')
@@ -35,6 +36,19 @@ export class ClientController {
   @Post()
   async create(@Body() client: ClientFullCreateInputDto): Promise<ClientOutputDto> {
     return await this.clientService.create(client);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiCreatedResponse({
+    type: ClientOutputDto
+  })
+  @Put(':clientUuid')
+  async update(
+      @Param('clientUuid') clientUuid: string,
+      @Body() clientInput: ClientCreateInputDto): Promise<ClientOutputDto> {
+    return await this.clientService.update(clientUuid,clientInput);
   }
   
   @UseGuards(JwtAuthGuard)
@@ -60,6 +74,31 @@ export class ClientController {
   @Delete(':clientUuid')
   async delete(@Param('clientUuid') clientUuid: string): Promise<ClientOutputDto> {
     return await this.clientService.delete(clientUuid);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    status: 200,
+    type: ClientOutputDto
+  })
+  @Delete(':clientUuid/address')
+  async deleteAddress(@Param('clientUuid') clientUuid: string): Promise<ClientOutputDto> {
+    return await this.clientService.deleteAddress(clientUuid);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    status: 200,
+    type: ClientOutputDto
+  })
+  @Delete(':clientUuid/car/:carUuid')
+  async deleteCar(@Param('clientUuid') clientUuid: string,
+                  @Param('carUuid') carUuid: string): Promise<ClientOutputDto> {
+    return await this.clientService.deleteCar(clientUuid,carUuid);
   }
   
   @UseGuards(JwtAuthGuard)
