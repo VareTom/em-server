@@ -14,7 +14,7 @@ import { ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs
 import { EntityService } from 'src/modules/entity/entity.service';
 
 // Guards
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/core/guards/jwt-auth.guard';
 
 // DTOs
 import { EntityCreateInputDto } from 'src/core/dtos/entity/entityCreateInputDto';

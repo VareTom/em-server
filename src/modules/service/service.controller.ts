@@ -8,7 +8,7 @@ import {
   UseGuards,
   UseInterceptors
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/core/guards/jwt-auth.guard';
 import { ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // Services

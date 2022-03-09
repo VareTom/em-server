@@ -14,7 +14,7 @@ import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiResponse, ApiTags } from
 import { UserService } from 'src/modules/user/user.service';
 
 // Guards
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/core/guards/jwt-auth.guard';
 
 // DTOs
 import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';

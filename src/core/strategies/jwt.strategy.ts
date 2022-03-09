@@ -6,7 +6,7 @@ import { Injectable } from '@nestjs/common';
 import { AuthService } from 'src/modules/auth/auth.service';
 
 // Interfaces
-import { TokenPayloadInterface } from 'src/modules/auth/interfaces/tokenPayload.interface';
+import { TokenPayloadInterface } from 'src/core/interfaces/tokenPayload.interface';
 import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';
 
 @Injectable()

@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // Services
 import { CarService } from 'src/modules/car/car.service';
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/core/guards/jwt-auth.guard';
 
 // DTOs
 import { CarOutputDto } from 'src/core/dtos/car/carOutputDto';

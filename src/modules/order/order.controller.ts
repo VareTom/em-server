@@ -12,7 +12,7 @@ import { ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs
 
 // Services
 import { OrderService } from 'src/modules/order/order.service';
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/core/guards/jwt-auth.guard';
 
 // DTOs
 import { OrderCreateInputDto } from 'src/core/dtos/order/orderCreateInputDto';
