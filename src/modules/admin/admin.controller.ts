@@ -27,7 +27,7 @@ export class AdminController {
     type: UserOutputDto,
     isArray: true
   })
-  @Get()
+  @Get('/all/users')
   async getAllUsers(): Promise<UserOutputDto[]> {
     return await this.adminService.getAllUsers();
   }
