@@ -23,4 +23,4 @@ services:
       # MYSQL_PASSWORD: oct4tek
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
-      - "3307:3306"
+      - "3309:3306"

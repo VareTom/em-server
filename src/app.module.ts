@@ -14,6 +14,7 @@ import { AddressModule } from 'src/modules/address/address.module';
 import { StatisticsModule } from 'src/modules/statistics/statistics.module';
 import { CarModule } from 'src/modules/car/car.module';
 import { MailModule } from 'src/modules/mail/mail.module';
+import { AdminModule } from './modules/admin/admin.module';
 
 // Middlewares
 import LogsMiddleware from 'src/middleware/logs.middleware';
@@ -34,7 +35,8 @@ import LogsMiddleware from 'src/middleware/logs.middleware';
     ExpenditureModule,
     AddressModule,
     StatisticsModule,
-    MailModule
+    MailModule,
+    AdminModule
   ]
 })
 export class AppModule {

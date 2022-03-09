@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs
 
 // Services
 import { StatisticsService } from 'src/modules/statistics/statistics.service';
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/core/guards/jwt-auth.guard';
 
 // DTOs
 import { StatisticsOutputDto } from 'src/core/dtos/dashboard/statisticsOutputDto';

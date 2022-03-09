@@ -8,7 +8,7 @@ import {
   UseGuards,
   UseInterceptors
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/core/guards/jwt-auth.guard';
 import { ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // DTOs
@@ -78,7 +78,34 @@ export class ClientController {
       @Body() clientInput: ClientCreateInputDto): Promise<ClientOutputDto> {
     return await this.clientService.update(clientUuid,clientInput);
   }
-  
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiCreatedResponse({
+    type: ClientOutputDto
+  })
+  @Put(':clientUuid/car/:carUuid')
+  async updateCar(
+      @Param('clientUuid') clientUuid: string,
+      @Param('carUuid') carUuid: string,
+      @Body() carInput: CarCreateInputDto): Promise<ClientOutputDto> {
+    return await this.clientService.updateCar(clientUuid, carUuid, carInput);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiCreatedResponse({
+    type: ClientOutputDto
+  })
+  @Put(':clientUuid/address')
+  async updateAddress(
+      @Param('clientUuid') clientUuid: string,
+      @Body() addressInput: AddressCreateInputDto): Promise<ClientOutputDto> {
+    return await this.clientService.updateAddress(clientUuid, addressInput);
+  }
+
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Unauthorized'})
