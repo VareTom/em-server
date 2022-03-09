@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 
 @Injectable()
 export class SuperAdminGuard implements CanActivate {
@@ -7,7 +7,9 @@ export class SuperAdminGuard implements CanActivate {
   }
 
   canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest()
-    return request.user.isSuperAdmin;
+    const request = context.switchToHttp().getRequest();
+    const isUserSuperAdmin = request.user.isSuperAdmin;
+    if (!isUserSuperAdmin) throw new UnauthorizedException();
+    return isUserSuperAdmin;
   }
 }
