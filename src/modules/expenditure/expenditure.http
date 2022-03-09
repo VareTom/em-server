@@ -10,11 +10,11 @@ Authorization: Bearer {{bearerToken}}
 {
   "name": "Vélo",
   "priceInCent": 22000,
-  "entityUuid": "312ad27e-5c4e-4791-9065-f3b9decd4f33"
+  "entityUuid": "43a75d57-c6de-432d-8e58-ecc508e1e705"
 }
 
 ### Get all expenditures for specific entity
-GET {{url}}/{{prefix}}/expenditures/f4663840-b3f0-4c90-b1b3-139e187e9772
+GET {{url}}/{{prefix}}/expenditures/43a75d57-c6de-432d-8e58-ecc508e1e705
 Accept: application/json
 Authorization: Bearer {{bearerToken}}
 
