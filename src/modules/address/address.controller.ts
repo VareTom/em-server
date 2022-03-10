@@ -15,12 +15,11 @@ import { AddressService } from 'src/modules/address/address.service';
 
 // Guards
 import { JwtAuthGuard } from 'src/core/guards/jwt-auth.guard';
+
+// DTOs
 import { ClientOutputDto } from 'src/core/dtos/client/clientOutputDto';
 import { AddressCreateInputDto } from 'src/core/dtos/address/addressCreateInputDto';
 import { AddressOutputDto } from 'src/core/dtos/address/addressOutputDto';
-
-// DTOs
-
 
 @ApiTags('addresses')
 @Controller('addresses')

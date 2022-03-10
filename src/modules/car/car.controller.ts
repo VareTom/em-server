@@ -17,7 +17,6 @@ import { JwtAuthGuard } from 'src/core/guards/jwt-auth.guard';
 // DTOs
 import { CarOutputDto } from 'src/core/dtos/car/carOutputDto';
 import { ClientOutputDto } from 'src/core/dtos/client/clientOutputDto';
-import { Car } from 'src/core/entities/car.entity';
 import { CarCreateInputDto } from 'src/core/dtos/car/carCreateInputDto';
 
 @ApiTags('cars')
@@ -50,7 +49,7 @@ export class CarController {
     type: ClientOutputDto
   })
   @Put(':carUuid/client/:clientUuid')
-  async updateCar(
+  async update(
       @Param('clientUuid') clientUuid: string,
       @Param('carUuid') carUuid: string,
       @Body() carInput: CarCreateInputDto): Promise<ClientOutputDto> {
