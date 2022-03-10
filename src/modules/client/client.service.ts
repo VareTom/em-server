@@ -43,18 +43,6 @@ export class ClientService {
     return new ClientOutputDto(returnedClient);
   }
   
-  async createCar(clientUuid: string, carInput: CarCreateInputDto): Promise<ClientOutputDto> {
-    const client = await this.clientRepository.findByPk(clientUuid, { include: [ Address, Car ] });
-    if (!client) throw new HttpException('Cannot find this client', HttpStatus.BAD_REQUEST);
-  
-    const createdCar = await this.carRepository.create(carInput);
-    if (!createdCar) throw new HttpException('Cannot create car', HttpStatus.BAD_REQUEST);
-    await client.$add('cars', createdCar);
-    await client.reload();
-    
-    return new ClientOutputDto(client);
-  }
-  
   async update(clientUuid: string, clientInput: ClientCreateInputDto): Promise<ClientOutputDto> {
     const client = await this.clientRepository.findByPk(clientUuid, { include: [ Address, Car ] });
     if (!client) throw new HttpException('Cannot find this client', HttpStatus.BAD_REQUEST);
@@ -63,20 +51,6 @@ export class ClientService {
     client.lastName = clientInput.lastName;
     await client.save();
     
-    return new ClientOutputDto(client);
-  }
-
-  async updateCar(clientUuid: string, carUuid: string, carInput: CarCreateInputDto): Promise<ClientOutputDto> {
-    const client = await this.clientRepository.findByPk(clientUuid, { include: [ Address, Car ] });
-    if (!client) throw new HttpException('Cannot find this client', HttpStatus.BAD_REQUEST);
-
-    const car = await this.carRepository.findByPk(carUuid);
-    if (!car) throw new HttpException('Cannot find this car', HttpStatus.BAD_REQUEST);
-
-    const isCarUpdated = await this.carRepository.update(carInput, { where: {uuid: car.uuid}});
-    if (isCarUpdated[0] < 1) throw new HttpException('Cannot update this car', HttpStatus.BAD_REQUEST);
-    await client.reload();
-
     return new ClientOutputDto(client);
   }
   
@@ -99,18 +73,7 @@ export class ClientService {
     return new ClientOutputDto(client);
   }
   
-  async deleteCar(clientUuid: string,carUuid: string): Promise<ClientOutputDto> {
-    const client = await this.clientRepository.findByPk(clientUuid, { include: [ Address, Car ] });
-    if (!client) throw new HttpException('Cannot find this client', HttpStatus.BAD_REQUEST);
-    
-    const carToDelete = client.cars.find(car => car.uuid === carUuid);
-    await carToDelete.destroy();
-    await client.reload();
-    
-    return new ClientOutputDto(client);
-  }
-  
-  async getClientDetails(userUuid: string): Promise<ClientOutputDto> {
+  async getDetails(userUuid: string): Promise<ClientOutputDto> {
     const client = await this.clientRepository.findOne({
       where: {uuid: userUuid},
       include: [ Address, Car ]

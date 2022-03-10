@@ -46,19 +46,6 @@ export class ClientController {
   @ApiCreatedResponse({
     type: ClientOutputDto
   })
-  @Post(':clientUuid/car')
-  async createCar(
-    @Param('clientUuid') clientUuid: string,
-    @Body() car: CarCreateInputDto): Promise<ClientOutputDto> {
-    return await this.clientService.createCar(clientUuid, car);
-  }
-  
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiResponse({ status: 401, description: 'Unauthorized'})
-  @ApiCreatedResponse({
-    type: ClientOutputDto
-  })
   @Put(':clientUuid')
   async update(
       @Param('clientUuid') clientUuid: string,
@@ -69,27 +56,13 @@ export class ClientController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Unauthorized'})
-  @ApiCreatedResponse({
-    type: ClientOutputDto
-  })
-  @Put(':clientUuid/car/:carUuid')
-  async updateCar(
-      @Param('clientUuid') clientUuid: string,
-      @Param('carUuid') carUuid: string,
-      @Body() carInput: CarCreateInputDto): Promise<ClientOutputDto> {
-    return await this.clientService.updateCar(clientUuid, carUuid, carInput);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiResponse({ status: 401, description: 'Unauthorized'})
   @ApiResponse({
     status: 200,
     type: ClientOutputDto
   })
   @Get(':userUuid/details')
-  async clientDetails(@Param('userUuid') userUuid: string): Promise<ClientOutputDto> {
-    return await this.clientService.getClientDetails(userUuid);
+  async details(@Param('userUuid') userUuid: string): Promise<ClientOutputDto> {
+    return await this.clientService.getDetails(userUuid);
   }
   
   @UseGuards(JwtAuthGuard)
@@ -116,18 +89,4 @@ export class ClientController {
   async delete(@Param('clientUuid') clientUuid: string): Promise<ClientOutputDto> {
     return await this.clientService.delete(clientUuid);
   }
-  
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiResponse({ status: 401, description: 'Unauthorized'})
-  @ApiResponse({
-    status: 200,
-    type: ClientOutputDto
-  })
-  @Delete(':clientUuid/car/:carUuid')
-  async deleteCar(@Param('clientUuid') clientUuid: string,
-                  @Param('carUuid') carUuid: string): Promise<ClientOutputDto> {
-    return await this.clientService.deleteCar(clientUuid,carUuid);
-  }
-
 }

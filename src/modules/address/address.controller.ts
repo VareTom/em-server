@@ -17,6 +17,7 @@ import { AddressService } from 'src/modules/address/address.service';
 import { JwtAuthGuard } from 'src/core/guards/jwt-auth.guard';
 import { ClientOutputDto } from 'src/core/dtos/client/clientOutputDto';
 import { AddressCreateInputDto } from 'src/core/dtos/address/addressCreateInputDto';
+import { AddressOutputDto } from 'src/core/dtos/address/addressOutputDto';
 
 // DTOs
 
@@ -59,14 +60,14 @@ export class AddressController {
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOperation({summary: 'Delete an address and return client object'})
+  @ApiOperation({summary: 'Delete an address and return the object of deleted address'})
   @ApiResponse({ status: 401, description: 'Unauthorized'})
   @ApiResponse({
     status: 200,
-    type: ClientOutputDto
+    type: AddressOutputDto
   })
   @Delete(':addressUuid')
-  async delete(@Param('addressUuid') addressUuid: string): Promise<ClientOutputDto> {
+  async delete(@Param('addressUuid') addressUuid: string): Promise<AddressOutputDto> {
     return await this.addressService.delete(addressUuid);
   }
 }

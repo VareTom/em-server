@@ -11,6 +11,7 @@ import { ADDRESS_REPOSITORY, CLIENT_REPOSITORY } from 'src/core/constants';
 // DTOs
 import { AddressCreateInputDto } from 'src/core/dtos/address/addressCreateInputDto';
 import { ClientOutputDto } from 'src/core/dtos/client/clientOutputDto';
+import { AddressOutputDto } from 'src/core/dtos/address/addressOutputDto';
 
 @Injectable()
 export class AddressService {
@@ -47,16 +48,12 @@ export class AddressService {
     return new ClientOutputDto(client);
   }
 
-  async delete(addressUuid: string): Promise<ClientOutputDto> {
-    const client = await this.clientRepository.findOne({
-      include: [ Address, Car ],
-      where: { addressUuid: addressUuid }
-    });
-    if (!client) throw new HttpException('Cannot find this client', HttpStatus.BAD_REQUEST);
+  async delete(addressUuid: string): Promise<AddressOutputDto> {
+    const address = await this.addressRepository.findByPk(addressUuid);
+    if (!address) throw new HttpException('Cannot find this address', HttpStatus.BAD_REQUEST);
 
-    await client.address.destroy();
-    await client.reload();
+    await address.destroy();
 
-    return new ClientOutputDto(client);
+    return new AddressOutputDto(address);
   }
 }
