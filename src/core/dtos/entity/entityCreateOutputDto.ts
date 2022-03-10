@@ -6,7 +6,7 @@ import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';
 export class EntityCreateOutputDto {
   
   @ApiProperty()
-  @IsUUID()
+  @IsUUID(4)
   @IsNotEmpty()
   uuid: string;
   
@@ -20,7 +20,7 @@ export class EntityCreateOutputDto {
   description?: string;
   
   @ApiProperty()
-  @IsUUID()
+  @IsUUID(4)
   authorUuid: string;
   
   @ApiProperty()

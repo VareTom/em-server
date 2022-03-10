@@ -19,6 +19,7 @@ import { JwtAuthGuard } from 'src/core/guards/jwt-auth.guard';
 // DTOs
 import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';
 import { UserUpdateInputDto } from 'src/core/dtos/user/userUpdateInputDto';
+import { SuperAdminGuard } from 'src/core/guards/super-admin.guard';
 
 
 @ApiTags('users')
@@ -52,5 +53,18 @@ export class UserController {
   async update(@Param('uuid') uuid: string,
                @Body() user: UserUpdateInputDto): Promise<UserOutputDto> {
     return await this.userService.update(user,uuid);
+  }
+
+  @UseGuards(JwtAuthGuard, SuperAdminGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    status: 200,
+    type: UserOutputDto,
+    isArray: true
+  })
+  @Get('all')
+  async getAllUsers(): Promise<UserOutputDto[]> {
+    return await this.userService.getAllUsers();
   }
 }

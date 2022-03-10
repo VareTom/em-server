@@ -46,19 +46,6 @@ export class ClientController {
   @ApiCreatedResponse({
     type: ClientOutputDto
   })
-  @Post(':clientUuid/address')
-  async createAddress(
-      @Param('clientUuid') clientUuid: string,
-      @Body() address: AddressCreateInputDto): Promise<ClientOutputDto> {
-    return await this.clientService.createAddress(clientUuid, address);
-  }
-  
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiResponse({ status: 401, description: 'Unauthorized'})
-  @ApiCreatedResponse({
-    type: ClientOutputDto
-  })
   @Post(':clientUuid/car')
   async createCar(
     @Param('clientUuid') clientUuid: string,
@@ -96,19 +83,6 @@ export class ClientController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Unauthorized'})
-  @ApiCreatedResponse({
-    type: ClientOutputDto
-  })
-  @Put(':clientUuid/address')
-  async updateAddress(
-      @Param('clientUuid') clientUuid: string,
-      @Body() addressInput: AddressCreateInputDto): Promise<ClientOutputDto> {
-    return await this.clientService.updateAddress(clientUuid, addressInput);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiResponse({ status: 401, description: 'Unauthorized'})
   @ApiResponse({
     status: 200,
     type: ClientOutputDto
@@ -141,18 +115,6 @@ export class ClientController {
   @Delete(':clientUuid')
   async delete(@Param('clientUuid') clientUuid: string): Promise<ClientOutputDto> {
     return await this.clientService.delete(clientUuid);
-  }
-  
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiResponse({ status: 401, description: 'Unauthorized'})
-  @ApiResponse({
-    status: 200,
-    type: ClientOutputDto
-  })
-  @Delete(':clientUuid/address')
-  async deleteAddress(@Param('clientUuid') clientUuid: string): Promise<ClientOutputDto> {
-    return await this.clientService.deleteAddress(clientUuid);
   }
   
   @UseGuards(JwtAuthGuard)

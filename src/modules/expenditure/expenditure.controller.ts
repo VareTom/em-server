@@ -8,7 +8,7 @@ import {
   UseGuards,
   UseInterceptors
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // Services
 import { ExpenditureService } from 'src/modules/expenditure/expenditure.service';
@@ -49,6 +49,7 @@ export class ExpenditureController {
     type: ExpenditureOutputDto,
     isArray: true
   })
+  @ApiQuery({name: 'period', enum: FiltersPeriodEnum})
   @Get(':entityUuid')
   async findAllForEntity(@Param('entityUuid') entityUuid: string,
                          @Query('period') period: FiltersPeriodEnum): Promise<ExpenditureOutputDto[]> {

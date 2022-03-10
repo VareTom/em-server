@@ -1,6 +1,0 @@
-### Get all users of the plateform
-GET {{url}}/{{prefix}}/admin/all/users
-Accept: application/json
-Authorization: Bearer {{bearerToken}}
-
-###

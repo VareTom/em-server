@@ -8,7 +8,7 @@ import { EntityCreateOutputDto } from 'src/core/dtos/entity/entityCreateOutputDt
 export class UserOutputDto {
 
   @ApiProperty()
-  @IsUUID()
+  @IsUUID(4)
   uuid: string;
   
   @Exclude()

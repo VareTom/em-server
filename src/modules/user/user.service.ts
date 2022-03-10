@@ -46,4 +46,17 @@ export class UserService {
         throw new HttpException(`User not updated`, HttpStatus.INTERNAL_SERVER_ERROR);
       });
   }
+
+  async getAllUsers(): Promise<UserOutputDto[]> {
+    return this.userRepository.findAll({
+          include: [ Entity ]
+        })
+        .then(users => {
+          return users.map(user => new UserOutputDto(user));
+        })
+        .catch(err => {
+          console.log(err);
+          throw new HttpException('Cannot retrieve all users.', HttpStatus.INTERNAL_SERVER_ERROR);
+        })
+  }
 }
