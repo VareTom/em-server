@@ -30,7 +30,7 @@ export class CarController {
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOperation({summary: 'Create a car and return client object'})
+  @ApiOperation({summary: 'Create a car for a client and return client object'})
   @ApiResponse({ status: 401, description: 'Unauthorized'})
   @ApiCreatedResponse({
     type: ClientOutputDto
@@ -44,7 +44,7 @@ export class CarController {
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOperation({summary: 'Update a car and return client object'})
+  @ApiOperation({summary: "Update a client's car and return client object"})
   @ApiResponse({ status: 401, description: 'Unauthorized'})
   @ApiCreatedResponse({
     type: ClientOutputDto
