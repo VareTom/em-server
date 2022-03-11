@@ -32,6 +32,8 @@ export class EntityService {
     const user = await this.userRepository.findOne({
       where: {
         uuid: entity.authorUuid,
+        isDisabled: false,
+        isConfirmed: true,
         entityUuid: { [Op.is]: null }
       }
     })

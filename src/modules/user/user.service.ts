@@ -20,7 +20,11 @@ export class UserService {
 
   async getOne(uuid: string): Promise<UserOutputDto> {
     const user = await this.userRepository.findOne({
-      where: {uuid: uuid},
+      where: {
+        uuid: uuid,
+        isDisabled: false,
+        isConfirmed: true,
+      },
       include: [ Entity ]
     });
     

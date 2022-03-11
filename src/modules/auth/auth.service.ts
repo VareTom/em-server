@@ -25,7 +25,13 @@ export class AuthService {
               private readonly jwt: JwtService) {}
   
   async validateUser(uuid: string): Promise<UserOutputDto> {
-    const user = await this.userRepository.findByPk(uuid);
+    const user = await this.userRepository.findOne({
+      where: {
+        uuid: uuid,
+        isDisabled: false,
+        isConfirmed: true
+      }
+    });
     if (!user) {
       throw new UnauthorizedException();
     }
@@ -36,7 +42,8 @@ export class AuthService {
     const user = await this.userRepository.findOne({
       where: {
         email: userCreateInput.email,
-        isConfirmed: true
+        isConfirmed: true,
+        isDisabled: false
       },
       include: [ Entity ]
     });
@@ -59,7 +66,9 @@ export class AuthService {
     const user = await this.userRepository.findOne({
       where: {
         email: registerInput.email.toLowerCase(),
-        registrationCode: registerInput.code
+        registrationCode: registerInput.code,
+        isDisabled: false,
+        isConfirmed: false
       },
       include: [ Entity ]
     })
