@@ -24,17 +24,17 @@ import LogsMiddleware from 'src/middleware/logs.middleware';
     
     // Custom Modules
     DatabaseModule,
-    UserModule,
+    AddressModule,
     AuthModule,
     CarModule,
-    EntityModule,
     ClientModule,
-    ServiceModule,
-    OrderModule,
+    EntityModule,
     ExpenditureModule,
-    AddressModule,
+    MailModule,
+    OrderModule,
+    ServiceModule,
     StatisticsModule,
-    MailModule
+    UserModule,
   ]
 })
 export class AppModule {

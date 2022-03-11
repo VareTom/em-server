@@ -33,15 +33,15 @@ export const databaseProviders = [{
     }
     const sequelize = new Sequelize(config);
     sequelize.addModels([
-      User,
-      Entity,
-      Service,
-      Expenditure,
-      Client,
       Address,
+      Car,
+      Client,
+      Entity,
+      Expenditure,
       Order,
       OrderService,
-      Car
+      Service,
+      User
     ]);
     await sequelize.sync({alter: true});
     return sequelize;
