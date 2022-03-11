@@ -27,6 +27,10 @@ export class UserOutputDto {
   isSuperAdmin: boolean;
   
   @ApiProperty()
+  @IsBoolean()
+  isDisabled: boolean;
+  
+  @ApiProperty()
   @IsDate()
   createdAt: Date;
   
@@ -50,6 +54,7 @@ export class UserOutputDto {
     this.email = json.email;
     this.isConfirmed = json.isConfirmed;
     this.isSuperAdmin = json.isSuperAdmin;
+    this.isDisabled = json.isDisabled;
     this.createdAt = json.createdAt;
     this.updatedAt = json.updatedAt;
     this.deletedAt = json.deletedAt ?? null;

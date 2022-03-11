@@ -30,6 +30,19 @@ export class UserController {
   constructor(private readonly userService: UserService) {
   }
   
+  @UseGuards(JwtAuthGuard, SuperAdminGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    status: 200,
+    type: UserOutputDto,
+    isArray: true
+  })
+  @Get('/all')
+  async getAllUsers(): Promise<UserOutputDto[]> {
+    return await this.userService.getAllUsers();
+  }
+  
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Unauthorized'})
@@ -53,18 +66,5 @@ export class UserController {
   async update(@Param('uuid') uuid: string,
                @Body() user: UserUpdateInputDto): Promise<UserOutputDto> {
     return await this.userService.update(user,uuid);
-  }
-
-  @UseGuards(JwtAuthGuard, SuperAdminGuard)
-  @ApiBearerAuth()
-  @ApiResponse({ status: 401, description: 'Unauthorized'})
-  @ApiResponse({
-    status: 200,
-    type: UserOutputDto,
-    isArray: true
-  })
-  @Get('all')
-  async getAllUsers(): Promise<UserOutputDto[]> {
-    return await this.userService.getAllUsers();
   }
 }

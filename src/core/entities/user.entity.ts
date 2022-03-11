@@ -41,6 +41,12 @@ export class User extends Model<User> {
   @Column
   isConfirmed: boolean;
   
+  @IsBoolean()
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  isDisabled: boolean;
+  
   @IsNumber()
   @Unique
   @Column
