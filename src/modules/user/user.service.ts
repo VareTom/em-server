@@ -47,7 +47,7 @@ export class UserService {
       });
   }
 
-  async getAllUsers(): Promise<UserOutputDto[]> {
+  async getAll(): Promise<UserOutputDto[]> {
     return this.userRepository.findAll({
           include: [ Entity ]
         })
@@ -58,5 +58,15 @@ export class UserService {
           console.log(err);
           throw new HttpException('Cannot retrieve all users.', HttpStatus.INTERNAL_SERVER_ERROR);
         })
+  }
+  
+  async disabled (uuid: string): Promise<UserOutputDto> {
+    const user = await this.userRepository.findByPk(uuid);
+    if (!user) throw new HttpException('Cannot find this user', HttpStatus.BAD_REQUEST);
+    
+    user.isDisabled = !user.isDisabled;
+    await user.save();
+    
+    return new UserOutputDto(user);
   }
 }

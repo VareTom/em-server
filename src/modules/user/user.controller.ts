@@ -39,8 +39,20 @@ export class UserController {
     isArray: true
   })
   @Get('/all')
-  async getAllUsers(): Promise<UserOutputDto[]> {
-    return await this.userService.getAllUsers();
+  async getAll(): Promise<UserOutputDto[]> {
+    return await this.userService.getAll();
+  }
+  
+  @UseGuards(JwtAuthGuard, SuperAdminGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiResponse({
+    status: 200,
+    type: UserOutputDto
+  })
+  @Get(':uuid/disabled')
+  async disabled(@Param('uuid') uuid: string): Promise<UserOutputDto> {
+    return await this.userService.disabled(uuid);
   }
   
   @UseGuards(JwtAuthGuard)
