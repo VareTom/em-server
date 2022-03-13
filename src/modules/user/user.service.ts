@@ -10,10 +10,15 @@ import { USER_REPOSITORY } from 'src/core/constants';
 import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';
 import { UserUpdateInputDto } from 'src/core/dtos/user/userUpdateInputDto';
 import { Entity } from 'src/core/entities/entity.entity';
+import { UserCreateInputDto } from 'src/core/dtos/user/userCreateInputDto';
+
+// Services
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class UserService {
   constructor(
+    private readonly mailerService: MailerService,
     @Inject(USER_REPOSITORY)
     private userRepository: typeof User
   ) {}
@@ -72,5 +77,48 @@ export class UserService {
     await user.save();
     
     return new UserOutputDto(user);
+  }
+  
+  async invite (userCreateInput: UserCreateInputDto): Promise<UserOutputDto> {
+    const user = await this.userRepository.findOne({
+      where: {email: userCreateInput.email}
+    });
+    if (user) throw new HttpException('Email already registered', HttpStatus.BAD_REQUEST);
+    
+    const createdUser = await this.userRepository.create(userCreateInput);
+    if (!createdUser) throw new HttpException('Cannot create user', HttpStatus.BAD_REQUEST);
+    
+    const registrationCode = Math.floor(100000 + Math.random() * 900000);
+    createdUser.registrationCode = registrationCode;
+  
+    await createdUser.save();
+  
+    try {
+      let url;
+      if (process.env.NODE_ENV === 'development') {
+        url = `http://localhost:4200/auth/register?code=${registrationCode}&email=${createdUser.email}`;
+      } else {
+        url = `https://em.varetom.be/auth/register?code=${registrationCode}&email=${createdUser.email}`
+      }
+      const data = {
+        registrationCode,
+        url: url
+      }
+    
+      await this.mailerService.sendMail({
+        to: createdUser.email,
+        from: process.env.MAIL_NO_REPLY,
+        subject: 'Invitation à rejoindre `Em',
+        template: 'invitation',
+        context: {
+          ...data
+        }
+      })
+  
+      return new UserOutputDto(user);
+    } catch (e) {
+      console.log(e);
+      throw new HttpException('Cannot send email', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

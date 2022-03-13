@@ -62,25 +62,32 @@ export class EntityService {
   async inviteMember(entityUuid: string, userCreateInput: UserCreateInputDto): Promise<UserOutputDto> {
     const entity = await this.entityRepository.findByPk(entityUuid);
     if (!entity) throw new HttpException('Cannot find this entity', HttpStatus.BAD_REQUEST);
-    
-    const [user, created] = await this.userRepository.findOrCreate({
+  
+    const user = await this.userRepository.findOne({
       where: {email: userCreateInput.email}
     });
-    if (!created) throw new HttpException('Email already registered', HttpStatus.BAD_REQUEST);
+    if (user) throw new HttpException('Email already registered', HttpStatus.BAD_REQUEST);
+  
+    const createdUser = await this.userRepository
+      .create(userCreateInput)
+      .catch(err => {
+        throw new HttpException('Cannot create user', HttpStatus.INTERNAL_SERVER_ERROR);
+      });
+    if (!createdUser) throw new HttpException('Cannot create user', HttpStatus.BAD_REQUEST);
     
-    await user.$set('entity', entity);
+    await createdUser.$set('entity', entity);
     
     const registrationCode = Math.floor(100000 + Math.random() * 900000);
-    user.registrationCode = registrationCode;
+    createdUser.registrationCode = registrationCode;
     
-    await user.save();
+    await createdUser.save();
   
     try {
       let url;
       if (process.env.NODE_ENV === 'development') {
-        url = `http://localhost:4200/auth/register?code=${registrationCode}&email=${user.email}`;
+        url = `http://localhost:4200/auth/register?code=${registrationCode}&email=${createdUser.email}`;
       } else {
-        url = `https://em.varetom.be/auth/register?code=${registrationCode}&email=${user.email}`
+        url = `https://em.varetom.be/auth/register?code=${registrationCode}&email=${createdUser.email}`
       }
       const data = {
         registrationCode,
@@ -88,7 +95,7 @@ export class EntityService {
       }
       
       await this.mailerService.sendMail({
-        to: user.email,
+        to: createdUser.email,
         from: process.env.MAIL_NO_REPLY,
         subject: 'Invitation à rejoindre `Em',
         template: 'invitation',

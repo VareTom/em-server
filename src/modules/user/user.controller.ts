@@ -3,7 +3,7 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
-  Param,
+  Param, Post,
   Put,
   UseGuards,
   UseInterceptors
@@ -20,6 +20,7 @@ import { JwtAuthGuard } from 'src/core/guards/jwt-auth.guard';
 import { UserOutputDto } from 'src/core/dtos/user/userOutputDto';
 import { UserUpdateInputDto } from 'src/core/dtos/user/userUpdateInputDto';
 import { SuperAdminGuard } from 'src/core/guards/super-admin.guard';
+import { UserCreateInputDto } from 'src/core/dtos/user/userCreateInputDto';
 
 
 @ApiTags('users')
@@ -78,5 +79,16 @@ export class UserController {
   async update(@Param('uuid') uuid: string,
                @Body() user: UserUpdateInputDto): Promise<UserOutputDto> {
     return await this.userService.update(user,uuid);
+  }
+  
+  @UseGuards(JwtAuthGuard, SuperAdminGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiCreatedResponse({
+    type: UserOutputDto
+  })
+  @Post('/invite')
+  async addEntityMember(@Body() userInput: UserCreateInputDto): Promise<UserOutputDto> {
+    return await this.userService.invite(userInput);
   }
 }

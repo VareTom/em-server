@@ -1,8 +1,8 @@
 import {
-  AllowNull, BelongsTo, BelongsToMany,
+  AllowNull, BelongsTo,
   Column,
   DataType,
-  Default, ForeignKey, HasMany,
+  Default, ForeignKey,
   IsEmail,
   IsUUID,
   Model,
@@ -36,13 +36,11 @@ export class User extends Model<User> {
   email: string;
   
   @IsBoolean()
-  @AllowNull(false)
   @Default(false)
   @Column
   isConfirmed: boolean;
   
   @IsBoolean()
-  @AllowNull(false)
   @Default(false)
   @Column
   isDisabled: boolean;
@@ -50,14 +48,13 @@ export class User extends Model<User> {
   @IsNumber()
   @Unique
   @Column
-  registrationCode: number;
+  registrationCode?: number;
   
   @IsString()
   @Column
   password: string;
   
   @IsBoolean()
-  @AllowNull(false)
   @Default(false)
   @Column
   isSuperAdmin: boolean;
