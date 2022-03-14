@@ -18,6 +18,10 @@ import { Entity } from 'src/core/entities/entity.entity';
 @Table({
   timestamps: true,
   paranoid: true,
+  indexes: [
+    { unique: true, fields: ['email'] },
+    { unique: true, fields: ['registrationCode'] },
+  ]
 })
 export class User extends Model<User> {
   
@@ -31,7 +35,6 @@ export class User extends Model<User> {
   
   @IsEmail
   @AllowNull(false)
-  @Unique
   @Column
   email: string;
   
@@ -46,7 +49,6 @@ export class User extends Model<User> {
   isDisabled: boolean;
   
   @IsNumber()
-  @Unique
   @Column
   registrationCode?: number;
   

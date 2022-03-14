@@ -13,7 +13,6 @@ import {
 } from 'sequelize-typescript';
 import { Address } from 'src/core/entities/address.entity';
 import { Car } from 'src/core/entities/car.entity';
-import { Service } from 'src/core/entities/service.entity';
 import { Order } from 'src/core/entities/order.entity';
 import { Entity } from 'src/core/entities/entity.entity';
 
