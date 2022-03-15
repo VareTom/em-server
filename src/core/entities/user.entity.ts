@@ -2,7 +2,7 @@ import {
   AllowNull, BelongsTo,
   Column,
   DataType,
-  Default, ForeignKey,
+  Default, ForeignKey, Index,
   IsEmail,
   IsUUID,
   Model,
@@ -17,11 +17,7 @@ import { Entity } from 'src/core/entities/entity.entity';
 
 @Table({
   timestamps: true,
-  paranoid: true,
-  indexes: [
-    { unique: true, fields: ['email'] },
-    { unique: true, fields: ['registrationCode'] },
-  ]
+  paranoid: true
 })
 export class User extends Model<User> {
   
@@ -34,6 +30,7 @@ export class User extends Model<User> {
   uuid: string;
   
   @IsEmail
+  @Index({unique: true})
   @AllowNull(false)
   @Column
   email: string;
@@ -49,6 +46,7 @@ export class User extends Model<User> {
   isDisabled: boolean;
   
   @IsNumber()
+  @Index({unique: true})
   @Column
   registrationCode?: number;
   
