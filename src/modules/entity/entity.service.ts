@@ -71,7 +71,8 @@ export class EntityService {
     const createdUser = await this.userRepository
       .create(userCreateInput)
       .catch(err => {
-        throw new HttpException('Cannot create user', HttpStatus.INTERNAL_SERVER_ERROR);
+        if (err.name === 'SequelizeUniqueConstraintError') throw new HttpException(`Email already registered`, HttpStatus.BAD_REQUEST);
+        throw new HttpException(`User not created`, HttpStatus.INTERNAL_SERVER_ERROR);
       });
     if (!createdUser) throw new HttpException('Cannot create user', HttpStatus.BAD_REQUEST);
     

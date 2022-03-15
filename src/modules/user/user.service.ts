@@ -85,7 +85,11 @@ export class UserService {
     });
     if (user) throw new HttpException('Email already registered', HttpStatus.BAD_REQUEST);
     
-    const createdUser = await this.userRepository.create(userCreateInput);
+    const createdUser = await this.userRepository.create(userCreateInput)
+      .catch(err => {
+        if (err.name === 'SequelizeUniqueConstraintError') throw new HttpException(`Email already registered`, HttpStatus.BAD_REQUEST);
+        throw new HttpException(`User not created`, HttpStatus.INTERNAL_SERVER_ERROR);
+      });
     if (!createdUser) throw new HttpException('Cannot create user', HttpStatus.BAD_REQUEST);
     
     const registrationCode = Math.floor(100000 + Math.random() * 900000);
