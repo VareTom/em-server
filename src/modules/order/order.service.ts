@@ -74,6 +74,21 @@ export class OrderService {
     return orders.map(order => new OrderOutputDto(order));
   }
   
+  async getByUuid(uuid: string): Promise<OrderOutputDto> {
+    const order = await this.orderRepository.findOne({
+      where: {
+        uuid: uuid
+      },
+      include: [ Client, Service ]
+    })
+      .catch(err => {
+        throw new HttpException('Cannot retrieve this order', HttpStatus.INTERNAL_SERVER_ERROR);
+      })
+    if (!order) throw new HttpException('Cannot retrieve this order', HttpStatus.BAD_REQUEST);
+  
+    return new OrderOutputDto(order);
+  }
+  
   async validate(orderUuid: string): Promise<OrderOutputDto> {
     const order = await this.orderRepository.findOne( {
       where: {
@@ -99,6 +114,7 @@ export class OrderService {
   }
   
   async update(orderUuid: string, orderUpdateInput: OrderUpdateInputDto): Promise<OrderOutputDto> {
+    console.log()
     const order = await this.orderRepository.findByPk(orderUuid);
     if (!order) throw new HttpException('Cannot find this order', HttpStatus.BAD_REQUEST);
   
@@ -118,6 +134,8 @@ export class OrderService {
     order.totalInCent = totalInCent;
     order.services = services;
     order.client = client;
+    order.durationInMinute = orderUpdateInput.durationInMinute;
+    order.performedAt = orderUpdateInput.performedAt;
   
     await order.save();
     

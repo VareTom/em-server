@@ -47,7 +47,7 @@ export class OrderController {
     isArray: true
   })
   @ApiQuery({name: 'period', enum: FiltersPeriodEnum})
-  @Get(':entityUuid')
+  @Get('/entity/:entityUuid')
   async findAllForEntity(@Param('entityUuid') entityUuid: string,
                          @Query('period') period: FiltersPeriodEnum): Promise<OrderOutputDto[]> {
     return await this.orderService.findAllForEntity(entityUuid, period);
@@ -63,6 +63,17 @@ export class OrderController {
   @Get(':orderUuid/validate')
   async validate(@Param('orderUuid') orderUuid: string): Promise<OrderOutputDto> {
     return await this.orderService.validate(orderUuid);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 401, description: 'Unauthorized'})
+  @ApiCreatedResponse({
+    type: OrderOutputDto
+  })
+  @Get(':orderUuid')
+  async getByUuid(@Param('orderUuid') orderUuid: string): Promise<OrderOutputDto> {
+    return await this.orderService.getByUuid(orderUuid);
   }
   
   @UseGuards(JwtAuthGuard)
