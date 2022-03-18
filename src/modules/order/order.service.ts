@@ -129,10 +129,10 @@ export class OrderService {
     if (!client) throw new HttpException('Cannot retrieve client', HttpStatus.BAD_REQUEST);
   
     const totalInCent = services.reduce((partialSum, a) => partialSum + a.priceInCent, 0)
-    
-    //await order.$set('servicesUuid', services);
-    order.totalInCent = totalInCent;
+  
+    await order.$add('services', services);
     order.services = services;
+    order.totalInCent = totalInCent;
     order.client = client;
     order.durationInMinute = orderUpdateInput.durationInMinute;
     order.performedAt = orderUpdateInput.performedAt;
